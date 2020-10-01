@@ -2,6 +2,7 @@
 require('./bootstrap');
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbvue/lib/css/mdb.min.css';
+import '../ccs/app.css'
 
 window.Vue = require('vue');
 
@@ -17,9 +18,7 @@ import 'vue-waves-effect/dist/vueWavesEffect.css';
 Vue.use(Waves);
 
 /*-----------------------------------------------------------
-
   Vue instance
-
   -----------------------------------------------------------*/
 new Vue({
   el: '#app',
