@@ -11,6 +11,5 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// SPA
+Route::get('/{any}', 'SpaController@index')->where('any', '.*')->name('home');
