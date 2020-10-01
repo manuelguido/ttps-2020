@@ -1,32 +1,84 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
+// Bootstrap
 require('./bootstrap');
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbvue/lib/css/mdb.min.css';
+import '../css/style.css';
 
 window.Vue = require('vue');
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+// Vue, mainapp + router
+import Vue from 'vue';
+import App from './views/App';
+import router from './router';
+import store from './store';
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+// Mixins
+import alertMixin from './mixins/alertMixin';
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+// Waves
+import Waves from 'vue-waves-effect';
+import 'vue-waves-effect/dist/vueWavesEffect.css';
+Vue.use(Waves);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+// Mixins
+Vue.mixin(alertMixin);
 
-const app = new Vue({
-    el: '#app',
-});
+/*-----------------------------------------------------------
+
+  Components
+
+-----------------------------------------------------------*/
+/*-----------------------------------------------------------
+  Navigation
+-----------------------------------------------------------*/
+// Navbar
+Vue.component('navbar', require('./components/Navbar.vue').default);
+
+/*-----------------------------------------------------------
+  Forms
+-----------------------------------------------------------*/
+// Input
+Vue.component('v-input', require('./components/forms/Input.vue').default);
+
+/*-----------------------------------------------------------
+  Charts
+-----------------------------------------------------------*/
+// Line
+Vue.component('line-chart', require('./components/charts/LineChart.vue').default);
+// Scatter
+Vue.component('scatter-chart', require('./components/charts/ScatterChart.vue').default);
+// Data Table
+Vue.component('data-table', require('./components/Table.vue').default);
+
+/*-----------------------------------------------------------
+  User dashboard
+-----------------------------------------------------------*/
+// Dashboard navigation
+Vue.component('dashboard-navigation', require('./components/dashboard/navigation/Navigation.vue').default);
+// Title
+Vue.component('dashboard-title', require('./components/dashboard/Title.vue').default);
+// Subtite
+Vue.component('dashboard-subtitle', require('./components/dashboard/SubTitle.vue').default);
+
+
+/*-----------------------------------------------------------
+  Loading status
+-----------------------------------------------------------*/
+// Spinner
+Vue.component('spinner', require('./components/loading/Spinner.vue').default);
+// Loading Overlay
+Vue.component('loading-overlay', require('./components/loading/Overlay.vue').default);
+// Loading Overlay
+Vue.component('loading-dots', require('./components/loading/Dots.vue').default);
+
+/*-----------------------------------------------------------
+
+  Vue instance
+
+  -----------------------------------------------------------*/
+new Vue({
+  el: '#app',
+  components: { App },
+  router,
+  store
+}).$mount('#app')
