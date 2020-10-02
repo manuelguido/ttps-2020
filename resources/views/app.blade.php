@@ -9,6 +9,8 @@
         <title>SCO</title>
         {{-- Fonts --}}
         <link rel="stylesheet" href="{{ asset('fonts/fonts/css/all.min.css') }}">
+        {{-- Icon --}}
+        <link rel="icon" href="{{ asset('img/favicon.png') }}">
     </head>
     <body>
         {{-- App --}}
