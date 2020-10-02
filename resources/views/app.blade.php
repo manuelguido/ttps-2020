@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {{-- Crsf --}}
+        <meta name="csrf-token" content="{{ csrf_token()}}">
+        {{-- Title --}}
+        <title>SCO</title>
+        {{-- Fonts --}}
+        <link rel="stylesheet" href="{{ asset('fonts/fonts/css/all.min.css') }}">
+    </head>
+    <body>
+        {{-- App --}}
+        <div id="app">
+            <app></app>
+        </div>
+        {{-- App script --}}
+        <script src="{{ asset('js/app.js') }}"></script>
+    </body>
+</html>
