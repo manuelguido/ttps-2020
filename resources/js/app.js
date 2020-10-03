@@ -40,7 +40,6 @@ Vue.component('navbar', require('./components/Navbar.vue').default);
 // Input
 Vue.component('v-input', require('./components/forms/Input.vue').default);
 
-
 /*-----------------------------------------------------------
 
   Vue instance
