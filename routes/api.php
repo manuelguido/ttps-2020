@@ -13,6 +13,18 @@ use Illuminate\Http\Request;
 |
 */
 
+// Returns the user
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Login user
+Route::post('/login', 'AuthController@login');
+// Logout user
+Route::middleware('auth:api')->post('/logout', 'AuthController@logout');
+
+/*--------------------------------------------------------------------------
+| Social
+--------------------------------------------------------------------------*/
+Route::get('/authorize/google', 'SocialAuthController@redirectToProvider')->name('api.social.redirect');
+Route::get('/authorize/google/callback', 'SocialAuthController@handleProviderCallback')->name('api.social.callback');

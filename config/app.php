@@ -165,7 +165,8 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Schedula\Laravel\PassportSocialite\PassportSocialiteServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
         /*
          * Application Service Providers...
          */

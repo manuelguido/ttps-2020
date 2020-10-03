@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {{-- Crsf --}}
-        <meta name="csrf-token" content="{{ csrf_token()}}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         {{-- Title --}}
         <title>SCO</title>
         {{-- Fonts --}}
@@ -16,6 +16,9 @@
         {{-- App --}}
         <div id="app">
             <app></app>
+            {{-- @if($token))
+                {{$token}}
+            @endif --}}
         </div>
         {{-- App script --}}
         <script src="{{ asset('js/app.js') }}"></script>
