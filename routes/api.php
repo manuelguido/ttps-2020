@@ -24,6 +24,26 @@ Route::post('/login', 'AuthController@login');
 Route::middleware('auth:api')->post('/logout', 'AuthController@logout');
 
 /*--------------------------------------------------------------------------
+| API de seguros médicos
+--------------------------------------------------------------------------*/
+// Retorna todos los seguros médicos
+Route::middleware('auth:api')->get('/medical_ensurance/index', 'MedicalEnsuranceController@index');
+
+
+/*--------------------------------------------------------------------------
+| API Pacientes
+--------------------------------------------------------------------------*/
+// Retorna todos los pacientes
+Route::get('/patient/index', 'PatientController@index');
+// Almacena un paciente
+Route::middleware('auth:api')->post('/patient/store', 'PatientController@store');
+
+
+
+
+
+
+/*--------------------------------------------------------------------------
 | Social
 --------------------------------------------------------------------------*/
 Route::get('/authorize/google', 'SocialAuthController@redirectToProvider')->name('api.social.redirect');
