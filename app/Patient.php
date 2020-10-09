@@ -19,7 +19,7 @@ class Patient extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'lastname', 'address', 'phone', 'birth_date', 'personal_background', 'medical_ensurance_id',
+        'name', 'lastname', 'address', 'phone', 'birth_date', 'personal_background', 'medical_ensurance_id', 'patient_state_id', 'system_id',
     ];
 
     public $timestamps = false;
@@ -38,5 +38,21 @@ class Patient extends Model
     public function medicalEnsurance()
     {
         return $this->belongsTo('App\MedicalEnsurance');
+    }
+
+    /**
+     * Retorna el sistema en el que se encuentra el usuario.
+     */
+    public function system()
+    {
+        return $this->belongsTo('App\System', 'system_id');
+    }
+
+    /**
+     * Retorna el estado del paciente.
+     */
+    public function state()
+    {
+        return $this->belongsTo('App\PatientSate', 'patient_state_id');
     }
 }

@@ -44,6 +44,8 @@ class SocialAuthController extends Controller
         } else { // El usuario existe y se logea
             // Actualiza la imagen del usuario en base a google
             $appUser->image = $user->avatar;
+            $appUser->name = $user->user['given_name'];
+            $appUser->lastname = $user->user['family_name'];
             $appUser->save();
             
             // Crea un token de acceso
@@ -54,11 +56,6 @@ class SocialAuthController extends Controller
                 'user' => $appUser,
                 'token' => $passportToken,
             ]);
-            
-            // return response()->json([
-            //     'access_token' => $passportToken,
-            // ]);
-        }
-        /* ENDLOGIC */        
+        }        
     }
 }

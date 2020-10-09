@@ -8,7 +8,11 @@ use App\Role;
 
 class PatientController extends Controller
 {
-    public function column_fields ()
+
+    /**
+     * Columnas para la tabla completa
+     */
+    private function column_fields ()
     {
         return [
             ['label' => 'Nombre', 'field' => 'name', 'sort' => 'asc'],
@@ -18,6 +22,9 @@ class PatientController extends Controller
         ];
     }
 
+    /**
+     * Retorna los pacientes en forma de tabla con json para mostrar de forma completa en frontend 
+     */
     public function index()
     {
         $data['columns'] = $this->column_fields();
@@ -25,15 +32,21 @@ class PatientController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * Retorna solo los pacientes
+     */
     public function index_by_system()
     {
         return response()->json(Patient::all());
     }
 
+    /**
+     * Almacena un paciente
+     */
     public function store(Request $data)
     {
         // Rol try
-        if (!app('App\Http\Controllers\RoleController')->has_role(ROLE::ROLE_ADMIN)) {
+        if (!app('App\Http\Controllers\RoleController')->has_role(ROLE::ROLE_ADMIN) or 1 == 1) {
             $message = ['status' => 'warning', 'message' => 'No tienes el permiso para realizar esta acción'];
             return response()->json($message, 200);
         } else {

@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class System extends Model
+class PatientState extends Model
 {
     /**
      * Attributes
      */
-    protected $table = 'systems';
+    protected $table = 'patient_states';
 
-    protected $primaryKey = 'system_id';
+    protected $primaryKey = 'patient_state_id';
 
     /**
      * The attributes that are mass assignable.
@@ -19,21 +19,13 @@ class System extends Model
      * @var array
      */
     protected $fillable = [
-        'system',
+        'patient_state',
     ];
 
     public $timestamps = false;
 
     /**
-     * Retorna los usuarios del sistema
-     */
-    public function users()
-    {
-        return $this->belongsToMany('App\User','role_user', 'role_id', 'user_id');
-    }
-
-    /**
-     * Retorna los pacientes del sistema
+     * Retorna los pacientes con este estado
      */
     public function patients()
     {
