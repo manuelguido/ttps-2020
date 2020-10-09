@@ -14,6 +14,7 @@ import store from './store';
 
 // Mixins
 import alertMixin from './mixins/alertMixin';
+import assetMixin from './mixins/assetMixin';
 
 // Waves
 import Waves from 'vue-waves-effect';
@@ -22,11 +23,10 @@ Vue.use(Waves);
 
 // Mixins
 Vue.mixin(alertMixin);
+Vue.mixin(assetMixin);
 
 /*-----------------------------------------------------------
-
   Components
-
 -----------------------------------------------------------*/
 /*-----------------------------------------------------------
   Navigation
@@ -41,9 +41,7 @@ Vue.component('navbar', require('./components/Navbar.vue').default);
 Vue.component('v-input', require('./components/forms/Input.vue').default);
 
 /*-----------------------------------------------------------
-
   Vue instance
-
   -----------------------------------------------------------*/
 new Vue({
   el: '#app',
