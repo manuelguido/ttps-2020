@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSystemsTable extends Migration
+class CreatePatientStatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateSystemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('systems', function (Blueprint $table) {
-            $table->bigIncrements('system_id');
-            $table->string('system');
+        Schema::create('patient_states', function (Blueprint $table) {
+            $table->bigIncrements('patient_state_id');
+            $table->string('patient_state');
         });
     }
 
@@ -26,6 +26,6 @@ class CreateSystemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('systems');
+        Schema::dropIfExists('patient_states');
     }
 }
