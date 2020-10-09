@@ -16,11 +16,11 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        function new_user($email, $password)
+        function new_user($email, $password, $name, $lastname)
         {
             $user = new User;
-            $user->name = Str::random(10);
-            $user->lastname = Str::random(10);
+            $user->name = $name;
+            $user->lastname = $lastname;
             $user->email = $email;
             $user->phone = mt_rand(1000000, 99999999);
             $user->dni = mt_rand(1000000, 99999999);
@@ -37,24 +37,24 @@ class UsersTableSeeder extends Seeder
         }
 
         // Creacion de administrador
-        $admin = new_user('admin@gmail.com', 'password');
+        $admin = new_user('admin@gmail.com', 'password', 'Nombre', 'Admin');
         $admin->set_role(Role::ROLE_ADMIN);
 
         // Creacion de jefe de sistema
-        $admin = new_user('system_chief@gmail.com', 'password');
+        $admin = new_user('system_chief@gmail.com', 'password', 'Nombre', 'J. de sistema');
         $admin->set_role(Role::ROLE_SYSTEM_CHIEF);
 
         // Creación de médico
-        $medic = new_user('medic@gmail.com', 'password');
+        $medic = new_user('medic@gmail.com', 'password', 'Nombre', 'Médico');
         $medic->set_role(Role::ROLE_MEDIC);
         new_medic($medic->user_id);
 
         // Creación de configurador de reglas
-        $admin = new_user('rule_setter@gmail.com', 'password');
+        $admin = new_user('rule_setter@gmail.com', 'password', 'Nombre', 'C. de Reglas');
         $admin->set_role(Role::ROLE_RULE_SETTER);
 
         // Creacion de administrador
-        $admin = new_user('manuelguido.m@gmail.com', 'Numera96!gG');
+        $admin = new_user('manuelguido.m@gmail.com', 'password', 'Manuel', 'Guido');
         $admin->set_role(Role::ROLE_ADMIN);
     }
 }
