@@ -8,10 +8,10 @@
 <script>
 export default {
   created() {
-    localStorage.clear() // Deletes all local storage
-    this.$store.dispatch("destroyToken").then(response => {
-      this.$router.push({ path: '/' });
-    });
+    localStorage.clear(); // Deletes all local storage
+    this.$store.dispatch("destroyToken");
+    window.location.href = '/'
+    // this.$router.push({ path: '/' });
   }
 };
 </script>
