@@ -56,6 +56,6 @@ class SocialAuthController extends Controller
                 'user' => $appUser,
                 'token' => $passportToken,
             ]);
-        }        
+        }
     }
 }
