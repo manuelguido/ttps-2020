@@ -2,8 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store';
 
+import dashboardRoutes from './dashboardRoutes'
 import publicRoutes from './publicRoutes'
+import errorRoutes from './errorRoutes'
 import authRoutes from './authRoutes'
+import userRoutes from './userRoutes'
 
 Vue.use(Router)
 
@@ -11,6 +14,9 @@ var allRoutes = []
 allRoutes = allRoutes.concat(
   publicRoutes,
   authRoutes,
+  dashboardRoutes,
+  userRoutes,
+  errorRoutes
 )
 
 const routes = allRoutes
