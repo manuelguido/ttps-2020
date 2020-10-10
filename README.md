@@ -1,4 +1,4 @@
-# TTPS 2020 Grupo 7
+# SeCo - TTPS 2020 - Grupo 7
 Desarrollo de un SPA (Aplciación de una sola página) con Laravel 5.8 y Vuejs para la materia "Taller de tecnologías de producción de software"
 
 Integrantes del equipo de desarrollo:
