@@ -13,11 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-// Returns the user
+/*--------------------------------------------------------------------------
+| API de usuario
+--------------------------------------------------------------------------*/
+// Retorna el usuario
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+// Retorna todos los pacientes
+Route::middleware('auth:api')->get('/user/routes', 'UserController@routes');
 
+/*--------------------------------------------------------------------------
+| Autenticacion
+--------------------------------------------------------------------------*/
 // Login user
 Route::post('/login', 'AuthController@login');
 // Logout user
@@ -44,7 +52,7 @@ Route::middleware('auth:api')->post('/patient/store', 'PatientController@store')
 
 
 /*--------------------------------------------------------------------------
-| Social
+| Social auth
 --------------------------------------------------------------------------*/
 Route::get('/authorize/google', 'SocialAuthController@redirectToProvider')->name('api.social.redirect');
 Route::get('/authorize/google/callback', 'SocialAuthController@handleProviderCallback')->name('api.social.callback');
