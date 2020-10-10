@@ -23,7 +23,7 @@
       // alert(token);
       localStorage.setItem('access_token', token);
       // window.close();
-      window.location.href = "/dashboard";
+      window.location.pathname = "dashboard/home";
     }
   </script>
 </body>
