@@ -39,8 +39,9 @@ class SocialAuthController extends Controller
         $appUser = User::getByEmail($user->email);
 
         // El usuario no existe
-        if(!$user) {
-            return redirect()->to('login');
+        if(!$appUser) {
+            // Retorna la vista.
+            return view('callback_no_user');
         } else { // El usuario existe y se logea
             // Actualiza la imagen del usuario en base a google
             $appUser->image = $user->avatar;
@@ -51,7 +52,7 @@ class SocialAuthController extends Controller
             // Crea un token de acceso
             $passportToken = $appUser->createToken('Login token')->accessToken;
 
-            // Create new view (I use callback.blade.php), and send the token and the name.
+            // Retorna la vista.
             return view('callback', [
                 'user' => $appUser,
                 'token' => $passportToken,
