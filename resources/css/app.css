@@ -136,6 +136,12 @@ a:active,
   color: white !important;
 }
 
+/* Dashboard */
+.dashboard-container {
+  padding-top: 1em;
+  margin-left: 240px !important;
+}
+
 /* Responsive */
 @media (min-width: 992px) {
   .web-hide {
