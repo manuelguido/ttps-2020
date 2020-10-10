@@ -1,10 +1,10 @@
-const production = false;
+const production = true;
 
 const assetMixin = {
 	data () {
 		return {
 			dev_path: 'http://127.0.0.1:8000/',
-			prod_path: 'http://127.0.0.1:8000/', // Cambiar ruta cuando se haga el deploy
+			prod_path: 'http://www.glossar.site/public', // Cambiar ruta cuando se haga el deploy
 		}
 	},
 	methods: {
