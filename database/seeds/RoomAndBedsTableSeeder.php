@@ -74,7 +74,7 @@ class RoomAndBedsTableSeeder extends Seeder
         }
 
         /**
-         * Salas del sistema de guardia
+         * Salas del sistema de uti
          */
         // Guardo el id
         $system_id = $system_id = System::where('system', System::SYSTEM_UTI)->get()->first()->system_id;
@@ -92,7 +92,7 @@ class RoomAndBedsTableSeeder extends Seeder
         }
 
         /**
-         * Salas del sistema de guardia
+         * Salas del sistema de hotel
          */
         // Guardo el id
         $system_id = $system_id = System::where('system', System::SYSTEM_HOTEL)->get()->first()->system_id;
@@ -116,7 +116,7 @@ class RoomAndBedsTableSeeder extends Seeder
         }
 
         /**
-         * Salas del sistema de guardia
+         * Salas del sistema de domicilio
          */
         // Guardo el id
         $system_id = $system_id = System::where('system', System::SYSTEM_HOME)->get()->first()->system_id;
