@@ -42,7 +42,9 @@ class SocialAuthController extends Controller
         if(!$appUser) {
             // Retorna la vista.
             return view('callback_no_user');
-        } else { // El usuario existe y se logea
+
+        // El usuario existe y se logea
+        } else {
             // Actualiza la imagen del usuario en base a google
             $appUser->image = $user->avatar;
             $appUser->name = $user->user['given_name'];
