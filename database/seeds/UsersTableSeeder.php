@@ -71,21 +71,21 @@ class UsersTableSeeder extends Seeder
         // Creacion de jefe de sistema (Piso Covid)
         $system_chief = new_user('jefe_piso_covid@gmail.com', 'password', 'Nombre', 'J.S. Piso covid');
         $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->set_system(System::SYSTEM_GUARD);
+        $system_chief->set_system(System::SYSTEM_COVID_FLOOR);
         
         // Creacion de jefe de sistema (UTI)
         $system_chief = new_user('jefe_uti@gmail.com', 'password', 'Nombre', 'J.S. UTI');
         $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->set_system(System::SYSTEM_GUARD);
+        $system_chief->set_system(System::SYSTEM_UTI);
 
         // Creacion de jefe de sistema (Hotel)
         $system_chief = new_user('jefe_hotel@gmail.com', 'password', 'Nombre', 'J.S. Hotel');
         $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->set_system(System::SYSTEM_GUARD);
+        $system_chief->set_system(System::SYSTEM_HOTEL);
 
         // Creacion de jefe de sistema (Domicilio)
         $system_chief = new_user('jefe_domicilio@gmail.com', 'password', 'Nombre', 'J.S. Domicilio');
         $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->set_system(System::SYSTEM_GUARD);
+        $system_chief->set_system(System::SYSTEM_HOME);
     }
 }

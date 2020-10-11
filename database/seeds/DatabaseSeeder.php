@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             SystemTableSeeder::class,
             UsersTableSeeder::class,
             MedicalEnsuranceTableSeeder::class,
+            RoomAndBedsTableSeeder::class,
         ]);
     }
 }
