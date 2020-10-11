@@ -6,7 +6,7 @@
         {{-- Crsf --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
         {{-- Title --}}
-        <title>SCO</title>
+        <title>SeCo</title>
         {{-- Fonts --}}
         <link rel="stylesheet" href="{{ asset('fonts/fonts/css/all.min.css') }}">
         {{-- Icon --}}
@@ -16,9 +16,6 @@
         {{-- App --}}
         <div id="app">
             <app></app>
-            {{-- @if($token))
-                {{$token}}
-            @endif --}}
         </div>
         {{-- App script --}}
         <script src="{{ asset('js/app.js') }}"></script>

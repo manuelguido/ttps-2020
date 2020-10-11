@@ -6,7 +6,7 @@
     {{-- Crsf --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- Title --}}
-    <title>SeCo</title>
+    <title>Callback</title>
     {{-- Fonts --}}
     <link rel="stylesheet" href="{{ asset('fonts/fonts/css/all.min.css') }}">
     {{-- Icon --}}
