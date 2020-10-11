@@ -14,24 +14,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
-    // /**
-    // * Find user using social provider's id
-    // * 
-    // * @param string $provider Provider name as requested from oauth e.g. facebook
-    // * @param string $id User id of social provider
-    // *
-    // * @return User
-    // */
-    // public static function findForPassportSocialite($provider,$id) {
-    //     $account = SocialAccount::where('provider', $provider)->where('provider_user_id', $id)->first();
-    //     if($account) {
-    //         if($account->user){
-    //             return $account->user;
-    //         }
-    //     }
-    //     return;
-    // }
-
     /**
      * Attributes
      */

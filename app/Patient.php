@@ -55,4 +55,12 @@ class Patient extends Model
     {
         return $this->belongsTo('App\PatientSate', 'patient_state_id');
     }
+
+    /**
+     * Retorna la cama del paciente
+     */
+    public function bed()
+    {
+        return $this->hasOne('App\Bed');
+    }
 }

@@ -25,7 +25,7 @@ class System extends Model
      * @var array
      */
     protected $fillable = [
-        'system',
+        'system', 'infinite_beds',
     ];
 
     public $timestamps = false;
