@@ -3,6 +3,7 @@
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\System;
 use App\Medic;
 use App\Role;
 use App\User;
@@ -16,6 +17,9 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        /**
+         * Nuevo usuario
+         */
         function new_user($email, $password, $name, $lastname)
         {
             $user = new User;
@@ -29,6 +33,9 @@ class UsersTableSeeder extends Seeder
             return $user;
         }
 
+        /**
+         * Nuevo médico
+         */
         function new_medic($user_id)
         {
             $medic = new Medic;
@@ -40,21 +47,45 @@ class UsersTableSeeder extends Seeder
         $admin = new_user('admin@gmail.com', 'password', 'Nombre', 'Admin');
         $admin->set_role(Role::ROLE_ADMIN);
 
-        // Creacion de jefe de sistema
-        $admin = new_user('system_chief@gmail.com', 'password', 'Nombre', 'J. de sistema');
-        $admin->set_role(Role::ROLE_SYSTEM_CHIEF);
-
         // Creación de médico
-        $medic = new_user('medic@gmail.com', 'password', 'Nombre', 'Médico');
+        $medic = new_user('medico@gmail.com', 'password', 'Nombre', 'Médico');
         $medic->set_role(Role::ROLE_MEDIC);
         new_medic($medic->user_id);
 
         // Creación de configurador de reglas
-        $admin = new_user('rule_setter@gmail.com', 'password', 'Nombre', 'C. de Reglas');
-        $admin->set_role(Role::ROLE_RULE_SETTER);
+        $rule_setter = new_user('configurador@gmail.com', 'password', 'Nombre', 'C. de Reglas');
+        $rule_setter->set_role(Role::ROLE_RULE_SETTER);
 
         // Creacion de administrador
         $admin = new_user('manuelguido.m@gmail.com', 'password', 'Manuel', 'Guido');
         $admin->set_role(Role::ROLE_ADMIN);
+
+        /**
+         * Jefes de sistema
+         */
+        // Creacion de jefe de sistema (Guardia)
+        $system_chief = new_user('jefe_guardia@gmail.com', 'password', 'Nombre', 'J.S. Guardia');
+        $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
+        $system_chief->set_system(System::SYSTEM_GUARD);
+
+        // Creacion de jefe de sistema (Piso Covid)
+        $system_chief = new_user('jefe_piso_covid@gmail.com', 'password', 'Nombre', 'J.S. Piso covid');
+        $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
+        $system_chief->set_system(System::SYSTEM_GUARD);
+        
+        // Creacion de jefe de sistema (UTI)
+        $system_chief = new_user('jefe_uti@gmail.com', 'password', 'Nombre', 'J.S. UTI');
+        $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
+        $system_chief->set_system(System::SYSTEM_GUARD);
+
+        // Creacion de jefe de sistema (Hotel)
+        $system_chief = new_user('jefe_hotel@gmail.com', 'password', 'Nombre', 'J.S. Hotel');
+        $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
+        $system_chief->set_system(System::SYSTEM_GUARD);
+
+        // Creacion de jefe de sistema (Domicilio)
+        $system_chief = new_user('jefe_domicilio@gmail.com', 'password', 'Nombre', 'J.S. Domicilio');
+        $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
+        $system_chief->set_system(System::SYSTEM_GUARD);
     }
 }

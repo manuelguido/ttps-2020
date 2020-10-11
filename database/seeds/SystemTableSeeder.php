@@ -19,10 +19,10 @@ class SystemTableSeeder extends Seeder
             $system->save();
         }
 
-        create_system('Guardia');
-        create_system('Piso covid');
-        create_system('UTI');
-        create_system('Hotel');
-        create_system('Domicilio');
+        create_system(System::SYSTEM_GUARD);
+        create_system(System::SYSTEM_COVID_FLOOR);
+        create_system(System::SYSTEM_UTI);
+        create_system(System::SYSTEM_HOTEL);
+        create_system(System::SYSTEM_HOME);
     }
 }

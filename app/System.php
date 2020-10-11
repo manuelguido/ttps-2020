@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class System extends Model
 {
+    const SYSTEM_GUARD = 'Guardia';
+    const SYSTEM_COVID_FLOOR = 'Piso Covid';
+    const SYSTEM_UTI = 'UTI';
+    const SYSTEM_HOTEL = 'Hotel';
+    const SYSTEM_HOME = 'Domicilio';
+
     /**
      * Attributes
      */

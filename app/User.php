@@ -105,7 +105,7 @@ class User extends Authenticatable
 
     public function set_role($role)
     {
-        // Gets role id
+        // Get role_id
         $role_id = Role::where('role', $role)->get()->first()->role_id;
         // Saves the role
         DB::table('role_user')->insert([
@@ -121,5 +121,16 @@ class User extends Authenticatable
             if ($r->role == $role) return True;
         }
         return False;
+    }
+
+    public function set_system($system)
+    {
+        // Get system_id
+        $system_id = System::where('system', $system)->get()->first()->system_id;
+        // Saves the system
+        DB::table('system_user')->insert([
+            'user_id' => $this->user_id,
+            'system_id' => $system_id,
+        ]);
     }
 }
