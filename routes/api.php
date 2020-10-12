@@ -17,10 +17,12 @@ use Illuminate\Http\Request;
 | API de usuario
 --------------------------------------------------------------------------*/
 // Retorna el usuario
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-// Retorna todos los pacientes
+Route::middleware('auth:api')->get('/user', 'UserController@user');
+// Retorna el usuario
+Route::middleware('auth:api')->get('/user/role', 'UserController@role');
+// Retorna el sistema del usuario
+Route::middleware('auth:api')->get('/user/system', 'UserController@system');
+// Retorna las rutas del usuario
 Route::middleware('auth:api')->get('/user/routes', 'UserController@routes');
 
 /*--------------------------------------------------------------------------

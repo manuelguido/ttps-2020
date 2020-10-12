@@ -6,11 +6,13 @@
         <img v-else :src="asset_path() + 'img/person.png'">
       </span>
       <span class="pl-3">
-        <!-- <i class="fad fa-user-alt mr-2"></i> -->
+        <span class="black-alpha-40">
         {{user.name}}
         {{user.lastname}}
+        </span>
+        <br>
+        <span>{{role}}</span>
       </span>
-      <!-- <span><i class="fas fa-chevron-down"></i></span> -->
     </div>
   </router-link>
 </template>
@@ -21,15 +23,21 @@ import axios from 'axios';
 export default {
   data () {
     return {
-      user: {}
+      user: {},
+      role: '',
     }
   },
   created () {
     this.updateUser();
+    this.updateRole();
   },
   methods: {
     setUser(user) {
       this.user = user;
+    },
+
+    setRole(role) {
+      this.role = role;
     },
 
     fetchUser () {
@@ -44,8 +52,22 @@ export default {
         this.setUser(res.data)
         localStorage.setItem('user', JSON.stringify(res.data));
       }).catch((err) => {
-        // var $this = this;
-        // setTimeout(function () { $this.fetchProducts() }, 1000);
+        console.log(err);
+      })
+    },
+
+    fetchRole () {
+      const path = '/api/user/role'
+      const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString()
+      axios.get(path, {
+        'headers': {
+          'Accept': 'application/json',
+          'Authorization': AuthStr
+          }
+      }).then((res) => {
+        this.setRole(res.data)
+        localStorage.setItem('role', JSON.stringify(res.data));
+      }).catch((err) => {
         console.log(err);
       })
     },
@@ -53,10 +75,17 @@ export default {
     updateUser () {
       if (localStorage.user) {
         var loc = localStorage.getItem('user');
-        var result = JSON.parse(loc);
-        this.user = result;
+        this.user = JSON.parse(loc);
       }
       this.fetchUser();
+    },
+
+    updateRole () {
+      if (localStorage.role) {
+        var loc = localStorage.getItem('role');
+        this.role = JSON.parse(loc);
+      }
+      this.fetchRole();
     }
   }
 }
@@ -76,8 +105,8 @@ export default {
 }
 
 .user-image {
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   overflow: hidden;
   border-radius: 100px;
 }

@@ -34,6 +34,16 @@ const routes = [
         component: patients
       },
       {
+        path: '/dashboard/rooms',
+        name: 'patients',
+        component: patients
+      },
+      {
+        path: '/dashboard/beds',
+        name: 'patients',
+        component: patients
+      },
+      {
         path: '/dashboard/reports',
         name: 'reports',
         component: reports

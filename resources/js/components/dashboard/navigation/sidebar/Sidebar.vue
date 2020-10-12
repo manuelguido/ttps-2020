@@ -41,7 +41,7 @@ export default {
     position: fixed;
     background: #fff;
     /* box-shadow: 0 .07em .425em 0 rgba(0,0,0,.225) !important; */
-    width: 240px;
+    width: 280px;
     left: 0;
     top: 0;
     z-index: 1030;

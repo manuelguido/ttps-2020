@@ -43,7 +43,7 @@ export default {
 }
 @media(min-width: 992px) {
   .panel-container {
-    margin-left: 240px !important;
+    margin-left: 280px !important;
   }
 }
 @media(max-width: 992px) {

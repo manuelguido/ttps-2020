@@ -95,4 +95,28 @@ class UserController extends Controller
         $data = $this->getRoutes($role);
         return response()->json($data);
     }
+
+    /**
+     * Retorna el usuario
+     */
+    public function user(Request $request)
+    {
+        return $request->user();
+    }
+
+    /**
+     * Retorna el rol del usuario
+     */
+    public function role(Request $request)
+    {
+        return $request->user()->roles()->first()->role;
+    }
+
+    /**
+     * Retorna el systema del usuario
+     */
+    public function system(Request $request)
+    {
+        return $request->user()->systems()->first()->role;
+    }
 }
