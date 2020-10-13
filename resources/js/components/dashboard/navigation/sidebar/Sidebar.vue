@@ -27,7 +27,7 @@ export default {
   },
   data () {
     return {
-      sidebar_title: 'SCO'
+      sidebar_title: 'SeCo'
     }
   }
 }

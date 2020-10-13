@@ -2,7 +2,7 @@
   <mdb-navbar id="dashboard-navbar" color="white" light class="dashboard-navbar shadow-none py-3 py-lg-2 py-xl-3">
     <!-- Brand -->
     <router-link to="/" class="navbar-brand">
-      <span class="w-700 primary">SCO</span>
+      <span class="w-700 primary">SeCo</span>
 			<span class="w-400 primary">Dashboard</span>
     </router-link>
 		<!-- /.Brand -->
