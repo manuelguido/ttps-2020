@@ -28,6 +28,7 @@ class UserController extends Controller
             ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
             ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
             ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
+            ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
         ];
     }
 
@@ -65,7 +66,7 @@ class UserController extends Controller
         // Es JEFE DE SISTEMA
         else if ($role == ROLE::ROLE_SYSTEM_CHIEF)
         {
-            return $this->medicRoutes();
+            return $this->systemChiefRoutes();
         }
         // Es MEDICO
         else if ($role == ROLE::ROLE_MEDIC)
