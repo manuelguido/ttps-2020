@@ -2,12 +2,14 @@
 import dashboard from '../layouts/Dashboard'
 // Home
 import home from '.././views/dashboard/Home'
-// Reports
+// reportes
 import reports from '.././views/dashboard/Reports'
-// Patients
+// Pacientes
 import patients from '.././views/dashboard/Patients'
-// Patients
+// Medicos
 import medics from '.././views/dashboard/Medics'
+// Systems
+import systems from '.././views/dashboard/Systems'
 
 const routes = [
   { 
@@ -52,6 +54,11 @@ const routes = [
         path: '/dashboard/medics',
         name: 'medics',
         component: medics
+      },
+      {
+        path: '/dashboard/systems',
+        name: 'systems',
+        component: systems
       }
     ]
   },
