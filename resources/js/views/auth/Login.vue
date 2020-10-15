@@ -85,7 +85,7 @@ export default {
           password: this.password
         })
         .then(response => {
-          this.$router.push({ name: "dashboard" });
+          this.$router.push({ name: "dataLoad" });
         })
         .catch(error => {
           this.error = error.response.data;

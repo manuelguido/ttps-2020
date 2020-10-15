@@ -18,80 +18,23 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
+  name: 'userData',
   data () {
     return {
-      user: {},
-      role: '',
-    }
-  },
-  created () {
-    this.updateUser();
-    this.updateRole();
-  },
-  methods: {
-    setUser(user) {
-      this.user = user;
-    },
-
-    setRole(role) {
-      this.role = role;
-    },
-
-    fetchUser () {
-      const path = '/api/user'
-      const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString()
-      axios.get(path, {
-        'headers': {
-          'Accept': 'application/json',
-          'Authorization': AuthStr
-          }
-      }).then((res) => {
-        this.setUser(res.data)
-        localStorage.setItem('user', JSON.stringify(res.data));
-      }).catch((err) => {
-        console.log(err);
-      })
-    },
-
-    fetchRole () {
-      const path = '/api/user/role'
-      const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString()
-      axios.get(path, {
-        'headers': {
-          'Accept': 'application/json',
-          'Authorization': AuthStr
-          }
-      }).then((res) => {
-        this.setRole(res.data)
-        localStorage.setItem('role', JSON.stringify(res.data));
-      }).catch((err) => {
-        console.log(err);
-      })
-    },
-
-    updateUser () {
-      if (localStorage.user) {
-        var loc = localStorage.getItem('user');
-        this.user = JSON.parse(loc);
-      }
-      this.fetchUser();
-    },
-
-    updateRole () {
-      if (localStorage.role) {
-        var loc = localStorage.getItem('role');
-        this.role = JSON.parse(loc);
-      }
-      this.fetchRole();
+      user: JSON.parse(localStorage.getItem('user')),
+      role: JSON.parse(localStorage.getItem('role')),
     }
   }
 }
 </script>
 
 <style scoped>
+.user-data,
+.user-data * {
+  transition: 0s all !important;
+}
+
 .user-data {
   color: var(--primary);
   display: block;

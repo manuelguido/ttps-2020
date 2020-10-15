@@ -31,44 +31,8 @@ export default {
   },
 	data () {
 		return {
-			user: {
-				
-			},
-			routes: []
+			routes: JSON.parse(localStorage.getItem('routes')),
 		}
-	},
-	mounted () {
-		this.loadRoutes();
-	},
-	methods: {
-		loadRoutes() {
-			// Obtener rutas del usuario
-			if (localStorage.routes) {
-				var routes = localStorage.getItem('routes')
-				this.routes = JSON.parse(routes)
-			}
-			this.getUserRoutes()
-		},
-
-		setRoutes(data) {
-			this.routes = data;
-		},
-
-		getUserRoutes: function () {
-      const path = '/api/user/routes'
-      const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString()
-      axios.get(path, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': AuthStr
-        }
-      }).then((res) => {
-				this.setRoutes(res.data);
-      }).catch((error) => {
-				// this.getUserRoutes();
-				console.log(error);
-      })
-    },
 	}
 }
 </script>

@@ -10,11 +10,21 @@ import patients from '.././views/dashboard/Patients'
 import medics from '.././views/dashboard/Medics'
 // Systems
 import systems from '.././views/dashboard/Systems'
+// Data Load
+import dataLoad from '.././views/auth/DataLoad'
 
 const routes = [
+  {
+    path: '/dataload',
+    name: 'dataLoad',
+    component: dataLoad,
+    meta: {
+      requiresAuth: true,
+    }
+  },
   { 
     path: '/admin',
-    redirect: '/dashboard/home', 
+    redirect: '/dashboard/home', //No necesita auth porque redirecciona a una ruta con auth siempre 
   },
   {
     path: '/dashboard',
