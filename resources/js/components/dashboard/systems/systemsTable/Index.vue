@@ -42,7 +42,7 @@ export default {
         },
         {
           system_id: 3,
-          name: 'UTI',
+          system: 'UTI',
         },
         {
           system_id: 4,

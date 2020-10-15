@@ -1,7 +1,7 @@
 <template>
   <mdb-navbar color="white" light class="navbar shadow-none py-3 py-lg-2 py-xl-3">
     <router-link to="/" class="navbar-brand">
-      <span class="w-400 primary">SCO</span>
+      <span class="w-400 primary">SeCo</span>
     </router-link>
     <mdb-navbar-toggler>
 			<mdb-navbar-nav right>
