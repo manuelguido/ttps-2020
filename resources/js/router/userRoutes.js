@@ -26,6 +26,14 @@ const routes = [
         component: notifications
       }
     ]
+  },
+  {
+    path: '/profile',
+    redirect: '/user/profile',
+  },
+  {
+    path: '/notifications',
+    redirect: '/user/notifications',
   }
 ]
 
