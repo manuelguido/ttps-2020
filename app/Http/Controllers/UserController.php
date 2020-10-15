@@ -114,10 +114,27 @@ class UserController extends Controller
     }
 
     /**
-     * Retorna el systema del usuario
+     * Retorna el sistema del usuario
      */
     public function system(Request $request)
     {
-        return $request->user()->systems()->first()->role;
+        return $request->user()->systems()->first()->system;
+    }
+
+    /**
+     * Retorna el usuario con el rol, sus rutas(de url) y su sistema correspondiente
+     */
+    public function fullUser(Request $request)
+    {
+        // El rol se obtiene antes para poder buscar las rutas correspondientes
+        $role = $request->user()->roles()->first()->role;
+
+        $data = [
+            'user' => $request->user(),
+            'role' => $role,
+            'system' => $request->user()->systems()->first()->system,
+            'routes' => $this->getRoutes($role),
+        ];
+        return response()->json($data);
     }
 }

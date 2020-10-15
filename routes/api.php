@@ -18,12 +18,14 @@ use Illuminate\Http\Request;
 --------------------------------------------------------------------------*/
 // Retorna el usuario
 Route::middleware('auth:api')->get('/user', 'UserController@user');
-// Retorna el usuario
+// Retorna el rol de usuario
 Route::middleware('auth:api')->get('/user/role', 'UserController@role');
 // Retorna el sistema del usuario
 Route::middleware('auth:api')->get('/user/system', 'UserController@system');
 // Retorna las rutas del usuario
 Route::middleware('auth:api')->get('/user/routes', 'UserController@routes');
+// Retorna el usuario con el rol, sus rutas(de url) y su sistema correspondiente
+Route::middleware('auth:api')->get('/user/full', 'UserController@fullUser');
 
 /*--------------------------------------------------------------------------
 | Autenticacion
