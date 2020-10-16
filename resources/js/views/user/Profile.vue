@@ -59,6 +59,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Hace el formato de DNI
+     */
     dni() {
       let val = (this.user.dni/1).toFixed(0).replace('.')
       return "DNI " + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")

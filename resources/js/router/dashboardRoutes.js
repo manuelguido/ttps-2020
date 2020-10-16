@@ -6,6 +6,8 @@ import home from '.././views/dashboard/Home'
 import reports from '.././views/dashboard/Reports'
 // Pacientes
 import patients from '.././views/dashboard/Patients'
+// Paciente
+import patient from '.././views/dashboard/Patient'
 // Medicos
 import medics from '.././views/dashboard/Medics'
 // Systems
@@ -44,6 +46,12 @@ const routes = [
         path: '/dashboard/patients',
         name: 'patients',
         component: patients
+      },
+      {
+        path: '/dashboard/patient/:patient_id',
+        name: 'patient',
+        component: patient,
+        props: true,
       },
       {
         path: '/dashboard/rooms',
