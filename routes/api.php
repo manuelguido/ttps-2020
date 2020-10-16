@@ -36,14 +36,16 @@ Route::middleware('auth:api')->get('/medical_ensurance/index', 'MedicalEnsurance
 /**
  * API de sistemas
  */
-// Retorna todos los seguros sistemas
+// Retorna todos los sistemas
 Route::middleware('auth:api')->get('/system/index', 'SystemController@index');
+// Retorna todos los seguros sistemas
+Route::middleware('auth:api')->get('/system/index/full', 'SystemController@indexFull');
 
 
 /**
  * API de estados de pacientes
  */
-// Retorna todos los seguros sistemas
+// Retorna todos los estados de pacientes
 Route::middleware('auth:api')->get('/patient_state/index', 'PatientStateController@index');
 
 

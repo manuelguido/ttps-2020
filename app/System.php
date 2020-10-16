@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class System extends Model
 {
@@ -44,5 +45,62 @@ class System extends Model
     public function patients()
     {
         return $this->hasMany('App\Patient', 'patient_id', 'system_id');
+    }
+
+    /**
+     * Retorna las habitaciones del sistema
+     */
+    public function rooms()
+    {
+        return $this->hasMany('App\Room', 'room_id', 'system_id');
+    }
+
+    /**
+     * Retorna el total de camas del sistema
+     */
+    public function totalBeds()
+    {
+        // Resultado de consulta
+        $result = DB::table('rooms')
+            ->where('rooms.system_id', '=', $this->system_id)
+            ->join('beds', 'beds.room_id', '=', 'rooms.room_id')
+            ->get();
+
+        // Retorna el resultado
+        return count($result);
+    }
+
+    /**
+     * Retorna el total de habitaciones ocupadas del sistema
+     */
+    public function occupiedBeds()
+    {
+        // Resultado de consulta
+        $result = DB::table('rooms')
+            ->where([
+                ['rooms.system_id', '=', $this->system_id],
+                ['beds.is_occupied', '=', true],
+            ])
+            ->join('beds', 'beds.room_id', '=', 'rooms.room_id')
+            ->get();
+
+        return count($result);
+    }
+
+    /**
+     * Retorna el total de habitaciones ocupadas del sistema
+     */
+    public function freeBeds()
+    {
+        // Resultado de consulta
+        $result = DB::table('rooms')
+            ->where([
+                ['rooms.system_id', '=', $this->system_id],
+                ['beds.is_occupied', '=', false],
+            ])
+            ->join('beds', 'beds.room_id', '=', 'rooms.room_id')
+            ->get();
+
+        return count($result);
     }
 }
