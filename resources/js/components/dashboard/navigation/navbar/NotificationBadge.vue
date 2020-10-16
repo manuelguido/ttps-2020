@@ -1,8 +1,8 @@
 <template>
   <!-- Notifications -->
 	<mdb-nav-item to="/notifications" class="d-flex align-items-center px-3 notification-badge mx-3 uns">
-    <mdb-badge v-if="amount > 0" color="success" class="mr-1">{{amount}}</mdb-badge>
-    <mdb-badge v-else color="default" class="mr-1">{{amount}}</mdb-badge>
+    <!-- <mdb-badge v-if="amount > 0" color="success" class="mr-1">{{amount}}</mdb-badge>
+    <mdb-badge v-else color="default" class="mr-1">{{amount}}</mdb-badge> -->
     <i class="fad fa-bell fa-lg"></i>
 	</mdb-nav-item>
 	<!-- /.Notifications -->
@@ -50,3 +50,5 @@
   cursor: pointer;
 }
 </style>
+
+5f6368

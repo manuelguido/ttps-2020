@@ -5,30 +5,26 @@
 </template>
 
 <script>
-// import axios from 'axios';
-
 export default {
   name: 'App',
-  // created () {
-  //   axios.defaults.headers.common['Accept'] = 'application/json';
-  //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('access_token').toString();
-  // }
 }
 </script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+
 #app {
   font-family: 'Nunito', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
-  color: #434343;
+  color: #5f6368;
   font-weight: 400;
   margin: 0;
   padding: 0;
   min-height: 100vh;
 }
+
 body {
   background-color: #fcfcfc !important;
   overflow-x: hidden !important;
