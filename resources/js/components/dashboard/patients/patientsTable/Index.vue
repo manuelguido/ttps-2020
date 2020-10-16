@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1 class="h5-responsive">Sala: G2</h1>
+  <div class="mt-4">
+    <!-- <h1 class="h5-responsive">Sala: G2</h1> -->
   
     <table class="table table-striped table-bordered">
       <thead>
@@ -15,8 +15,8 @@
           <td>Cama 1</td>
           <td>{{p.lastname}}, {{p.name}} ({{p.dni}})</td>
           <td class="text-right">
-            <router-link :to="'/dashboard/patient/'+p.patient_id" class="btn btn-outline-primary btn-sm">Ver</router-link>
-            <button class="btn btn-outline-primary btn-sm">Asignar</button>
+            <router-link class="btn btn-outline-primary btn-sm" :to="'/dashboard/patient/'+p.patient_id">Ver</router-link>
+            <router-link class="btn btn-outline-primary btn-sm" :to="'/dashboard/patient/'+p.patient_id+'/assignment'">Asignar</router-link>
           </td>
         </tr>
       </tbody>

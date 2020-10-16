@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mdb-btn color="primary" @click.native="modal = true">Registrar paciente</mdb-btn>
+    <mdb-btn color="primary" @click.native="modal = true" class="mr-0 ml-5">Registrar paciente</mdb-btn>
     <mdb-modal :show="modal" @close="modal = false">
       <mdb-modal-header>
         <mdb-modal-title>Cargar paciente</mdb-modal-title>

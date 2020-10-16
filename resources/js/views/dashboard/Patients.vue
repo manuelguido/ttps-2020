@@ -6,18 +6,27 @@
     <!-- Row -->
     <div class="row">
       <!-- Col -->
-      <div class="col-12 text-right">
-        <modal></modal>
+      <div class="col-12 col-lg-8 col-xl-6">
+        <div class="row d-flex align-items-center">
+          <div class="col-12 col-lg-6">
+            <select class="form-control">
+              <option>Sala G1</option>
+              <option>Sala G2</option>
+            </select>
+          </div>
+          <div class="col-12 col-lg-6 text-right">
+            <modal></modal>
+          </div>
+        </div>
       </div>
       <!-- /.Col -->
+    </div>
+    <!-- /.Row -->
+    <!-- Row -->
+    <div class="row">
       <!-- Col -->
-      <div class="col-12 col-lg-6 text-left">
-        <!-- <data-table></data-table> -->
-        <!-- <patients-table
-          v-for="r in rooms"
-          :key="r.room_id"
-          :patients=r.patients
-        ></patients-table> -->
+      <div class="col-12 col-lg-8 col-xl-6">
+        <!-- Tabla de pacientes -->
         <patients-table></patients-table>
       </div>
       <!-- /.Col -->
