@@ -26,6 +26,6 @@ export default {
 .dashboard-title {
   font-size: 2em;
   font-weight: 400;
-  color: #777;
+  color: var(--black);
 }
 </style>

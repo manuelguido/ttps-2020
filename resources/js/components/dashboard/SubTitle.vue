@@ -1,11 +1,11 @@
 <template>
-  <h2 class="dashboard-subtitle">{{title}}</h2>
+  <h2 class="dashboard-subtitle">{{text}}</h2>
 </template>
 
 <script>
 export default {
   props: {
-    title: {
+    text: {
       type: String,
       default: ''
     }
@@ -16,6 +16,6 @@ export default {
 <style scoped>
 .dashboard-subtitle {
   font-size: 1.5em;
-  color: #454545;
+  color: var(--black);
 }
 </style>
