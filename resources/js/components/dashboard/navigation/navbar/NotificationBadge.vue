@@ -50,5 +50,3 @@
   cursor: pointer;
 }
 </style>
-
-5f6368

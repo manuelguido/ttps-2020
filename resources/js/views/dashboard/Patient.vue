@@ -1,6 +1,7 @@
 <template>
   <!-- Container -->
   <div class="container-fluid">
+    <backlink></backlink>
     <!-- Title -->
     <dashboard-title text="Paciente" full></dashboard-title>
     <!-- Row -->

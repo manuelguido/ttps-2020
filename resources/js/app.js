@@ -66,6 +66,14 @@ Vue.component('navbar', require('./components/Navbar.vue').default);
 
 
 /**
+ * Botones
+ */
+// Backlink
+Vue.component('backlink', require('./components/BackLink.vue').default);
+
+
+
+/**
  * Formularios
  */
 // Input
