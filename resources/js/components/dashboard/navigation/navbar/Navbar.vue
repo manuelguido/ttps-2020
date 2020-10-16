@@ -20,9 +20,10 @@
 					<!-- Items -->
     			<items :routes=routes></items>
 				</span>
-				<mdb-nav-item to="/notifications" class="d-flex align-items-center px-3">
-					<i class="fad fa-bell fa-lg"></i>
-				</mdb-nav-item>
+				<!-- Icono de notificaciones -->
+				<notification-badge></notification-badge>
+
+				<!-- Dropdown de cuenta -->
 				<mdb-dropdown tag="li" class="nav-item mobile-hide uns" dropleft>
           <mdb-dropdown-toggle tag="a" navLink class="btn btn-dropdown black-alpha-60" slot="toggle" waves-fixed><i class="fad fa-user-alt black-alpha-50 mx-2"></i></mdb-dropdown-toggle>
           <mdb-dropdown-menu>
@@ -33,6 +34,8 @@
             <mdb-dropdown-item to="/logout">Cerrar sesión</mdb-dropdown-item>
           </mdb-dropdown-menu>
         </mdb-dropdown>
+				<!-- Dropdown de cuenta -->
+
       </mdb-navbar-nav>
     </mdb-navbar-toggler>
   </mdb-navbar>
@@ -41,6 +44,7 @@
 <script>
   import { mdbNavbar, mdbNavbarBrand, mdbNavbarToggler, mdbNavbarNav, mdbNavItem, mdbDropdown, mdbDropdownMenu, mdbDropdownToggle, mdbInput, mdbDropdownItem, mdbBtn } from 'mdbvue';
 	import items from './Items'
+	import notificationBadge from './NotificationBadge'
 	export default {
     name: 'Navbar',
     components: {
@@ -55,7 +59,8 @@
       mdbDropdownItem,
 			mdbInput,
 			mdbBtn,
-			items
+			items,
+			'notification-badge': notificationBadge
 		},
 		props: {
 			routes: Array
