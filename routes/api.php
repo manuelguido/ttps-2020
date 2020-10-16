@@ -41,6 +41,13 @@ Route::middleware('auth:api')->get('/system/index', 'SystemController@index');
 
 
 /**
+ * API de estados de pacientes
+ */
+// Retorna todos los seguros sistemas
+Route::middleware('auth:api')->get('/patient_state/index', 'PatientStateController@index');
+
+
+/**
  * API pacientes
  */
 // Retorna todos los pacientes

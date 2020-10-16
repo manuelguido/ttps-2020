@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class PatientState extends Model
 {
+    const STATE_HOSPITALIZED = 'En internación';
+    const STATE_DISCHARGED = 'Dado de alta';
+    const STATE_DEATH = 'Óbito';
+
     /**
      * Attributes
      */
