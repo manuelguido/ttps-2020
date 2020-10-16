@@ -14,11 +14,11 @@
   --error: #ff7b82 !important;
   --warning: #ffe22e !important;
   
-  --black: #4d4d4d !important;
+  --black: #5f6368 !important;
   --grey: #c2c2c2 !important;
   --white: #ffffff !important;
 
-  --black: #5f6368;
+  /* --black: #5f6368; */
   --black-alpha-03: rgba(0,0,0,.03) !important;
   --black-alpha-06: rgba(0,0,0,.06) !important;
   --black-alpha-10: rgba(0,0,0,.1) !important;
