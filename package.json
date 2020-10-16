@@ -26,6 +26,8 @@
     "dependencies": {
         "js-cookie": "^2.2.1",
         "mdbvue": "^6.7.1",
+        "moment": "^2.29.1",
+        "vue-moment": "^4.1.0",
         "vue-router": "^3.4.3",
         "vue-waves-effect": "^0.1.0",
         "vuex": "^3.5.1"

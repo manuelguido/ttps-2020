@@ -6,14 +6,79 @@
     <!-- Row -->
     <div class="row">
       <!-- Col -->
-      <div class="col-12 text-right">
-        {{systems}}
+      <div class="col-12 col-lg-6 col-xl-5">
+        <!-- Row -->
+        <div class="row">
+          
+          <!-- Nombre -->
+          <div class="col-12 mb-3">
+            <p class="h3-responsive primary">{{patient.name}} {{patient.lastname}}</p>
+          </div>
+          
+          <!-- DNI -->
+          <div class="col-3 mb-3 primary">
+            DNI
+          </div>
+          <div class="col-9 mb-3">
+            <p class="mb-2">{{dni()}}</p>
+          </div>
+
+          <!-- Teléfono -->
+          <div class="col-3 mb-3 primary">
+            Teléfono
+          </div>
+          <div class="col-9 mb-3">
+            <p class="mb-2">{{patient.phone}}</p>
+          </div>
+
+          <!-- Fecha -->
+          <div class="col-3 mb-3 primary">
+            Fecha de nacimiento
+          </div>
+          <div class="col-9 mb-3">
+            <p class="mb-2">{{patient.birth_date | formatDateFull}}</p>
+          </div>
+
+          <!-- Atecedentes personales -->
+          <div class="col-3 mb-3 primary">
+            Antecedentes personales
+          </div>
+          <div class="col-9 mb-3">
+            <p class="mb-2">{{patient.personal_background}}</p>
+          </div>
+
+          <div class="col-12 mb-3">
+            <hr>
+          </div>
+
+          <!-- Obra social -->
+          <div class="col-3 mb-3 primary">
+            Obra social
+          </div>
+          <div class="col-9 mb-3">
+            <p class="mb-2">{{getMedicalEnsurance()}}</p>
+          </div>
+
+          <!-- Obra social -->
+          <div class="col-3 mb-3 primary">
+            Se encuentra en
+          </div>
+          <div class="col-9 mb-3">
+            <p class="mb-2">{{getSystem()}}</p>
+          </div>
+
+          <!-- Obra social -->
+          <div class="col-3 mb-3 primary">
+            Estado
+          </div>
+          <div class="col-9 mb-3">
+            <p class="mb-2">{{getPatientState()}}</p>
+          </div>
+
+        </div>
+        <!-- /.Row -->
       </div>
-      <div class="col-12 text-right">
-        {{medical_ensurances}}
-      </div>
-      <div class="col-12 text-right">
-        {{patient_states}}
+      <!-- /.Col -->
       </div>
       <!-- /.Col -->
       <!-- Col -->
@@ -60,7 +125,7 @@ export default {
      */
     dni() {
       let val = (this.patient.dni/1).toFixed(0).replace('.')
-      return "DNI " + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
 
     /**
@@ -118,7 +183,40 @@ export default {
       }).catch((err) => {
         console.log(err)
       })
-    }
+    },
+
+    /**
+     * Retorna la obra social del paciente
+     */
+    getMedicalEnsurance () {
+      for (let i = 0; i < this.medical_ensurances.length; i++) {
+        if (this.medical_ensurances[i].medical_ensurance_id == this.patient.medical_ensurance_id) {
+          return this.medical_ensurances[i].medical_ensurance;
+        }
+      }
+    },
+
+    /**
+     * Retorna el sistema del paciente
+     */
+    getSystem () {
+      for (let i = 0; i < this.systems.length; i++) {
+        if (this.systems[i].system_id == this.patient.system_id) {
+          return this.systems[i].system;
+        }
+      }
+    },
+
+    /**
+     * Retorna la obra social del paciente
+     */
+    getPatientState () {
+      for (let i = 0; i < this.patient_states.length; i++) {
+        if (this.patient_states[i].patient_state_id == this.patient.patient_state_id) {
+          return this.patient_states[i].patient_state;
+        }
+      }
+    },
   }
 
 }
