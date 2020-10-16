@@ -15,7 +15,7 @@ class PatientStatesTableSeeder extends Seeder
         function new_patient_state($name)
         {
             $state = new PatientState;
-            $state->state = $name;
+            $state->patient_state = $name;
             $state->save();
             return $state;
         }
