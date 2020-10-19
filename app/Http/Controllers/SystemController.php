@@ -8,6 +8,16 @@ use App\System;
 class SystemController extends Controller
 {
     /**
+     * Validación de id de systema
+     */
+    private function validateId()
+    {
+        return request()->validate([
+            'system_id' => 'required|integer|min:1',
+        ]);
+    }
+
+    /**
      * Retorna todos los sistemas
      */
     public function index()
@@ -20,6 +30,7 @@ class SystemController extends Controller
      */
     private function getFullSystem($system)
     {
+        $system->total_rooms = $system->totalRooms();
         $system->total_beds = $system->totalBeds();
         $system->occupied_beds = $system->occupiedBeds();
         $system->free_beds = $system->total_beds - $system->occupied_beds;
@@ -41,5 +52,19 @@ class SystemController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    /**
+     * Retorna un sistema con su información de camas y habitaciones
+     */
+    public function showFull(Request $data)
+    {
+        // Validación
+        $this->validateId();
+        // Sistemas
+        $system = System::find($data->system_id);
+        // Información a devolver
+
+        return response()->json($this->getFullSystem($system));
     }
 }

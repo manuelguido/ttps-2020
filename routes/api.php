@@ -24,6 +24,8 @@ Route::middleware('auth:api')->get('/user/full', 'UserController@fullUser');
 Route::post('/login', 'AuthController@login');
 // Logout user
 Route::middleware('auth:api')->post('/logout', 'AuthController@logout');
+// Consultar si tiene el rol correspondiente
+Route::middleware('auth:api')->get('/', 'RoleController@hasRole');
 
 
 /**
@@ -38,8 +40,10 @@ Route::middleware('auth:api')->get('/medical_ensurance/index', 'MedicalEnsurance
  */
 // Retorna todos los sistemas
 Route::middleware('auth:api')->get('/system/index', 'SystemController@index');
-// Retorna todos los seguros sistemas
+// Retorna todos los sistemas con su información de camas y habitaciones
 Route::middleware('auth:api')->get('/system/index/full', 'SystemController@indexFull');
+// Retorna todos un sistema con su información de camas y habitaciones
+Route::middleware('auth:api')->get('/system/full', 'SystemController@showFull');
 
 
 /**

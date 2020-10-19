@@ -56,6 +56,20 @@ class System extends Model
     }
 
     /**
+     * Retorna el total de salas del sistema
+     */
+    public function totalRooms()
+    {
+        // Resultado de consulta
+        $result = DB::table('rooms')
+            ->where('system_id', '=', $this->system_id)
+            ->get();
+
+        // Retorna el resultado
+        return count($result);
+    }
+
+    /**
      * Retorna el total de camas del sistema
      */
     public function totalBeds()
