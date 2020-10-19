@@ -10,7 +10,7 @@ export default {
   created() {
     localStorage.clear(); // Deletes all local storage
     this.$store.dispatch("destroyToken");
-    window.location.href = '/'
+    window.location.href = '/login'
     // this.$router.push({ path: '/' });
   }
 };

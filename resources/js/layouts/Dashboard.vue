@@ -33,6 +33,29 @@ export default {
 	name: 'dashboard',
 	components: {
 		'navigation': navigation
+  },
+  created () {
+    this.inactivityTime(); 
+  },
+  methods: {
+    inactivityTime () {
+      var time;
+      window.onload = resetTimer;
+      // DOM Events
+      document.onmousemove = resetTimer;
+      document.onkeypress = resetTimer;
+
+      function logout() {
+        // localStorage.clear();
+        window.location.href = "/logout"
+        console.log("Has salido del sistema.")            
+      }
+
+      function resetTimer() {
+        clearTimeout(time);
+        time = setTimeout(logout, 60000)
+      }
+    }
   }
 }
 </script>
