@@ -3,7 +3,7 @@ import dashboard from '../layouts/Dashboard'
 // Home
 import home from '.././views/dashboard/Home'
 // reportes
-import reports from '.././views/dashboard/Reports'
+// import reports from '.././views/dashboard/Reports'
 // Pacientes
 import patients from '.././views/dashboard/Patients'
 // Paciente
@@ -14,6 +14,8 @@ import patientAssigment from '.././views/dashboard/PatientAssigment'
 import medics from '.././views/dashboard/Medics'
 // Systems
 import systems from '.././views/dashboard/Systems'
+// Systems
+import system from '.././views/dashboard/System'
 // Data Load
 import dataLoad from '.././views/auth/DataLoad'
 
@@ -121,7 +123,16 @@ const routes = [
         path: '/dashboard/systems',
         name: 'systems',
         component: systems
-      }
+      },
+      /**
+       * Sistema
+       */
+      {
+        path: '/dashboard/system/:system_id',
+        name: 'system',
+        component: system,
+        props: true,
+      },
     ]
   },
 ]

@@ -80,8 +80,6 @@
         <!-- /.Row -->
       </div>
       <!-- /.Col -->
-      </div>
-      <!-- /.Col -->
       <!-- Col -->
       <div class="col-12 col-lg-6 text-left">
         
