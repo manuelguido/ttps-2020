@@ -1,10 +1,10 @@
 <template>
   <!-- Notifications -->
-	<mdb-nav-item to="/notifications" class="d-flex align-items-center px-3 notification-badge mx-3 uns">
-    <!-- <mdb-badge v-if="amount > 0" color="success" class="mr-1">{{amount}}</mdb-badge>
-    <mdb-badge v-else color="default" class="mr-1">{{amount}}</mdb-badge> -->
+	<router-link to="/notifications" class="nav-item d-flex align-items-center mx-3 px-4 notification-badge waves-effect uns">
+    <mdb-badge v-if="amount > 0" color="success" class="mr-1" style="border-radius: 50px;">{{amount}}</mdb-badge>
+    <mdb-badge v-else color="default" class="mr-1">{{amount}}</mdb-badge>
     <i class="fad fa-bell fa-lg"></i>
-	</mdb-nav-item>
+	</router-link>
 	<!-- /.Notifications -->
 </template>
 
@@ -18,7 +18,7 @@
     },
     data () {
       return {
-        amount: 0,
+        amount: 1,
       }
     },
     created () {
@@ -43,7 +43,8 @@
 
 <style scoped>
 .notification-badge {
-  border-radius: 4px;
+  border-radius: 8px;
+  color: #333;
 }
 .notification-badge:hover {
   background: rgba(0,0,0,.04);

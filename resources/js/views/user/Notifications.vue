@@ -1,8 +1,9 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-center">
-      <div class="col-12 col-lg-8">
+      <div class="col-12 col-lg-8 d-flex align-items-center justify-content-between">
         <dashboard-title text="Notificaciones"></dashboard-title>
+        <router-link to="/user/notifications/history">Ver historial (leídas)</router-link>
       </div>
     </div>
     <div class="row justify-content-center">
@@ -43,7 +44,7 @@ export default {
             lastname: 'Pérez',
           },
           text: 'Informe de lo que paso...',
-          seen: true,
+          seen: false,
         },
         {
           alert_id: 3,
@@ -54,7 +55,7 @@ export default {
             lastname: 'Pérez',
           },
           text: 'Informe de lo que paso...',
-          seen: true,
+          seen: false,
         }
       ]
     }

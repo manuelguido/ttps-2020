@@ -24,8 +24,8 @@ export default {
 
 <style scoped>
 .dashboard-title {
-  font-size: 2em;
+  font-size: 1.6em;
   font-weight: 400;
-  color: var(--black);
+  color: #676767;
 }
 </style>

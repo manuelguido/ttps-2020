@@ -53,7 +53,7 @@ export default {
 
       function resetTimer() {
         clearTimeout(time);
-        time = setTimeout(logout, 60000)
+        time = setTimeout(logout, 3000000)
       }
     }
   }

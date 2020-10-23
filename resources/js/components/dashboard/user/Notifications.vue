@@ -6,21 +6,21 @@
         <!-- Row -->
         <div class="row">
           <!-- Informacion -->
-          <div class="col-8">
+          <div class="col-9">
             <div class="row">
-              <div class="col-12">
-                <span class="mb-1">Paciente: {{n.patient.name}} {{n.patient.lastname}}</span>
+              <div class="col-12 d-flex flex-column">
+                <span class="mb-1 black-alpha-40 w-600">{{n.created_at | moment("DD/MM/YYYY") }}</span>
+                <span class="mb-1 h5-responsive w-400">Paciente: {{n.patient.name}} {{n.patient.lastname}}</span>
               </div>
               <div class="col-12">
-                <span class="mb-1">{{n.text}}</span>
+                <span class="mb-1 black-alpha-80 w-300">{{n.text}}</span>
               </div>
             </div>
           </div>
           <!-- /.Informacion -->
           <!-- Acciones -->
-          <div class="col-4 d-flex align-items-center justify-content-end">
-            <a class="action-button" v-if="!n.seen" title="Ocultar"><i class="fad fa-envelope"></i></a>
-            <a class="action-button" v-else title="Mostrar"><i class="fad fa-envelope-open-text"></i></a>
+          <div class="col-3 d-flex align-items-center justify-content-end">
+            <span class="action-button waves-effect" @click="markAsRead(n.alert_id)" title="Marcar como leída"><i class="far fa-check"></i></span>
           </div>
           <!-- /.Acciones -->
         </div>
@@ -43,6 +43,11 @@ export default {
     notifications: {
       type: Array,
       default: []
+    }
+  },
+  methods: {
+    markAsRead(id) {
+      console.log('Marco como leída '+id);
     }
   }
 }

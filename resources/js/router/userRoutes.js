@@ -4,7 +4,7 @@ import dashboard from '../layouts/Dashboard'
 import profile from '.././views/user/Profile'
 // Notifications
 import notifications from '.././views/user/Notifications'
-
+import notificationsHistory from '.././views/user/NotificationsHistory'
 const routes = [
   {
     path: '/user',
@@ -24,6 +24,11 @@ const routes = [
         path: '/user/notifications',
         name: 'notifications',
         component: notifications
+      },
+      {
+        path: '/user/notifications/history',
+        name: 'notifications',
+        component: notificationsHistory
       }
     ]
   },

@@ -1,20 +1,21 @@
 <template>
   <mdb-navbar id="dashboard-navbar" color="white" light class="dashboard-navbar shadow-none py-3 py-lg-2 py-xl-3">
-    <!-- Brand -->
+
+		<!-- Brand -->
     <router-link to="/" class="navbar-brand">
       <span class="w-700 primary">SeCo</span>
 			<span class="w-400 primary">Dashboard</span>
     </router-link>
 		<!-- /.Brand -->
-    <mdb-navbar-toggler>
-			<!-- <form class="search-form mx-auto my-3 my-lg-1">
-				<div class="input-group">
-					<input type="text" class="form-control" v-model="input_search" placeholder="Buscar en el panel" aria-label="Buscar" aria-describedby="search-addon">
-					<div class="input-group-append">
-						<span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
-					</div>
-				</div>
-			</form> -->
+		<!-- Brand -->
+    <!-- <router-link to="/" class="navbar-brand">
+			<span><i class="fad fa-star-of-life primary mr-2"></i></span>
+      <span class="primary">SeCo</span>
+			<span class="primary">Dashboard</span>
+    </router-link> -->
+		<!-- /.Brand -->
+
+		<mdb-navbar-toggler>
 			<mdb-navbar-nav right>
 				<span class="web-hide">
 					<!-- Items -->
@@ -150,43 +151,6 @@
 .brand * {
 	color: var(--primary) !important;
 }
-
-/* Searchbar */
-/* .search-form {
-	background: var(--black-alpha-03);
-	border-radius: 8px;
-	border: 0 none;
-	padding: 10px;
-}
-@media (min-width: 992px) {
-	.search-form {
-		width: 50%;
-	}
-}
-@media (max-width: 992px) {
-	.search-form {
-		width: 100%;
-	}
-}
-
-
-.search-form input {
-	width: 100%;
-	height: 100%;
-}
-
-.search-form input,
-.search-form input:focus {
-	color: var(--white-a);
-}
-
-.search-form input:focus,
-.search-form * {
-	box-shadow: none;
-	background: none;
-	border: 0 none;
-	outline: none ;
-} */
 
 /* Buttons */
 .btn-dropdown {

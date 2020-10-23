@@ -26,8 +26,32 @@ import 'vue-waves-effect/dist/vueWavesEffect.css';
 Vue.use(Waves);
 
 
+
+/**
+ * Progressbar
+ */
+import VueProgressBar from 'vue-progressbar'
+
+const options = {
+  color: '#59b97a',
+  failedColor: '#ff7b82',
+  thickness: '3px',
+  transition: {
+    speed: '1s',
+    opacity: '1',
+    termination: 300
+  },
+  autoRevert: true,
+  location: 'top',
+  inverse: false
+}
+
+Vue.use(VueProgressBar, options)
+
+
 // Vue moment para fechas
 import moment from 'moment'
+Vue.use(require('vue-moment'));
 // Date filters
 Vue.filter('formatDate', function (value) {
   if (value) {
@@ -78,6 +102,8 @@ Vue.component('backlink', require('./components/BackLink.vue').default);
  */
 // Input
 Vue.component('v-input', require('./components/forms/Input.vue').default);
+// Search Input
+Vue.component('search-input', require('./components/forms/SearchInput.vue').default);
 
 
 /**

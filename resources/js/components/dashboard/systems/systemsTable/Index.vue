@@ -18,8 +18,9 @@
           <td>{{s.total_beds}}</td>
           <td>{{s.free_beds}}</td>
           <td>{{s.occupied_beds}}</td>
-          <td class="text-right">
+          <td class="text-right d-flex justify-content-between">
             <router-link :to="'/dashboard/system/'+s.system_id" class="btn btn-outline-primary btn-sm">Ver</router-link>
+            <router-link :to="'/dashboard/system/'+s.system_id" class="btn btn-outline-primary btn-sm">Ver pacientes</router-link>
           </td>
         </tr>
       </tbody>
@@ -39,6 +40,9 @@ export default {
   mounted () {
     this.fetchSystems();
   },
+  created () {
+    this.$Progress.start();
+  },
   methods: {
     /**
      * Obtiene el sistema con su información
@@ -54,6 +58,7 @@ export default {
         }
       }).then((res) => {
         this.systems = res.data
+        this.$Progress.finish()
       }).catch((err) => {
         console.log(err)
       })
