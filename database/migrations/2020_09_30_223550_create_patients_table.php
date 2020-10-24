@@ -19,6 +19,7 @@ class CreatePatientsTable extends Migration
             $table->string('lastname');
             $table->string('address');
             $table->integer('phone');
+            $table->integer('dni')->unique();
             $table->date('birth_date');
             $table->mediumText('personal_background');
             $table->unsignedBigInteger('medical_ensurance_id');
