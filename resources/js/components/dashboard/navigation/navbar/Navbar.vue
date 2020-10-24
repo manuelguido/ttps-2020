@@ -4,7 +4,7 @@
 		<!-- Brand -->
     <router-link to="/" class="navbar-brand">
 			<span><i class="fad fa-star-of-life primary mr-2"></i></span>
-      <span class="primary">SeCo</span>
+      <span class="primary w-600">SeCo</span>
 			<span class="primary">Dashboard</span>
     </router-link>
 		<!-- /.Brand -->

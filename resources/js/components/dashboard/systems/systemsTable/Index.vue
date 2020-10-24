@@ -1,7 +1,7 @@
 <template>
-  <div class="card p-0">
+  <div class="card shadow-sm">
     <!-- Table -->
-    <table class="table table-striped table-bordered my-0">
+    <table class="table my-0">
       <thead>
         <tr>
           <th scope="col">Nombre</th>
@@ -13,11 +13,11 @@
       </thead>
       <tbody>
         <tr v-for="s in systems" :key="s.system_id">
-          <td>{{s.system}}</td>
+          <th scope="row">{{s.system}}</th>
           <td>{{s.total_beds}}</td>
           <td>{{s.free_beds}}</td>
           <td>{{s.occupied_beds}}</td>
-          <td class="text-right d-flex justify-content-end">
+          <td class="text-right">
             <router-link :to="'/dashboard/system/'+s.system_id" class="btn btn-outline-primary btn-sm">Ver</router-link>
             <router-link :to="'/dashboard/system/'+s.system_id" class="btn btn-outline-primary btn-sm ml-3">Ver pacientes</router-link>
           </td>

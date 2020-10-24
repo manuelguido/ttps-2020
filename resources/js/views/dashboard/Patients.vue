@@ -6,7 +6,7 @@
     <!-- Row -->
     <div class="row">
       <!-- Col -->
-      <div class="col-12 col-lg-8 mb-4">
+      <div class="col-12 col-lg-8">
         <div class="row d-flex align-items-center">
 
           <!-- Search form -->
@@ -23,7 +23,7 @@
           <!-- /.Search form -->
 
           <!-- Salas -->
-          <div class="col-12 col-lg-6">
+          <div class="col-12 col-lg-6 mb-4">
             <select class="form-control">
               <option>Sala G1</option>
               <option>Sala G2</option>
@@ -32,7 +32,7 @@
           <!-- /.Salas -->
 
           <!-- Modal de carga de paciente -->
-          <div class="col-12 col-lg-6 text-right">
+          <div class="col-12 col-lg-6 mb-4 text-right">
             <modal></modal>
           </div>
           <!-- /.Modal de carga de paciente -->
@@ -110,7 +110,8 @@ export default {
         this.matchData(patient.name) ||
         this.matchData(patient.lastname) ||
         this.matchData(patient.name+' '+patient.lastname) ||
-        this.matchData(patient.lastname+' '+patient.name)
+        this.matchData(patient.lastname+' '+patient.name) ||
+        this.matchData(patient.dni.toString())
       );
     }
   },

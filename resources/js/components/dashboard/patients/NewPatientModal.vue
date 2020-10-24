@@ -3,9 +3,9 @@
     <mdb-btn color="primary" @click.native="modal = true" class="mr-0 ml-5">Registrar paciente</mdb-btn>
     <mdb-modal :show="modal"  size="lg" @close="modal = false">
       <mdb-modal-header>
-        <mdb-modal-title>Cargar paciente</mdb-modal-title>
+        <mdb-modal-title>Registrar paciente</mdb-modal-title>
       </mdb-modal-header>
-      <mdb-modal-body class="text-left">
+      <mdb-modal-body class="text-left p-md-2 p-lg-4 p-xl-5">
         <!-- Form -->
         <form method="POST" @submit.prevent="newPatient">
           
@@ -14,14 +14,14 @@
             <!-- Nombre -->
             <div class="col-12 col-md-6">
               <div class="form-group">
-                <label>Nombre</label>
+                <label>Nombre (*)</label>
                 <input type="text" class="form-control mb-3" v-model="name" placeholder="Ingrese el nombre" required>
               </div>
             </div>
             <!-- Apellido -->
             <div class="col-12 col-md-6">
               <div class="form-group">
-                <label>Apellido</label>
+                <label>Apellido (*)</label>
                 <input type="text" class="form-control mb-3" v-model="lastname" placeholder="Ingrese el apellido" required>
               </div>
             </div>
@@ -33,15 +33,15 @@
             <!-- DNI -->
             <div class="col-12 col-md-6">
               <div class="form-group">
-                <label>DNI</label>
-                <input type="number" min="0" class="form-control mb-3" v-model="dni" placeholder="Solo números sin simbolos" required>
+                <label>DNI (*)</label>
+                <input type="number" min="0" class="form-control mb-3" v-model="dni" placeholder="Ingrese solo números" required>
               </div>
             </div>
             <!-- Dirección -->
             <div class="col-12 col-md-6">   
               <div class="form-group">
-                <label>Dirección</label>
-                <input type="text" class="form-control mb-3" v-model="address" placeholder="Dirección del paciente" required>
+                <label>Dirección (*)</label>
+                <input type="text" class="form-control mb-3" v-model="address" placeholder="Ingrese dirección del paciente" required>
               </div>
             </div>
           </div>
@@ -52,14 +52,14 @@
             <!-- Teléfono -->
             <div class="col-12 col-md-6">
               <div class="form-group">
-                <label>Teléfono</label>
-                <input type="number" min="0" class="form-control mb-3" v-model="phone" placeholder="Solo números sin simbolos" required>
+                <label>Teléfono (*)</label>
+                <input type="number" min="0" class="form-control mb-3" v-model="phone" placeholder="Ingrese solo números" required>
               </div>
             </div>
             <!-- Fecha de nacimiento -->
             <div class="col-12 col-md-6">  
               <div class="form-group px-0">
-                <label>Fecha de nacimiento</label>
+                <label>Fecha de nacimiento (*)</label>
                 <input type="date" class="form-control mb-3" v-model="birth_date" required>
               </div>
             </div>
@@ -68,19 +68,19 @@
 
           <div class="form-group">
             <label>Antecedentes personales</label>
-            <textarea rows="3" class="form-control mb-3" v-model="personal_background" placeholder="Antecedentes del paciente"></textarea>
+            <textarea rows="3" class="form-control mb-3" v-model="personal_background" placeholder="Ingresar antecedentes personales del paciente"></textarea>
           </div>
 
           <div class="form-group">
             <label>Información opcional de familiares</label>
-            <textarea rows="3" class="form-control mb-3" v-model="family_data" placeholder="Antecedentes del paciente"></textarea>
+            <textarea rows="3" class="form-control mb-3" v-model="family_data" placeholder="Ejemplo: telefono y nombre de padre/madre/tutor"></textarea>
           </div>
 
           <div class="row">
             <div class="col-12 col-md-6">
               <div class="form-group">
-                <label>Obra social</label>
-                <select v-model="medical_ensurance_id" class="custom-select">
+                <label>Obra social (*)</label>
+                <select v-model="medical_ensurance_id" class="custom-select" required>
                   <option value="0" disabled>Seleccionar</option>
                   <option v-for="m in medical_ensurances" :key="m.medical_ensurance_id" :value="m.medical_ensurance_id">{{m.medical_ensurance}}</option>
                 </select>

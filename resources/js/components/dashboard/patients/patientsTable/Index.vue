@@ -1,7 +1,8 @@
 <template>
-  <div class="card p-0">
+  <div class="card shadow-sm">
+    <div class="table-responsive text-nowrap">
     <!-- Table -->
-    <table class="table table-striped table-bordered my-0">
+    <table class="table my-0 table-hover">
       <thead>
         <tr>
           <th scope="col">Paciente</th>
@@ -27,6 +28,7 @@
       </tbody>
     </table>
     <!-- /.Table -->
+    </div>
   </div>
 </template>
 
