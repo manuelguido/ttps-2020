@@ -1,7 +1,7 @@
 <template>
   <div>
     <mdb-btn color="primary" @click.native="modal = true" class="mr-0 ml-5">Registrar paciente</mdb-btn>
-    <mdb-modal :show="modal" @close="modal = false">
+    <mdb-modal :show="modal"  size="lg" @close="modal = false">
       <mdb-modal-header>
         <mdb-modal-title>Cargar paciente</mdb-modal-title>
       </mdb-modal-header>
@@ -9,30 +9,62 @@
         <!-- Form -->
         <form method="POST" @submit.prevent="newPatient">
           
-          <div class="form-group">
-            <label>Nombre</label>
-            <input type="text" class="form-control mb-3" v-model="name" placeholder="Nombre del paciente" required>
+          <!-- Row -->
+          <div class="row">
+            <!-- Nombre -->
+            <div class="col-12 col-md-6">
+              <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" class="form-control mb-3" v-model="name" placeholder="Ingrese el nombre" required>
+              </div>
+            </div>
+            <!-- Apellido -->
+            <div class="col-12 col-md-6">
+              <div class="form-group">
+                <label>Apellido</label>
+                <input type="text" class="form-control mb-3" v-model="lastname" placeholder="Ingrese el apellido" required>
+              </div>
+            </div>
           </div>
-          
-          <div class="form-group">
-            <label>Apellido</label>
-            <input type="text" class="form-control mb-3" v-model="lastname" placeholder="Apellido paciente" required>
-          </div>
+          <!-- /.Row -->
 
-          <div class="form-group">
-            <label>Dirección</label>
-            <input type="text" class="form-control mb-3" v-model="address" placeholder="Dirección del paciente" required>
+          <!-- Row -->
+          <div class="row">
+            <!-- DNI -->
+            <div class="col-12 col-md-6">
+              <div class="form-group">
+                <label>DNI</label>
+                <input type="number" min="0" class="form-control mb-3" v-model="dni" placeholder="Solo números sin simbolos" required>
+              </div>
+            </div>
+            <!-- Dirección -->
+            <div class="col-12 col-md-6">   
+              <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" class="form-control mb-3" v-model="address" placeholder="Dirección del paciente" required>
+              </div>
+            </div>
           </div>
+          <!-- /.Row -->
 
-          <div class="form-group">
-            <label>Teléfono</label>
-            <input type="number" min="0" class="form-control mb-3" v-model="phone" placeholder="Solo números sin simbolos" required>
+          <!-- Row -->
+          <div class="row">
+            <!-- Teléfono -->
+            <div class="col-12 col-md-6">
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="number" min="0" class="form-control mb-3" v-model="phone" placeholder="Solo números sin simbolos" required>
+              </div>
+            </div>
+            <!-- Fecha de nacimiento -->
+            <div class="col-12 col-md-6">  
+              <div class="form-group px-0">
+                <label>Fecha de nacimiento</label>
+                <input type="date" class="form-control mb-3" v-model="birth_date" required>
+              </div>
+            </div>
           </div>
-
-          <div class="form-group col-6 px-0">
-            <label>Fecha de nacimiento</label>
-            <input type="date" class="form-control mb-3" v-model="birth_date" required>
-          </div>
+          <!-- /.Row -->
 
           <div class="form-group">
             <label>Antecedentes personales</label>
@@ -40,11 +72,20 @@
           </div>
 
           <div class="form-group">
-            <label>Obra social</label>
-            <select v-model="medical_ensurance_id" class="custom-select">
-              <option value="0" disabled>Seleccionar</option>
-              <option v-for="m in medical_ensurances" :key="m.medical_ensurance_id" :value="m.medical_ensurance_id">{{m.medical_ensurance}}</option>
-            </select>
+            <label>Información opcional de familiares</label>
+            <textarea rows="3" class="form-control mb-3" v-model="family_data" placeholder="Antecedentes del paciente"></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="form-group">
+                <label>Obra social</label>
+                <select v-model="medical_ensurance_id" class="custom-select">
+                  <option value="0" disabled>Seleccionar</option>
+                  <option v-for="m in medical_ensurances" :key="m.medical_ensurance_id" :value="m.medical_ensurance_id">{{m.medical_ensurance}}</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           <button class="btn btn-primary btn-block mt-4 mt-lg-5" type="submit">Cargar</button>
@@ -71,10 +112,12 @@
         modal: false,
         name: '',
         lastname: '',
+        dni: '',
         address: '',
         phone: '',
         birth_date: '',
         personal_background: '',
+        family_data: '',
         medical_ensurance_id: 0,
         medical_ensurances: '',
       }
@@ -86,6 +129,7 @@
       resetForm () {
         this.name = '';
         this.lastname = '';
+        this.dni = '',
         this.address = '';
         this.phone = '';
         this.birth_date = '';
@@ -100,10 +144,12 @@
         var formData = new FormData()
         formData.append('name', this.name)
         formData.append('lastname', this.lastname)
+        formData.append('dni', this.dni)
         formData.append('address', this.address)
         formData.append('phone', this.phone)
         formData.append('birth_date', this.birth_date)
         formData.append('personal_background', this.personal_background)
+        formData.append('family_data', this.family_data)
         formData.append('medical_ensurance_id', this.medical_ensurance_id)
 
         axios.post(path, formData, {
@@ -113,8 +159,9 @@
           }
         }).then((res) => {
           this.new_alert(res.data)
-          if (res.data.status == 200) {
+          if (res.data.status == 'success') {
             this.resetForm();
+            this.modal = false;
           }
           console.log(res)
         }).catch((err) => {

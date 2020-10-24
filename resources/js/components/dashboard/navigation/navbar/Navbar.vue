@@ -3,16 +3,10 @@
 
 		<!-- Brand -->
     <router-link to="/" class="navbar-brand">
-      <span class="w-700 primary">SeCo</span>
-			<span class="w-400 primary">Dashboard</span>
-    </router-link>
-		<!-- /.Brand -->
-		<!-- Brand -->
-    <!-- <router-link to="/" class="navbar-brand">
 			<span><i class="fad fa-star-of-life primary mr-2"></i></span>
       <span class="primary">SeCo</span>
 			<span class="primary">Dashboard</span>
-    </router-link> -->
+    </router-link>
 		<!-- /.Brand -->
 
 		<mdb-navbar-toggler>
