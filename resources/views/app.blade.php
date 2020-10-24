@@ -18,6 +18,6 @@
             <app></app>
         </div>
         {{-- App script --}}
-        <script src="{{ asset('js/app2.js') }}"></script>
+        <script src="{{ asset('js/app.min.js') }}"></script>
     </body>
 </html>

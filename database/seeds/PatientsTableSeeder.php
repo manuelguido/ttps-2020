@@ -12,7 +12,7 @@ class PatientsTableSeeder extends Seeder
      */
     public function run()
     {
-        function new_patient($name)
+        function new_patient($name, $lastname)
         {
             $patient = new Patient;
             $patient->name = $name;
