@@ -56,6 +56,7 @@ class PatientController extends Controller
                 $patient = new Patient;
                 $patient->name = $data->name;
                 $patient->lastname = $data->lastname;
+                $patient->dni = $data->dni;
                 $patient->address = $data->address;
                 $patient->phone = $data->phone;
                 $patient->birth_date = $data->birth_date;
