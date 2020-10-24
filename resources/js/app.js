@@ -139,6 +139,11 @@ Vue.component('loading-overlay', require('./components/loading/Overlay.vue').def
 Vue.component('loading-dots', require('./components/loading/Dots.vue').default);
 
 
+
+// Loading Overlay
+Vue.component('data-table', require('./components/Table.vue').default);
+
+
 /**
  * Instancia de VUE
  * 

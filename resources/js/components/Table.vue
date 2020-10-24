@@ -4,9 +4,10 @@
     bordered
     arrows
     reactive
-    data="http://127.0.0.1:8000/api/patient/index"
-    :time="3000"
+    :data="api_url"
+    :time="1000"
     :tfoot="false"
+    focus
   />
 </template>
 
@@ -18,6 +19,9 @@
       mdbDatatable
     },
     props: {
+      api_url: {
+        type: String,
+      },
       columns: {
         type: Array,
       },
@@ -25,10 +29,6 @@
         type: Array,
       }
     },
-    // created () {
-    //   this.setColumns();
-    //   this.setRows();
-    // },
     data() {
       return {
         data: {
@@ -38,12 +38,8 @@
       }
     },
     methods: {
-      setColumns () {
-        this.data.columns = this.columns;
-      },
-
-      setRows () {
-        this.data.rows = this.rows;
+      goTo() {
+        alert();
       }
     }
   }

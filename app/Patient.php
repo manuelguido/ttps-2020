@@ -24,6 +24,7 @@ class Patient extends Model
 
     public $timestamps = false;
 
+
     /**
      * Retorna el usuario correspondiente al médico
      */
@@ -31,6 +32,7 @@ class Patient extends Model
     {
         return Patient::join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')->get();
     }
+
 
     /**
      * Retorna la obra social del paciente

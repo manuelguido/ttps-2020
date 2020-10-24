@@ -22,7 +22,7 @@
     			<items :routes=routes></items>
 				</span>
 				<!-- Icono de notificaciones -->
-				<notification-badge></notification-badge>
+				<!-- <notification-badge></notification-badge> -->
 
 				<!-- Dropdown de cuenta -->
 				<mdb-dropdown tag="li" class="nav-item mobile-hide uns" dropleft>
@@ -70,58 +70,6 @@
 			return {
 				input_search: '',
 			}
-		},
-		created () {
-			this.createListeners();
-    },
-    mounted () {
-			this.handleScroll();
-    },
-    destroyed () {
-			this.removeListeners();
-    },
-    methods: {
-			createListeners() {
-				window.addEventListener('scroll', this.handleScroll);
-				window.addEventListener('onresize', this.handleScroll);
-			},
-
-			removeListeners() {
-				window.removeEventListener('scroll', this.handleScroll);
-				window.removeEventListener('onresize', this.handleScroll);
-			},
-			
-			// Makes the navbar big
-			bigNavbar (nav) {
-				nav.classList.add('py-lg-3');
-				nav.classList.remove('py-lg-1');
-			},
-
-			// Makes the navbar mobile
-			mobileNavbar (nav) {
-				nav.classList.add('py-lg-1');
-				nav.classList.remove('py-lg-3');
-			},
-
-			// Makes the navbar small
-			smallNavbar (nav) {
-				nav.classList.add('py-lg-1');
-				nav.classList.remove('py-lg-3');
-			},
-
-			// Handles scroll listener
-			handleScroll () {
-				var nav = document.querySelector('#dashboard-navba2r');
-				let desktopScreen = window.innerWidth >= 992;
-				// Top page
-        if (window.scrollY <= 100 && desktopScreen) {
-					this.bigNavbar(nav);
-				} else if (!desktopScreen) {
-					this.mobileNavbar(nav);
-				} else {
-					this.mobileNavbar(nav);
-				}
-			},
 		}
   }
 </script>

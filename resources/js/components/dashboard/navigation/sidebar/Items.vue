@@ -38,7 +38,7 @@ export default {
 .item {
   border-radius: 4px;
   border-left: 2px solid rgba(255, 255, 255, 0);
-  color: var(--black-alpha-40);
+  color: #5f6368;
   font-size: 18px;
   font-weight: 400;
   padding: .6em .2em;
@@ -63,6 +63,6 @@ export default {
 }
 
 .item .icon {
-  color: var(--black-alpha-10);
+  color: rgba(95, 99, 104, 0.5);
 }
 </style>

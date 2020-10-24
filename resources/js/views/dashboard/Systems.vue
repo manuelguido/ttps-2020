@@ -7,7 +7,7 @@
     <div class="row">
       <!-- /.Col -->
       <!-- Col -->
-      <div class="col-12 col-lg-6 text-left">
+      <div class="col-12 col-lg-8 text-left">
         <systems-table></systems-table>
       </div>
       <!-- /.Col -->

@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <!-- <h1 class="h5-responsive">Sistemas</h1> -->
-  
-    <table class="table table-striped table-bordered">
+  <div class="card p-0">
+    <!-- Table -->
+    <table class="table table-striped table-bordered my-0">
       <thead>
         <tr>
           <th scope="col">Nombre</th>
@@ -18,13 +17,14 @@
           <td>{{s.total_beds}}</td>
           <td>{{s.free_beds}}</td>
           <td>{{s.occupied_beds}}</td>
-          <td class="text-right d-flex justify-content-between">
+          <td class="text-right d-flex justify-content-end">
             <router-link :to="'/dashboard/system/'+s.system_id" class="btn btn-outline-primary btn-sm">Ver</router-link>
-            <router-link :to="'/dashboard/system/'+s.system_id" class="btn btn-outline-primary btn-sm">Ver pacientes</router-link>
+            <router-link :to="'/dashboard/system/'+s.system_id" class="btn btn-outline-primary btn-sm ml-3">Ver pacientes</router-link>
           </td>
         </tr>
       </tbody>
     </table>
+    <!-- /.Table -->
   </div>
 </template>
 

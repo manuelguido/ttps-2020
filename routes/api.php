@@ -57,7 +57,7 @@ Route::middleware('auth:api')->get('/patient_state/index', 'PatientStateControll
  * API pacientes
  */
 // Retorna todos los pacientes
-Route::get('/patient/index', 'PatientController@index');
+Route::middleware('auth:api')->get('/patient/index', 'PatientController@index');
 // Almacena un paciente
 Route::middleware('auth:api')->post('/patient/store', 'PatientController@store');
 
