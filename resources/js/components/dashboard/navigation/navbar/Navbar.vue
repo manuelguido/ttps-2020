@@ -22,7 +22,7 @@
     			<items :routes=routes></items>
 				</span>
 				<!-- Icono de notificaciones -->
-				<!-- <notification-badge></notification-badge> -->
+				<notification-badge></notification-badge>
 
 				<!-- Dropdown de cuenta -->
 				<mdb-dropdown tag="li" class="nav-item mobile-hide uns" dropleft>

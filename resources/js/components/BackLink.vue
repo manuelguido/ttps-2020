@@ -23,7 +23,11 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.go(-1);
+      if(this.url == '/') {
+        this.$router.go(-1);
+      } else {
+        this.$router.push({ path: this.url });
+      }
     }
   }
 }

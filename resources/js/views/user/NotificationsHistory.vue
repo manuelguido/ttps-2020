@@ -1,6 +1,9 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+        <backlink text="Notificaciones" url="/user/notifications"></backlink>
+      </div>
       <div class="col-12 col-lg-8 d-flex align-items-center justify-content-between">
         <dashboard-title text="Historial de notificaciones"></dashboard-title>
       </div>
@@ -32,7 +35,7 @@ export default {
             lastname: 'Pérez',
           },
           text: 'Informe de lo que paso...',
-          seen: false,
+          seen: true,
         },
         {
           alert_id: 2,
@@ -43,7 +46,7 @@ export default {
             lastname: 'Pérez',
           },
           text: 'Informe de lo que paso...',
-          seen: false,
+          seen: true,
         },
         {
           alert_id: 3,
@@ -54,7 +57,7 @@ export default {
             lastname: 'Pérez',
           },
           text: 'Informe de lo que paso...',
-          seen: false,
+          seen: true,
         }
       ]
     }

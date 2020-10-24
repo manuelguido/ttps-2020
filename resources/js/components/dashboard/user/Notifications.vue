@@ -20,7 +20,7 @@
           <!-- /.Informacion -->
           <!-- Acciones -->
           <div class="col-3 d-flex align-items-center justify-content-end">
-            <span class="action-button waves-effect" @click="markAsRead(n.alert_id)" title="Marcar como leída"><i class="far fa-check"></i></span>
+            <span v-if="!n.seen" class="action-button waves-effect" @click="markAsRead(n.alert_id)" title="Marcar como leída"><i class="far fa-check"></i></span>
           </div>
           <!-- /.Acciones -->
         </div>
@@ -55,7 +55,7 @@ export default {
 
 <style scoped>
 .seen {
-  background-color: #ddd !important;
+  background-color: #eee !important;
 }
 
 .action-button {
