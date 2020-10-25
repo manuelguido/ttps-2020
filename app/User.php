@@ -77,15 +77,38 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Role', 'role_user', 'user_id', 'role_id')->get();
     }
 
+
+    /**
+     * Retorna los permisos del usuario
+     */
+    public function permissions()
+    {
+        return Permission::where('role_user.user_id', '=', $this->user_id)
+            ->join('permission_role', 'permission_role.permission_id', '=', 'permissions.permission_id')
+            ->join('roles', 'roles.role_id', '=', 'permission_role.role_id')
+            ->join('role_user', 'role_user.role_id', '=', 'roles.role_id')
+            ->select('permissions.*')
+            ->get();
+    }
+
     /**
      * Retorna los sistemas en los que se encuentra el usuario
      */
     public function systems()
     {
         return $this->belongsToMany('App\System', 'system_user', 'user_id', 'system_id')->get();
+    } 
+
+
+    /**
+     * Retorna los sistemas en los que se encuentra el usuario
+     */
+    public function bed()
+    {
+        return $this->belongsTo('App\Bed');
     }
 
-    public function set_role($role)
+    public function setRole($role)
     {
         // Get role_id
         $role_id = Role::where('role', $role)->get()->first()->role_id;
@@ -96,16 +119,39 @@ class User extends Authenticatable
         ]);
     }
 
-    public function has_role($role)
+    /**
+     * Chequear si el usuario tiene rol
+     */
+    public function hasRole($role)
     {
-        $roles = $this->roles();
-        foreach ($roles as $r) {
-            if ($r->role == $role) return True;
-        }
-        return False;
+        $result = Role::where([
+            ['roles.role', '=', $role],
+            ['role_user.user_id', '=', $this->id]
+            ])
+            ->join('role_user', 'role_user.role_id', '=', 'roles.role_id')
+            ->count();
+        
+        return ($result > 0);
     }
 
-    public function set_system($system)
+    /**
+     * Chequear si el usuario tien permiso
+     */
+    public function hasPermission($permission)
+    {
+        $result = Permission::where([
+            ['permissions.permission', '=', $permission],
+            ['role_user.user_id', '=', $this->user_id]
+            ])
+            ->join('permission_role', 'permission_role.permission_id', '=', 'permissions.permission_id')
+            ->join('roles', 'roles.role_id', '=', 'permission_role.role_id')
+            ->join('role_user', 'role_user.role_id', '=', 'roles.role_id')
+            ->count();
+        
+        return ($result > 0);
+    }
+
+    public function setSystem($system)
     {
         // Get system_id
         $system_id = System::where('system', $system)->get()->first()->system_id;

@@ -19,6 +19,7 @@ class UserController extends Controller
         ];
     }
 
+
     /**
      * Rutas del usuario jefe de sistema
      */
@@ -32,6 +33,7 @@ class UserController extends Controller
         ];
     }
 
+
     /**
      * Rutas del usuario médico
      */
@@ -43,6 +45,7 @@ class UserController extends Controller
         ];
     }
 
+
     /**
      * Rutas del usuario configurador de reglas
      */
@@ -53,39 +56,21 @@ class UserController extends Controller
         ];
     }
 
+
     /**
      * Determina las rutas del usuario y las retorna
      */    
     private function getRoutes($role)
     {
-        // Es ADMIN
-        if ($role == ROLE::ROLE_ADMIN)
-        {
-            return $this->adminRoutes();
+        switch ($role) {
+            case ROLE::ROLE_ADMIN: return $this->adminRoutes();
+            case ROLE::ROLE_SYSTEM_CHIEF: return $this->systemChiefRoutes();
+            case ROLE::ROLE_MEDIC: return $this->medicRoutes();
+            case ROLE::ROLE_RULE_SETTER: return $this->ruleSetterRoutes();
+            default: return [''];
         }
-        // Es JEFE DE SISTEMA
-        else if ($role == ROLE::ROLE_SYSTEM_CHIEF)
-        {
-            return $this->systemChiefRoutes();
-        }
-        // Es MEDICO
-        else if ($role == ROLE::ROLE_MEDIC)
-        {
-            return $this->medicRoutes();
-        }
-        // Es CONFIGURADOR DE REGLAS
-        else if ($role == ROLE::ROLE_RULE_SETTER)
-        {
-            return $this->ruleSetterRoutes();
-        }
-        // No es nada
-        else 
-        {
-            return [''];
-        }
-
-        // return $this->adminRoutes();
     }
+
 
     /**
      * Retorna las rutas del usuario en modo JSON para la la API
@@ -97,6 +82,7 @@ class UserController extends Controller
         return response()->json($data);
     }
 
+
     /**
      * Retorna el usuario
      */
@@ -104,6 +90,7 @@ class UserController extends Controller
     {
         return $request->user();
     }
+
 
     /**
      * Retorna el rol del usuario
@@ -113,6 +100,7 @@ class UserController extends Controller
         return $request->user()->roles()->first()->role;
     }
 
+
     /**
      * Retorna el sistema del usuario
      */
@@ -121,8 +109,9 @@ class UserController extends Controller
         return $request->user()->systems()->first()->system;
     }
 
+
     /**
-     * Retorna el usuario con el rol, sus rutas(de url) y su sistema correspondiente
+     * Retorna el usuario con el rol, sus rutas(de url) y su sistema correspondiente y sus permisos
      */
     public function fullUser(Request $request)
     {
@@ -132,6 +121,7 @@ class UserController extends Controller
         $data = [
             'user' => $request->user(),
             'role' => $role,
+            'permissions' => $request->user()->permissions(),
             'system' => $request->user()->systems()->first()->system,
             'routes' => $this->getRoutes($role),
         ];

@@ -32,7 +32,7 @@ Route::middleware('auth:api')->get('/', 'RoleController@hasRole');
  * API de seguros médicos
  */
 // Retorna todos los seguros médicos
-Route::middleware('auth:api')->get('/medical_ensurance/index', 'MedicalEnsuranceController@index');
+Route::get('/medical_ensurance/index', 'MedicalEnsuranceController@index');
 
 
 /**

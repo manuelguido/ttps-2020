@@ -28,9 +28,13 @@ class Patient extends Model
     /**
      * Retorna el usuario correspondiente al médico
      */
-    public static function all_with_medical_ensurance()
+    public static function allFull()
     {
-        return Patient::join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')->get();
+        return Patient::join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
+            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
+            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
+            ->get();
     }
 
 

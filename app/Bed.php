@@ -19,7 +19,7 @@ class Bed extends Model
      * @var array
      */
     protected $fillable = [
-        'number', 'room_id',
+        'number', 'room_id', 'patient_id',
     ];
 
     public $timestamps = false;
@@ -37,6 +37,6 @@ class Bed extends Model
      */
     public function patient()
     {
-        return $this->belongsTo('App\Patient');
+        return $this->hasOne('App\Patient');
     }
 }

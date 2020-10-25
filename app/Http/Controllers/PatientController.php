@@ -27,10 +27,7 @@ class PatientController extends Controller
      */
     public function index()
     {
-        // $data['columns'] = $this->column_fields();
-        // $data['rows'] = Patient::all_with_medical_ensurance();
-        // return response()->json($data);
-        return response()->json(Patient::all_with_medical_ensurance());
+        return response()->json(Patient::allFull());
     }
 
     /**
@@ -47,6 +44,9 @@ class PatientController extends Controller
     public function store(Request $data)
     {
         // Rol try
+        if ($data->user()->hasPermission()) {
+            
+        }
         if (!app('App\Http\Controllers\RoleController')->has_role(ROLE::ROLE_ADMIN) AND 1 > 2) {
             $message = ['status' => 'warning', 'message' => 'No tienes el permiso para realizar esta acción'];
             return response()->json($message, 200);

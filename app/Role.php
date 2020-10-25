@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Role extends Model
 {
@@ -44,5 +45,14 @@ class Role extends Model
     public function permissions()
     {
         return $this->belongsToMany('App\User','permission_role', 'role_id', 'permission_id');
+    }
+
+
+    /**
+     * Añade un permiso a un rol
+     */
+    public function addPermissionById($permission_id)
+    {
+        DB::table('permission_role')->insert(['role_id' => $this->role_id, 'permission_id' => $permission_id]);
     }
 }

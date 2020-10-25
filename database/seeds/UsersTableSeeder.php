@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
         /**
          * Nuevo usuario
          */
-        function new_user($email, $password, $name, $lastname)
+        function newUser($email, $password, $name, $lastname)
         {
             $user = new User;
             $user->name = $name;
@@ -36,7 +36,7 @@ class UsersTableSeeder extends Seeder
         /**
          * Nuevo médico
          */
-        function new_medic($user_id)
+        function newMedic($user_id)
         {
             $medic = new Medic;
             $medic->user_id = $user_id;
@@ -44,48 +44,48 @@ class UsersTableSeeder extends Seeder
         }
 
         // Creacion de administrador
-        $admin = new_user('admin@gmail.com', 'password', 'Nombre', 'Admin');
-        $admin->set_role(Role::ROLE_ADMIN);
+        $admin = newUser('admin@gmail.com', 'password', 'Juan', 'Perez');
+        $admin->setRole(Role::ROLE_ADMIN);
 
         // Creación de médico
-        $medic = new_user('medico@gmail.com', 'password', 'Nombre', 'Médico');
-        $medic->set_role(Role::ROLE_MEDIC);
-        new_medic($medic->user_id);
+        $medic = newUser('medico@gmail.com', 'password', 'Juana', 'Mendez');
+        $medic->setRole(Role::ROLE_MEDIC);
+        newMedic($medic->user_id);
 
         // Creación de configurador de reglas
-        $rule_setter = new_user('configurador@gmail.com', 'password', 'Nombre', 'C. de Reglas');
-        $rule_setter->set_role(Role::ROLE_RULE_SETTER);
+        $rule_setter = newUser('configurador@gmail.com', 'password', 'María', 'Lopez');
+        $rule_setter->setRole(Role::ROLE_RULE_SETTER);
 
         // Creacion de administrador
-        $admin = new_user('manuelguido.m@gmail.com', 'password', 'Manuel', 'Guido');
-        $admin->set_role(Role::ROLE_ADMIN);
+        $admin = newUser('ttps2020.grupo7@gmail.com', 'password', 'Grupo', '7');
+        $admin->setRole(Role::ROLE_ADMIN);
 
         /**
          * Jefes de sistema
          */
         // Creacion de jefe de sistema (Guardia)
-        $system_chief = new_user('jefe_guardia@gmail.com', 'password', 'Nombre', 'J.S. Guardia');
-        $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->set_system(System::SYSTEM_GUARD);
+        $system_chief = newUser('jefe_guardia@gmail.com', 'password', 'Juan', 'Lopez');
+        $system_chief->setRole(Role::ROLE_SYSTEM_CHIEF);
+        $system_chief->setSystem(System::SYSTEM_GUARD);
 
         // Creacion de jefe de sistema (Piso Covid)
-        $system_chief = new_user('jefe_piso_covid@gmail.com', 'password', 'Nombre', 'J.S. Piso covid');
-        $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->set_system(System::SYSTEM_COVID_FLOOR);
+        $system_chief = newUser('jefe_piso_covid@gmail.com', 'password', 'Maria', 'Mendez');
+        $system_chief->setRole(Role::ROLE_SYSTEM_CHIEF);
+        $system_chief->setSystem(System::SYSTEM_COVID_FLOOR);
         
         // Creacion de jefe de sistema (UTI)
-        $system_chief = new_user('jefe_uti@gmail.com', 'password', 'Nombre', 'J.S. UTI');
-        $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->set_system(System::SYSTEM_UTI);
+        $system_chief = newUser('jefe_uti@gmail.com', 'password', 'Mirta', 'Gutierrez');
+        $system_chief->setRole(Role::ROLE_SYSTEM_CHIEF);
+        $system_chief->setSystem(System::SYSTEM_UTI);
 
         // Creacion de jefe de sistema (Hotel)
-        $system_chief = new_user('jefe_hotel@gmail.com', 'password', 'Nombre', 'J.S. Hotel');
-        $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->set_system(System::SYSTEM_HOTEL);
+        $system_chief = newUser('jefe_hotel@gmail.com', 'password', 'Nadia', 'Lopez');
+        $system_chief->setRole(Role::ROLE_SYSTEM_CHIEF);
+        $system_chief->setSystem(System::SYSTEM_HOTEL);
 
         // Creacion de jefe de sistema (Domicilio)
-        $system_chief = new_user('jefe_domicilio@gmail.com', 'password', 'Nombre', 'J.S. Domicilio');
-        $system_chief->set_role(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->set_system(System::SYSTEM_HOME);
+        $system_chief = newUser('jefe_domicilio@gmail.com', 'password', 'Carlos', 'Perez');
+        $system_chief->setRole(Role::ROLE_SYSTEM_CHIEF);
+        $system_chief->setSystem(System::SYSTEM_HOME);
     }
 }
