@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Role;
+use App\User;
 
 class UserController extends Controller
 {
@@ -127,4 +128,59 @@ class UserController extends Controller
         ];
         return response()->json($data);
     }
+
+
+
+    /**
+     * Retora todos los médicos
+     */
+    public function indexMedic()
+    {
+        return response()->json(User::medics());
+    }
+
+
+     /**
+     * Retora todos los médicos de un sistema
+     */
+    public function indexMedicBySystem($system_id)
+    {
+        return response()->json(User::medicsBySystem($system_id));
+    }
+
+
+    /**
+     * Almacena un médico
+     */
+    public function store(Request $data)
+    {
+        // Rol try
+        // if (! $data->user()->hasPermission(Permission::MEDIC_STORE)) {
+        //     $message = ['status' => 'warning', 'message' => 'No tienes el permiso para realizar esta acción'];
+        //     return response()->json($message, 200);
+        // } else {
+        //     if (Medic::dniExists($data->dni)) {
+        //         $message = ['status' => 'warning', 'message' => 'El méidco con ese DNI ya existe en el sistema'];
+        //         return response()->json($message, 200);
+        //     }
+        //     // Information try
+        //     try {
+        //         // $this->validatePatient();
+        //         $medic = new User;
+
+        //         $store_data = $data;
+        //         // $store_data->system_id = System::where('system', '=', System::SYSTEM_GUARD)->first()->system_id;
+                
+        //         $this->save($medic, $store_data);
+
+        //         // Returning the view
+        //         $message = ['status' => 'success', 'message' => 'Paciente guardado'];
+        //     } catch (\Exception $e) {
+        //         $message = ['status' => 'warning', 'message' => $e->errorInfo[2]];
+        //     }
+
+        //     return response()->json($message, 200);
+        // }
+    }
+
 }

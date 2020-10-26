@@ -42,7 +42,7 @@ Route::get('/medical_ensurance/index', 'MedicalEnsuranceController@index');
 Route::middleware('auth:api')->get('/system/index', 'SystemController@index');
 // Retorna todos los sistemas con su información de camas y habitaciones
 Route::middleware('auth:api')->get('/system/index/full', 'SystemController@indexFull');
-// Retorna todos un sistema con su información de camas y habitaciones
+// Retorna todo un sistema con su información de camas y habitaciones
 Route::middleware('auth:api')->get('/system/full', 'SystemController@showFull');
 
 
@@ -58,8 +58,24 @@ Route::middleware('auth:api')->get('/patient_state/index', 'PatientStateControll
  */
 // Retorna todos los pacientes
 Route::middleware('auth:api')->get('/patient/index', 'PatientController@index');
+// Retorna todos los pacientes por sistema
+Route::middleware('auth:api')->get('/patient/index/{system_id}', 'PatientController@indexBySystem');
+// Retorna todos los pacientes
+Route::middleware('auth:api')->get('/patient/show/{id}', 'PatientController@show');
 // Almacena un paciente
 Route::middleware('auth:api')->post('/patient/store', 'PatientController@store');
+
+
+/**
+ * API médicos
+ */
+// Retorna todos los medicos
+Route::middleware('auth:api')->get('/medic/index', 'UserController@indexMedic');
+// Retorna todos los medicos por sistema
+Route::middleware('auth:api')->get('/medic/index/{system_id}', 'UserController@indexMedicBySystem');
+// Almacena un medico
+Route::middleware('auth:api')->post('/patient/store', 'UserController@storeMedic');
+
 
 
 /**

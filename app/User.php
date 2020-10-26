@@ -161,4 +161,40 @@ class User extends Authenticatable
             'system_id' => $system_id,
         ]);
     }
+
+
+
+    /**
+     * Obtiene todos los médicos
+     */
+        /**
+     * Retorna todos los pacientes
+     */
+    public static function medics()
+    {
+        return User::where('roles.role', '=', Role::ROLE_MEDIC)
+            ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
+            ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
+            ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
+            ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
+            ->get();
+    }
+
+    /**
+     * Obtiene todos los médicos de un sistema
+     */
+    
+    public static function medicsBySystem($system_id)
+    {
+        return User::where([
+            ['roles.role', '=', Role::ROLE_MEDIC],
+            ['systems.system_id', '=', $system_id]
+            ])
+            ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
+            ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
+            ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
+            ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
+            ->get();
+    }
+
 }
