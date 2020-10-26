@@ -81,7 +81,7 @@
 	border-bottom: 1px solid #eee;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 11992px) {
 	.dashboard-navbar {
 		position: fixed !important;
 		width: 100vw;

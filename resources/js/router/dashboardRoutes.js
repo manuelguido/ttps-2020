@@ -75,6 +75,15 @@ const routes = [
         component: patients,
       },
       /**
+       * Pacientes de un sistema especifico
+       */
+      {
+        path: '/dashboard/patients/:system_id',
+        name: 'patients',
+        component: patients,
+        props: true,
+      },
+      /**
        * Paciente
        */
       {
@@ -87,7 +96,7 @@ const routes = [
        * Asignaciíon de medicos a paciente
        */
       {
-        path: '/dashboard/patient/:patient_id/assignment',
+        path: '/dashboard/patient/assignment/:patient_id',
         name: 'patientAssigment',
         component: patientAssigment,
         props: true,
@@ -123,6 +132,15 @@ const routes = [
         path: '/dashboard/medics',
         name: 'medics',
         component: medics
+      },
+      /**
+       * Médicos de un sistema especifico 
+       */
+      {
+        path: '/dashboard/medics/:system_id',
+        name: 'medics',
+        component: medics,
+        props: true,
       },
       /**
        * Sistemas

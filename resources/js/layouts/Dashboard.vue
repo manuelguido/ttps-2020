@@ -9,7 +9,7 @@
       <!-- Row -->
       <div class="row justify-content-center">
         <!-- Panel content -->
-        <section class="panel-container py-4 px-0 px-md-1 px-lg-3 px-xl-4">
+        <section class="panel-container py-5 px-0 px-md-1 px-lg-3 px-xl-4">
           <!-- Rotative content -->
           <!-- <section> -->
             <!-- Router view -->
@@ -63,15 +63,12 @@ export default {
 <style scoped>
 .panel-container {
   width: 100% !important;
+  margin-top: 80px;
 }
 @media(min-width: 992px) {
   .panel-container {
+    margin-top: 80px;
     margin-left: 280px !important;
-  }
-}
-@media(max-width: 992px) {
-  .panel-container {
-    margin-top: 80px !important;
   }
 }
 </style>

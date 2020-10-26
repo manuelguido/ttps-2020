@@ -3,7 +3,7 @@ require('./bootstrap');
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbvue/lib/css/mdb.min.css';
 import '../css/app.css';
-
+import '../css/fonts.css';
 
 window.Vue = require('vue');
 
@@ -126,6 +126,8 @@ Vue.component('dashboard-navigation', require('./components/dashboard/navigation
 Vue.component('dashboard-title', require('./components/dashboard/Title.vue').default);
 // Subtite
 Vue.component('dashboard-subtitle', require('./components/dashboard/SubTitle.vue').default);
+// Subtite
+Vue.component('info-data', require('./components/dashboard/InfoData.vue').default);
 
 
 /**

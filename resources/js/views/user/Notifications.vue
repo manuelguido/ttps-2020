@@ -34,28 +34,6 @@ export default {
           },
           text: 'Informe de lo que paso...',
           seen: false,
-        },
-        {
-          alert_id: 2,
-          created_at: new Date(),
-          patient: {
-            patient_id: 1,
-            name: 'Juan',
-            lastname: 'Pérez',
-          },
-          text: 'Informe de lo que paso...',
-          seen: false,
-        },
-        {
-          alert_id: 3,
-          created_at: new Date(),
-          patient: {
-            patient_id: 1,
-            name: 'Juan',
-            lastname: 'Pérez',
-          },
-          text: 'Informe de lo que paso...',
-          seen: false,
         }
       ]
     }

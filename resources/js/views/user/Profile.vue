@@ -1,46 +1,66 @@
 <template>
   <!-- Container -->
   <div class="container-fluid">
-    <dashboard-title text="Perfil"></dashboard-title>
     <!-- Row -->
     <div class="row">
+      <div class="col-12 col-lg-8 col-xl-7">
+        <dashboard-title text="Perfil de usuario"></dashboard-title>
+      </div>
       <!-- Col -->
-      <div class="col-12 col-lg-8 col-xl-6">
-        <!-- Row -->
-        <div class="row">
-          <!-- Image Col -->
-          <div class="col-12 mb-4">
-            <img class="user-image" v-if="user.image" :src="user.image">
-            <img class="user-image" v-else :src="asset_path() + 'img/person.png'">
+      <div class="col-12 col-lg-8 col-xl-7">
+        <!-- Card -->
+        <div class="card">
+          <!-- Card body -->
+          <div class="card-body p-md-4 p-lg-5">
+
+            <!-- Row -->
+            <div class="row">
+              <!-- Image Col -->
+              <div class="col-12 col-md-4 mb-4">
+                <img class="user-image" v-if="user.image" :src="user.image">
+                <img class="user-image" v-else :src="asset_path() + 'img/person.png'">
+              </div>
+              <!-- /.Image Col -->
+              
+              <!-- Information Col -->
+              <div class="col-12 col-md-8">
+                <div class="row">
+                  <!-- Nombre y apellido -->
+                  <div class="col-12 mb-4">
+                    <span class="w-400 h4-responsive">{{user.name}} {{user.lastname}}</span>
+                  </div>
+                  <!-- ./Nombre y apellido -->
+ 
+                  <!-- Sistema -->
+                  <div class="col-12 mb-2">
+                    <span class="h5-responsive primary">{{system}}</span>
+                  </div>
+                  <!-- /.Sistema -->
+                  
+                  <!-- Rol -->
+                  <div class="col-12 mb-2">
+                    <span class="h6-responsive primary">{{role}}</span>
+                  </div>
+                  <!-- /.Rol -->
+                  
+                  <div class="col-12">
+                    <hr>
+                    <info-data data="Email" :value="user.email"></info-data>
+                    <info-data data="DNI" :value="dni()"></info-data>
+                    <info-data data="Teléfono" :value="user.phone"></info-data>
+                  </div>
+
+                </div>
+                <!-- /.Row -->
+              </div>
+              <!-- /.Information Col -->
+            </div>
+            <!-- /.Row -->
+                    
           </div>
-          <!-- /.Image Col -->
-          <!-- Email -->
-          <div class="col-12 mb-3">
-            <span class="h4-responsive primary">{{role}}</span>
-          </div>
-          <!-- /.Email -->
-          <!-- Nombre y apellido -->
-          <div class="col-12 mb-3">
-            <span class="w-300 h5-responsive">{{user.name}} {{user.lastname}}</span>
-          </div>
-          <!-- ./Nombre y apellido -->
-          <!-- Email -->
-          <div class="col-12 mb-3">
-            <span class="w-300 h5-responsive">{{user.email}}</span>
-          </div>
-          <!-- /.Email -->
-          <!-- Email -->
-          <div class="col-12 mb-3">
-            <span class="w-300 h5-responsive">{{dni()}}</span>
-          </div>
-          <!-- /.Email -->
-          <!-- Email -->
-          <div class="col-12 mb-3">
-            <span class="w-300 h5-responsive">Teléfono: {{user.phone}}</span>
-          </div>
-          <!-- /.Email -->
+          <!-- /.Card body -->
         </div>
-        <!-- /.Row -->
+        <!-- /.Card -->
       </div>
       <!-- /.Col -->
     </div>
@@ -64,7 +84,7 @@ export default {
      */
     dni() {
       let val = (this.user.dni/1).toFixed(0).replace('.')
-      return "DNI " + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     }
   }
 }

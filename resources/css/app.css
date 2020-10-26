@@ -160,7 +160,7 @@ th, td {
   vertical-align: middle !important;
 }
 
-.card {
+.card, .btn {
   border-radius: 8px !important;
   overflow: hidden !important;
 }
@@ -179,4 +179,29 @@ input::-webkit-inner-spin-button {
 }
 input[type=number] {
     -moz-appearance:textfield; /* Firefox */
+}
+
+
+
+/* Loading */
+.loading {
+  background: #ddd !important;
+  border-radius: 4px !important;
+  color: #ddd !important;
+  animation: 2s fadeLight infinite !important;
+}
+.loading:first-child {
+  content: '' !important;
+}
+
+@keyframes fadeLight {
+ 0%{
+  opacity: 1;
+ }
+ 50%{
+  opacity: 0.5;
+ }
+ 100%{
+  opacity: 1;
+ }
 }

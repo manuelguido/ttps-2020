@@ -2,11 +2,11 @@
   <!-- Container -->
   <div class="container-fluid">
     <!-- Title -->
-    <dashboard-title text="Pacientes" full></dashboard-title>
+    <dashboard-title :text="title" full></dashboard-title>
     <!-- Row -->
     <div class="row">
       <!-- Col -->
-      <div class="col-12 col-lg-8">
+      <div class="col-12">
         <div class="row d-flex align-items-center">
 
           <!-- Search form -->
@@ -33,7 +33,7 @@
 
           <!-- Modal de carga de paciente -->
           <div class="col-12 col-lg-6 mb-4 text-right">
-            <modal></modal>
+            <modal @reload-patients="fetchPatients()"></modal>
           </div>
           <!-- /.Modal de carga de paciente -->
 
@@ -46,9 +46,9 @@
     <!-- Row -->
     <div class="row">
       <!-- Col -->
-      <div class="col-12 col-lg-8">
+      <div class="col-12">
         <!-- Tabla de pacientes -->
-        <patients-table :patients="patients"></patients-table>
+        <patients-table :patients="patients" :loading="loading" @reload-patients="fetchPatients()"></patients-table>
       </div>
       <!-- /.Col -->
     </div>
@@ -67,14 +67,29 @@ export default {
     modal,
     'patients-table': patientsTable
   },
+  props: {
+    system_id: {
+      default: null,
+    }
+  },
   data () {
     return {
+      title: '',
+      loading: true,
       patients: [],
       input_data: '',
+      system: null,
     }
   },
   created () {
+    this.$Progress.start();
     this.fetchPatients();
+
+    if (this.system_id) {
+      this.fetchSystem();
+    } else {
+      this.title = "Pacientes";
+    }
   },
   methods: {
     loadPatients (data) {
@@ -86,7 +101,8 @@ export default {
     },
 
     fetchPatients () {
-      const path = '/api/patient/index';
+      const path = (this.system_id) ? '/api/patient/index/'+this.system_id : '/api/patient/index';
+      console.log('Busco en '+path);
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
 
       axios.get(path, {
@@ -96,9 +112,35 @@ export default {
         }
       }).then((res) => {
         this.loadPatients(res.data);
+        this.$Progress.finish();
+        this.loading = false;
       }).catch((err) => {
         console.log(err)
-      })
+      });
+    },
+
+    fetchSystem () {
+     const path = '/api/system/full';
+      const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
+
+      axios.get(path, {
+        params: {
+          system_id: this.system_id,
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': AuthStr
+        }
+      }).then((res) => {
+        this.loadSystem(res.data);
+      }).catch((err) => {
+        console.log(err)
+      });
+    },
+
+    loadSystem (data) {
+      this.system = data;
+      this.title = 'Pacientes de '+this.system.system;
     },
 
     matchData (value) {
@@ -111,6 +153,7 @@ export default {
         this.matchData(patient.lastname) ||
         this.matchData(patient.name+' '+patient.lastname) ||
         this.matchData(patient.lastname+' '+patient.name) ||
+        this.matchData(patient.system) ||
         this.matchData(patient.dni.toString())
       );
     }
@@ -122,15 +165,6 @@ export default {
       this.patients.forEach(patient => {
         patient.show = this.mathSearch(patient);
       });
-    },
-
-    // Room filter
-    room_filter: function() {
-      // // Elements
-			for (let i = 0; i < this.products.length; i++) {
-        let condition = (this.products[i].category_id == this.category_filer || this.category_filer == 0)
-        condition ? this.updateProduct(this.products[i], i, true) : this.updateProduct(this.products[i], i, false) 
-      }
     }
   }
 }

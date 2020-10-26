@@ -1,20 +1,27 @@
 <template>
-  <router-link to="/user/profile" class="user-data mb-4 py-3 px-4" v-waves>
-    <div class="d-flex justify-content-star align-items-center">
-      <span class="user-image">
-        <img v-if="user.image" :src="user.image">
-        <img v-else :src="asset_path() + 'img/person.png'">
-      </span>
-      <span class="pl-3">
-        <span class="black-alpha-40">
-        {{user.name}}
-        {{user.lastname}}
-        </span>
-        <br>
-        <span>{{role}}</span>
-      </span>
+  <div>
+    <div class="div w-600 h5-responsive black-alpha-60 pl-4 mb-4">
+      {{system}}
     </div>
-  </router-link>
+    <router-link to="/user/profile" class="user-data mb-4 py-3 px-4 waves-effect">
+      <div class="d-flex justify-content-start align-items-center">
+
+        <div class="user-image">
+          <img v-if="user.image" :src="user.image">
+          <img v-else :src="asset_path() + 'img/person.png'">
+        </div>
+
+        <div class="pl-3 d-flex align-items-start flex-column">
+          <div class="black-alpha-60 w-400">
+            {{user.name}}
+            {{user.lastname}}
+          </div>
+          <div>{{role}}</div>
+        </div>
+
+      </div>
+    </router-link>
+  </div>
 </template>
 
 <script>
@@ -24,17 +31,13 @@ export default {
     return {
       user: JSON.parse(localStorage.getItem('user')),
       role: JSON.parse(localStorage.getItem('role')),
+      system: JSON.parse(localStorage.getItem('system')),
     }
   }
 }
 </script>
 
 <style scoped>
-.user-data,
-.user-data * {
-  transition: 0s all !important;
-}
-
 .user-data {
   color: var(--primary);
   display: block;

@@ -36,7 +36,7 @@ export default {
 }
 
 .item {
-  border-radius: 4px;
+  border-radius: 8px;
   border-left: 2px solid rgba(255, 255, 255, 0);
   color: #5f6368;
   font-size: 18px;

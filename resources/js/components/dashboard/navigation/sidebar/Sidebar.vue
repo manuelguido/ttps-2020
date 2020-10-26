@@ -1,6 +1,6 @@
 <template>
   <!-- Sidenav -->
-  <div class="sidenav mobile-hide uns">
+  <div class="sidebar pt-4 mobile-hide uns shadow-sm">
     <!--Header-->
     <user-data :user="user"></user-data>
 
@@ -36,7 +36,7 @@ export default {
 <style scoped>
 @media (min-width: 992px) {
   /* Sidebar */
-  .sidenav {
+  .sidebar {
     height: 100vh !important;
     position: fixed;
     background: #fff;
@@ -45,12 +45,12 @@ export default {
     left: 0;
     top: 0;
     z-index: 1030;
-    padding-top: 108px;
+    margin-top: 80px;
     border-right: 1px solid #eee !important;
   }
 }
 @media (max-width: 992px) {
-  .sidenav {
+  .sidebar {
     display: none !important;
   }
 }

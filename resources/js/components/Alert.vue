@@ -112,7 +112,7 @@ export default {
   width: auto;
   background: #fff;
   padding: 1em 1.4em;
-  border-radius: var(--rounded-md) !important;
+  border-radius: 8px !important;
   box-shadow: 0 1px 4em 0 rgba(0,0,0,.25);
 }
 .ls-alert, .ls-alert * {
@@ -159,16 +159,16 @@ export default {
 }
 
 .ls-alert-primary {
-  border-bottom: 6px solid var(--primary) !important;
+  border-bottom: 6px solid #444BF8 !important;
 }
 .ls-alert-success {
-  border-bottom: 6px solid var(--success) !important;
+  border-bottom: 6px solid #18cc8a !important;
 }
 .ls-alert-warning {
-  border-bottom: 6px solid var(--warning) !important;
+  border-bottom: 6px solid #F1BE25 !important;
 }
 .ls-alert-danger {
-  border-bottom: 6px solid var(--danger) !important;
+  border-bottom: 6px solid #F12559 !important;
 }
 .display-none {
   display: none !important;

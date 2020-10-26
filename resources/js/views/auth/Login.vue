@@ -4,18 +4,18 @@
     <!-- Navbar -->
     <navbar></navbar>
     <!-- Container -->
-    <div class="container pt-5 mt-5">
+    <div class="container pt-lg-5 mt-4 mt-lg-5">
         <!-- Row -->
         <div class="row justify-content-center">
             <!-- Col -->
-            <section class="col-md-7 col-lg-6 col-xl-5">
+            <section class="col-md-6 col-xl-5">
                 <!-- Card -->
                 <div class="card">
                   <loading-overlay v-if="loading"/>
                   <!-- Card body -->
-                  <div class="card-body py-5 px-4">
+                  <div class="card-body py-lg-5 px-lg-4">
                     <!-- Title -->
-                    <h1 class="text-center h3 mb-5">Iniciar sesión</h1>
+                    <h1 class="text-center h3 mb-4 mb-lg-5">Iniciar sesión</h1>
                     <form method="POST" @submit.prevent="login">
                         <!-- Errors -->
                         <p v-if="error" class="text-center text-danger">
@@ -107,29 +107,6 @@ export default {
 </script>
 
 <style scoped>
-.top-content {
-  background: white;
-  height: 45vh !important;
-}
-
-.bottom-content {
-  background: #060d1f;
-  height: 55vh !important;
-}
-
-.outer-position {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0;
-}
-
-.card {
-  box-shadow: 0 .05em .5em .2em rgba(0,0,0,.08) !important;
-}
-
-
 @media (min-width: 992px) {
 	.outer-position {
 		top: 5em;

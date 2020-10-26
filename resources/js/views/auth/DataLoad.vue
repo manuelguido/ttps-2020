@@ -1,6 +1,7 @@
 <template>
-  <div class="full-height-container">
-    <loading-dots message="Cargando información"></loading-dots>
+  <div class="full-height-container d-flex flex-column align-items-center">
+    <h1 class="h1 mb-4 animated fadeIn">Bienvenido</h1>
+    <loading-dots message="Obteniendo información de usuario"></loading-dots>
   </div>
 </template>
 
@@ -39,6 +40,7 @@ export default {
     storeUser (data) {
       localStorage.setItem('user', JSON.stringify(data.user));
       localStorage.setItem('role', JSON.stringify(data.role));
+      localStorage.setItem('permissions', JSON.stringify(data.permissions));
       localStorage.setItem('system', JSON.stringify(data.system));
       localStorage.setItem('routes', JSON.stringify(data.routes));
     },
@@ -55,9 +57,6 @@ export default {
 
 <style scoped>
 .full-height-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  padding: 20vh 0 0 0;
 }
 </style>

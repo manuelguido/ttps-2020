@@ -1,82 +1,69 @@
 <template>
   <!-- Container -->
   <div class="container-fluid">
-    <backlink></backlink>
     <!-- Row -->
-    <div class="row">
+    <div class="row justify-content-center">
       <!-- Col -->
-      <div class="col-12 col-lg-6 col-xl-5">
-        <!-- Row -->
-        <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body p-md-4 p-lg-5">
 
-          <!-- Sytema -->
-          <div class="col-12 mb-3">
-            <p class="h3-responsive primary">{{system.system}}</p>
-          </div>
-          <!-- /.Systema -->
+            <!-- Row -->
+            <div class="row">
+              <backlink url="/dashboard/systems" text="Sistemas"></backlink>
 
-          <!-- Camas ilimitadas -->
-          <div v-if="system.system == 'Guardia'" class="col-12 mb-3">
-            <div class="row d-flex align-items-center">
 
-              <!-- Total de camas -->
-              <div class="col-3 primary">
-                Camas ilimitadas
+              <!-- Nombre -->
+              <div class="col-12 d-flex justify-content-between mb-3">
+                <p class="h3-responsive primary">
+                  {{system.system}}
+                </p>
+                <div>
+                  <router-link class="btn btn-outline-primary btn-sm" :to="'/dashboard/patients/'+system.system_id">Ver pacientes</router-link>
+                  <router-link class="btn btn-outline-primary btn-sm" :to="'/dashboard/medics/'+system.system_id">Ver médicos</router-link>
+                </div>
               </div>
 
-              <!-- Activado / Descativado -->
-              <div class="col-9">
-                <span class="d-flex align-items-center" v-if="system.infinite_beds">
-                  Activado
-                  <button class="btn btn-sm button-primary">Desactivar</button>
-                </span>
-                <span class="d-flex align-items-center" v-else>
-                  Descactivado
-                  <button class="btn btn-sm button-primary">Activar</button>
-                </span>
+              <!-- Camas ilimitadas -->
+              <div v-if="system.system === 'Guardia'" class="col-12 mb-3">
+                <div class="row d-flex align-items-center">
+
+                  <!-- Total de camas -->
+                  <div class="col-3 primary">
+                    Camas ilimitadas
+                  </div>
+
+                  <!-- Activado / Descativado -->
+                  <div class="col-9">
+                    <span class="d-flex align-items-center" v-if="system.infinite_beds">
+                      Activado
+                      <button class="btn btn-sm button-primary p-1">Desactivar</button>
+                    </span>
+                    <span class="d-flex align-items-center" v-else>
+                      Descactivado
+                      <button class="btn btn-sm button-primary p-1">Activar</button>
+                    </span>
+                  </div>
+                </div>
               </div>
+              <!-- ./Camas ilimitadas -->
+
+              <!-- Information -->
+              <div class="col-12">
+                <hr class="mb-4">
+                <info-data data="Cantidad de salas" :value="system.total_rooms"></info-data>
+                <info-data data="Camas totales" :value="system.total_beds"></info-data>
+                <info-data data="Camas disponibles" :value="system.free_beds"></info-data>
+                <info-data data="Camas ocupadas" :value="system.occupied_beds"></info-data>
+              </div>
+              <!-- /.Information -->
+
             </div>
-          </div>
-          <!-- ./Camas ilimitadas -->
+            <!-- /.Row -->
 
-          <div class="col-12 mb-3">
-            <hr>
           </div>
-
-          <!-- Total de camas -->
-          <div class="col-3 mb-3 primary">
-            Cantidad de salas
-          </div>
-          <div class="col-9 mb-3">
-            <p class="mb-2">{{system.total_rooms}}</p>
-          </div>
-
-          <!-- Total de camas -->
-          <div class="col-3 mb-3 primary">
-            Camas totales
-          </div>
-          <div class="col-9 mb-3">
-            <p class="mb-2">{{system.total_beds}}</p>
-          </div>
-
-          <!-- Obra social -->
-          <div class="col-3 mb-3 primary">
-            Camas disponibles
-          </div>
-          <div class="col-9 mb-3">
-            <p class="mb-2">{{system.free_beds}}</p>
-          </div>
-
-          <!-- Obra social -->
-          <div class="col-3 mb-3 primary">
-            Camas ocupadas
-          </div>
-          <div class="col-9 mb-3">
-            <p class="mb-2">{{system.occupied_beds}}</p>
-          </div>
-
         </div>
-        <!-- /.Row -->
+
       </div>
       <!-- /.Col -->
       <!-- Col -->

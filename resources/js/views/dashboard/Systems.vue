@@ -7,7 +7,7 @@
     <div class="row">
       <!-- /.Col -->
       <!-- Col -->
-      <div class="col-12 col-lg-8 text-left">
+      <div class="col-12 text-left">
         <systems-table></systems-table>
       </div>
       <!-- /.Col -->
@@ -23,6 +23,6 @@ import systemsTable from '../../components/dashboard/systems/systemsTable/Index'
 export default {
   components: {
     'systems-table': systemsTable
-  }
+  },
 }
 </script>

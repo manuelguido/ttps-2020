@@ -1,9 +1,6 @@
 <template>
   <div>
-    <mdb-btn color="primary" @click.native="modal = true" class="mr-0 ml-5">
-      <i class="fad fa-user-plus mr-2"></i>
-      Nuevo paciente
-    </mdb-btn>
+    <mdb-btn color="primary" @click.native="modal = true" class="btn-sm mr-0 ml-5">Agregar evolución</mdb-btn>
     <mdb-modal :show="modal"  size="lg" @close="modal = false">
       <mdb-modal-header>
         <mdb-modal-title>Registrar paciente</mdb-modal-title>
@@ -87,13 +84,6 @@
                   <option value="0" disabled>Seleccionar</option>
                   <option v-for="m in medical_ensurances" :key="m.medical_ensurance_id" :value="m.medical_ensurance_id">{{m.medical_ensurance}}</option>
                 </select>
-              </div>
-            </div>
-
-            <div class="col-12 col-md-6">
-              <div class="form-group px-0">
-                <label>Ingresa a:</label>
-                <input type="text" class="form-control disabled mb-3" disabled value="Guardia">
               </div>
             </div>
           </div>
