@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <script src="{{ asset('js/app2.min.js') }}"></script>
+    <script src="{{ asset('js/app3.min.js') }}"></script>
 
     <script>
       window.onload = function() {

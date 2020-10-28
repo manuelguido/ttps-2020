@@ -19,8 +19,8 @@
                     <form method="POST" @submit.prevent="login">
                         <!-- Errors -->
                         <p v-if="error" class="text-center text-danger">
-                          {{error.message}}
-                          <!-- Los datos ingresados son incorrectos -->
+                          <!-- {{error.message}} -->
+                          Los datos ingresados son incorrectos
                         </p>
                         <!-- /.Error -->
                         <!-- Email -->

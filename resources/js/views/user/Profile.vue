@@ -2,26 +2,26 @@
   <!-- Container -->
   <div class="container-fluid">
     <!-- Row -->
-    <div class="row">
-      <div class="col-12 col-lg-8 col-xl-7">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-9">
         <dashboard-title text="Perfil de usuario"></dashboard-title>
       </div>
       <!-- Col -->
-      <div class="col-12 col-lg-8 col-xl-7">
+      <div class="col-12 col-lg-9">
         <!-- Card -->
         <div class="card">
           <!-- Card body -->
           <div class="card-body p-md-4 p-lg-5">
-
             <!-- Row -->
             <div class="row">
+
               <!-- Image Col -->
               <div class="col-12 col-md-4 mb-4">
                 <img class="user-image" v-if="user.image" :src="user.image">
                 <img class="user-image" v-else :src="asset_path() + 'img/person.png'">
               </div>
               <!-- /.Image Col -->
-              
+
               <!-- Information Col -->
               <div class="col-12 col-md-8">
                 <div class="row">
@@ -36,7 +36,7 @@
                     <span class="h5-responsive primary">{{system}}</span>
                   </div>
                   <!-- /.Sistema -->
-                  
+
                   <!-- Rol -->
                   <div class="col-12 mb-2">
                     <span class="h6-responsive primary">{{role}}</span>
