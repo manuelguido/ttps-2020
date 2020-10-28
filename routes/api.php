@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 
 /**
  * API de usuario
+ * 
  */
 // Retorna el usuario
 Route::middleware('auth:api')->get('/user', 'UserController@user');
@@ -19,6 +20,7 @@ Route::middleware('auth:api')->get('/user/full', 'UserController@fullUser');
 
 /**
  * API de Autenticacion
+ * 
  */
 // Login user
 Route::post('/login', 'AuthController@login');
@@ -30,6 +32,7 @@ Route::middleware('auth:api')->get('/', 'RoleController@hasRole');
 
 /**
  * API de seguros médicos
+ * 
  */
 // Retorna todos los seguros médicos
 Route::get('/medical_ensurance/index', 'MedicalEnsuranceController@index');
@@ -37,6 +40,7 @@ Route::get('/medical_ensurance/index', 'MedicalEnsuranceController@index');
 
 /**
  * API de sistemas
+ * 
  */
 // Retorna todos los sistemas
 Route::middleware('auth:api')->get('/system/index', 'SystemController@index');
@@ -48,6 +52,7 @@ Route::middleware('auth:api')->get('/system/full', 'SystemController@showFull');
 
 /**
  * API de estados de pacientes
+ * 
  */
 // Retorna todos los estados de pacientes
 Route::middleware('auth:api')->get('/patient_state/index', 'PatientStateController@index');
@@ -55,6 +60,7 @@ Route::middleware('auth:api')->get('/patient_state/index', 'PatientStateControll
 
 /**
  * API pacientes
+ * 
  */
 // Retorna todos los pacientes
 Route::middleware('auth:api')->get('/patient/index', 'PatientController@index');
@@ -64,18 +70,28 @@ Route::middleware('auth:api')->get('/patient/index/{system_id}', 'PatientControl
 Route::middleware('auth:api')->get('/patient/show/{id}', 'PatientController@show');
 // Almacena un paciente
 Route::middleware('auth:api')->post('/patient/store', 'PatientController@store');
+// Retorna toda la información hospitalizaciones de un paciente (Tanto cambios de sistema como)
+Route::get('/patient/hospitalizations/{patient_id}', 'PatientController@hospitalizations');
+// Cambia un paciente de sistema
+Route::middleware('auth:api')->post('/patient/change_system', 'PatientController@changeSystem');
+// Retorna los medicos asignados al paciente y los posibles médicos a asignar
+Route::middleware('auth:api')->get('/patient/medics/{patient_id}', 'PatientController@medics');
+// Retorna los medicos asignados al paciente y los posibles médicos a asignar
+Route::middleware('auth:api')->post('/patient/medic/add', 'PatientController@addMedic');
+// Retorna los medicos asignados al paciente y los posibles médicos a asignar
+Route::middleware('auth:api')->post('/patient/medic/remove', 'PatientController@removeMedic');
 
 
 /**
  * API médicos
+ * 
  */
 // Retorna todos los medicos
 Route::middleware('auth:api')->get('/medic/index', 'UserController@indexMedic');
 // Retorna todos los medicos por sistema
 Route::middleware('auth:api')->get('/medic/index/{system_id}', 'UserController@indexMedicBySystem');
 // Almacena un medico
-Route::middleware('auth:api')->post('/patient/store', 'UserController@storeMedic');
-
+Route::middleware('auth:api')->post('/medic/store', 'UserController@storeMedic');
 
 
 /**
