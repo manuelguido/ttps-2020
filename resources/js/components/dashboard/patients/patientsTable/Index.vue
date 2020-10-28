@@ -21,7 +21,7 @@
             v-if="p.show"
             :patient="p"
             :systems="systems"
-            @reload-patients="reloadPatients()"
+            @reload-data="reloadData()"
           ></item>
         </tbody>
       </table>
@@ -72,8 +72,8 @@ export default {
       });
     },
 
-    reloadPatients () {
-      this.$emit('reload-patients');
+    reloadData () {
+      this.$emit('reload-data');
     }
   }
 }
