@@ -48,6 +48,19 @@
               </div>
               <!-- ./Camas ilimitadas -->
 
+              <!-- Uso de camas -->
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-3 mb-3 primary">
+                    Uso de camas
+                  </div>
+                  <div class="col-9 mb-3">
+                    {{bed_percentage}}
+                  </div>
+                </div>
+              </div>
+              <!-- /.Uso de camas -->
+
               <!-- Information -->
               <div class="col-12">
                 <hr class="mb-4">
@@ -86,12 +99,18 @@ export default {
       loading: true,
       system: {},
       rooms: [],
+      bed_percentage: 0,
     }
   },
   created () {
     this.fetchSystem();
   },
   methods: {
+    calcBedPercentage() {
+      this.bed_percentage = (((this.system.occupied_beds * 100) / this.system.total_beds).toFixed(1)) + '%';
+      // var current = data.toFixed(1);
+      //  = current + '%';
+    },
     /**
      * Obtiene el sistema con sus habitaciones y camas
      */
@@ -109,6 +128,7 @@ export default {
         }
       }).then((res) => {
         this.system = res.data
+        this.calcBedPercentage();
         this.loading = false;
       }).catch((err) => {
         console.log(err)

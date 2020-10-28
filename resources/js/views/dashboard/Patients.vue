@@ -48,7 +48,7 @@
       <!-- Col -->
       <div class="col-12">
         <!-- Tabla de pacientes -->
-        <patients-table :patients="patients" :loading="loading" @reload-patients="fetchPatients()"></patients-table>
+        <patients-table :patients="patients" :loading="loading" @reload-data="fetchPatients()"></patients-table>
       </div>
       <!-- /.Col -->
     </div>
@@ -148,12 +148,16 @@ export default {
     },
     
     mathSearch (patient) {
+      var aux_room = (patient.room != null) ? patient.room : '';
+      var aux_bed = (patient.bed_number != null) ? ('Cama '+ patient.bed_number) : '';
       return (
         this.matchData(patient.name) ||
         this.matchData(patient.lastname) ||
         this.matchData(patient.name+' '+patient.lastname) ||
         this.matchData(patient.lastname+' '+patient.name) ||
         this.matchData(patient.system) ||
+        this.matchData(aux_room) ||
+        this.matchData(aux_bed) ||
         this.matchData(patient.dni.toString())
       );
     }
