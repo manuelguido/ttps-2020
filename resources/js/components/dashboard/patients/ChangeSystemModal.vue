@@ -1,7 +1,7 @@
 <template>
   <div class="d-inline">
     <mdb-btn outline="secondary" @click.native="modal = true" class="btn-sm ml-0 mr-3 mr-lg-0">Cambiar sistema</mdb-btn>
-    <mdb-modal :show="modal" @close="modal = false">
+    <mdb-modal :show="modal" centered @close="modal = false">
       <mdb-modal-header>
         <mdb-modal-title>Cambiar paciente de sistema</mdb-modal-title>
       </mdb-modal-header>
@@ -72,6 +72,8 @@
         formData.append('patient_id', this.patient.patient_id)
         formData.append('system_id', this.system_id)
 
+        console.log('Systema: '+this.system_id+'   Paciente: '+this.patient.patient_id)
+
         axios.post(path, formData, {
           headers: {
             'Accept': 'application/json',
@@ -81,7 +83,7 @@
           this.new_alert(res.data)
           if (res.data.status == 'success') {
             this.modal = false;
-            this.$emit('reload-patients');
+            this.$emit('reload-data');
           }
           console.log(res)
         }).catch((err) => {
