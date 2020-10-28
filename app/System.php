@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Bed;
 use DB;
 
 class System extends Model
@@ -116,5 +117,34 @@ class System extends Model
             ->get();
 
         return count($result);
+    }
+
+
+    
+    /**
+     * Retorna si el sistema tiene camas disponibles
+     */
+    public function hasBeds()
+    {
+        return ($this->freeBeds() > 0);
+    }
+
+
+    /**
+     * Carga una nueva cama en el sistema (La siguiente disponible) 
+     */
+    public function ocuppyNewBed($patient_id)
+    {
+        $bed = Bed::where([
+            ['beds.is_occupied', '=', FALSE],
+            ['rooms.system_id', '=', $this->system_id]
+            ])
+            ->join('rooms', 'rooms.room_id', '=', 'beds.room_id')
+            ->orderBy('number', 'ASC')
+            ->first();
+
+        $bed->patient_id = $patient_id;
+        $bed->is_occupied = True;
+        $bed->save();
     }
 }

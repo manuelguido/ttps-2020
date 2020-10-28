@@ -3,6 +3,7 @@
 namespace App;
 
 use DB;
+use App\System;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -101,13 +102,19 @@ class User extends Authenticatable
 
 
     /**
-     * Retorna los sistemas en los que se encuentra el usuario
+     * Obtener los cambios de sistema que generó el usuario.
+     * 
      */
-    public function bed()
+    public function systemChanges()
     {
-        return $this->belongsTo('App\Bed');
+        return $this->hasMany('App\SystemChange');
     }
 
+
+    /**
+     * Agregar un nuevo rol a un usuario.
+     * 
+     */
     public function setRole($role)
     {
         // Get role_id
@@ -120,22 +127,22 @@ class User extends Authenticatable
     }
 
     /**
-     * Chequear si el usuario tiene rol
+     * Chequear si el usuario tiene rol.
+     * 
      */
     public function hasRole($role)
     {
-        $result = Role::where([
-            ['roles.role', '=', $role],
-            ['role_user.user_id', '=', $this->id]
-            ])
+        $result = Role::where([['roles.role', '=', $role],['role_user.user_id', '=', $this->id]])
             ->join('role_user', 'role_user.role_id', '=', 'roles.role_id')
             ->count();
         
         return ($result > 0);
     }
 
+
     /**
-     * Chequear si el usuario tien permiso
+     * Chequear si el usuario tien permiso.
+     * 
      */
     public function hasPermission($permission)
     {
@@ -151,6 +158,26 @@ class User extends Authenticatable
         return ($result > 0);
     }
 
+
+    /**
+     * Chequea si el usuario esta asginado a un sistema:
+     * 
+     * La funcion se usa porque los médicos y jefes de sistema tienen asignado
+     * Los administradores y administradores de reglas no lo necesitan, ya que administran TODOS los sistemas
+     * 
+     */
+    public function hasSystem()
+    {
+        $result = System::where('system_user.user_id', '=', $this->user_id)
+            ->join('system_user', 'system_user.system_id', '=', 'systems.system_id')->count();
+        return ($result > 0);
+    }
+
+
+    /**
+     * Agregar un usuario a un sistema
+     * 
+     */
     public function setSystem($system)
     {
         // Get system_id
@@ -163,12 +190,9 @@ class User extends Authenticatable
     }
 
 
-
     /**
-     * Obtiene todos los médicos
-     */
-        /**
-     * Retorna todos los pacientes
+     * Obtiene todos los médicos.
+     * 
      */
     public static function medics()
     {

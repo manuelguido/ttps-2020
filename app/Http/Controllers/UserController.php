@@ -17,6 +17,7 @@ class UserController extends Controller
             ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
             ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
             ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
+            ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
         ];
     }
 
@@ -54,6 +55,7 @@ class UserController extends Controller
     {
         return [
             ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
+            ['icon' => 'fad fa-cog', 'name' => 'Configuración', 'url' => '/dashboard/settings'],
         ];
     }
 
@@ -123,9 +125,11 @@ class UserController extends Controller
             'user' => $request->user(),
             'role' => $role,
             'permissions' => $request->user()->permissions(),
-            'system' => $request->user()->systems()->first()->system,
             'routes' => $this->getRoutes($role),
         ];
+
+        $data['system'] = ($request->user()->hasSystem()) ? $request->user()->systems()->first()->system : 'Sistema completo';
+
         return response()->json($data);
     }
 
