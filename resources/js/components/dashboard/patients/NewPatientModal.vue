@@ -4,13 +4,16 @@
       <i class="fad fa-user-plus mr-2"></i>
       Nuevo paciente
     </mdb-btn>
-    <mdb-modal :show="modal"  size="lg" @close="modal = false">
+    <mdb-modal :show="modal" size="lg" @close="modal = false">
       <mdb-modal-header>
-        <mdb-modal-title>Registrar paciente</mdb-modal-title>
+        <mdb-modal-title>
+          <span v-if="step == 1">Registrar paciente</span>
+          <span v-else-if="step == 2">Registrar ingreso del paciente</span>
+        </mdb-modal-title>
       </mdb-modal-header>
       <mdb-modal-body class="text-left p-md-2 p-lg-4 p-xl-5">
         <!-- Form -->
-        <form method="POST" @submit.prevent="newPatient">
+        <form v-if="step == 1" method="POST" @submit.prevent="newPatient">
           
           <!-- Row -->
           <div class="row">
@@ -100,6 +103,12 @@
 
           <button class="btn btn-primary btn-block mt-4 mt-lg-5" type="submit">Cargar</button>
         </form>
+
+        <!-- Registrar ingreso de paciente -->
+        <form v-if="step == 2" method="POST" @submit.prevent="newEntry">
+
+        </form>
+
         <!-- Form -->
       </mdb-modal-body>
     </mdb-modal>
@@ -120,6 +129,7 @@
     data() {
       return {
         modal: false,
+        step: 1,
         name: '',
         lastname: '',
         dni: '',
@@ -130,6 +140,7 @@
         family_data: '',
         medical_ensurance_id: 0,
         medical_ensurances: '',
+        stored_patient: {},
       }
     },
     created () {
@@ -147,6 +158,10 @@
         this.medical_ensurance_id = 0;
       },
 
+
+      /**
+       * Guarda un paciente
+       */
       newPatient () {
         const path = '/api/patient/store'
         const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString()
@@ -171,6 +186,41 @@
           this.new_alert(res.data)
           if (res.data.status == 'success') {
             this.resetForm();
+            this.stored_patient = res.data.patient;
+            this.modal = false;
+            this.$emit('reload-patients');
+          }
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
+
+      newEntry () {
+        const path = '/api/patient/store'
+        const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString()
+
+        var formData = new FormData()
+        formData.append('name', this.name)
+        formData.append('lastname', this.lastname)
+        formData.append('dni', this.dni)
+        formData.append('address', this.address)
+        formData.append('phone', this.phone)
+        formData.append('birth_date', this.birth_date)
+        formData.append('personal_background', this.personal_background)
+        formData.append('family_data', this.family_data)
+        formData.append('medical_ensurance_id', this.medical_ensurance_id)
+
+        axios.post(path, formData, {
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': AuthStr,
+          }
+        }).then((res) => {
+          this.new_alert(res.data)
+          if (res.data.status == 'success') {
+            this.resetForm();
+            this.stored_patient = res.data.patient;
             this.modal = false;
             this.$emit('reload-patients');
           }
