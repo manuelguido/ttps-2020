@@ -3,7 +3,7 @@
 	<router-link to="/notifications" class="nav-item d-flex align-items-center mx-3 px-4 notification-badge waves-effect uns">
     <mdb-badge v-if="amount > 0" color="success" class="mr-1" style="border-radius: 50px;">{{amount}}</mdb-badge>
     <mdb-badge v-else color="default" class="mr-1">{{amount}}</mdb-badge>
-    <i class="fad fa-bell fa-lg"></i>
+    <i class="fas fa-bell fa-lg"></i>
 	</router-link>
 	<!-- /.Notifications -->
 </template>
@@ -44,10 +44,10 @@
 <style scoped>
 .notification-badge {
   border-radius: 8px;
-  color: #333;
+  color: #fff;
 }
-.notification-badge:hover {
-  background: rgba(0,0,0,.04);
-  cursor: pointer;
-}
+/* .notification-badge:hover { */
+  /* background: rgba(0,0,0,.04); */
+  /* cursor: pointer; */
+/* } */
 </style>

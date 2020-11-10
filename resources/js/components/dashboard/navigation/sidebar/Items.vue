@@ -32,16 +32,15 @@ export default {
 }
 
 .list-group {
-  padding: 0 1em;
+  padding: 0;
 }
 
 .item {
-  border-radius: 8px;
-  border-left: 2px solid rgba(255, 255, 255, 0);
+  border-left: 6px solid transparent;
   color: #5f6368;
   font-size: 18px;
   font-weight: 400;
-  padding: .6em .2em;
+  padding: 1em 1em;
   transition: 0.04s all !important;
   margin: 0 !important;
 }
@@ -52,9 +51,9 @@ export default {
 
 .item.router-link-active,
 .item.router-link-exact-active {
-  background: var(--black-alpha-03);
+  background: var(--black-alpha-06);
   color: var(--primary);
-  border-left: 4px solid var(--primary);
+  border-left: 6px solid var(--primary);
   /* box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.125); */
 }
 .item.router-link-active .icon,

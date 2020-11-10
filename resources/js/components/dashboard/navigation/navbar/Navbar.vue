@@ -1,11 +1,11 @@
 <template>
-  <mdb-navbar id="dashboard-navbar" color="white" light class="dashboard-navbar shadow-none py-3 py-lg-2 py-xl-3">
+  <mdb-navbar id="dashboard-navbar" color="white" light class="dashboard-navbar shadow-none py-3 py-lg-2 py-xl-3 px-4">
 
 		<!-- Brand -->
-    <router-link to="/" class="navbar-brand">
-			<span><i class="fad fa-star-of-life primary mr-2"></i></span>
-      <span class="primary w-600">SeCo</span>
-			<span class="primary">Dashboard</span>
+    <router-link to="/" class="navbar-brand brand">
+			<span><i class="fad fa-star-of-life mr-2"></i></span>
+      <span class="w-600">SeCo</span>
+			<span>Dashboard</span>
     </router-link>
 		<!-- /.Brand -->
 
@@ -78,7 +78,8 @@
 <style scoped>
 .dashboard-navbar {
 	z-index: 1040 !important;
-	border-bottom: 1px solid #eee;
+	background: var(--primary) !important;
+	/* border-bottom: 1px solid #eee; */
 }
 
 @media (max-width: 11992px) {
@@ -91,7 +92,7 @@
 
 .brand,
 .brand * {
-	color: var(--primary) !important;
+	color: #fff !important;
 }
 
 /* Buttons */
