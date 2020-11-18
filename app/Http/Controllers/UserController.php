@@ -153,6 +153,24 @@ class UserController extends Controller
     }
 
 
+    public function updateProfile(Request $request) {
+        try {
+            $user = $request->user();
+            $user->name = $request['name'];
+            $user->lastname = $request['lastname'];
+            $user->email = $request['email'];
+            $user->dni = $request['dni'];
+            $user->phone = $request['phone'];
+            $user->save();
+
+            $message = ['status' => 'success', 'message' => 'Actualizaste tu perfil', 'user' => $user];
+        } catch (\Exception $e) {
+            $message = ['status' => 'warning', 'message' => 'Ocurrió un error, vuelve a intentarlo más tarde'];
+        }
+
+        return response()->json($message, 200);
+    }
+
     /**
      * Almacena un médico
      */

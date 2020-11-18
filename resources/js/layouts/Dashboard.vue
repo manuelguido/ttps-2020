@@ -35,7 +35,7 @@ export default {
 		'navigation': navigation
   },
   created () {
-    this.inactivityTime(); 
+    // this.inactivityTime(); 
   },
   methods: {
     inactivityTime () {

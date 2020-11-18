@@ -1,10 +1,21 @@
 <template>
   <!-- Container -->
   <div class="container-fluid">
-    <!-- Title -->
-    <dashboard-title :text="title" full></dashboard-title>
     <!-- Row -->
     <div class="row">
+      <!-- Col -->
+      <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+        <span>
+          <dashboard-title :text="title" :margin="false"></dashboard-title>
+        </span>
+        <!-- Modal de carga de paciente -->
+        <span>
+          <modal @reload-patients="fetchPatients()"></modal>
+        </span>
+        <!-- /.Modal de carga de paciente -->
+      </div>
+      <!-- /.Col -->
+
       <!-- Col -->
       <div class="col-12">
         <div class="row d-flex align-items-center">
@@ -21,21 +32,6 @@
             </form>
           </div>
           <!-- /.Search form -->
-
-          <!-- Salas -->
-          <div class="col-12 col-lg-6 mb-4">
-            <select class="form-control">
-              <option>Sala G1</option>
-              <option>Sala G2</option>
-            </select>
-          </div>
-          <!-- /.Salas -->
-
-          <!-- Modal de carga de paciente -->
-          <div class="col-12 col-lg-6 mb-4 text-right">
-            <modal @reload-patients="fetchPatients()"></modal>
-          </div>
-          <!-- /.Modal de carga de paciente -->
 
         </div>
       </div>

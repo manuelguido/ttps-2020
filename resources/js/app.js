@@ -33,7 +33,7 @@ Vue.use(Waves);
 import VueProgressBar from 'vue-progressbar'
 
 const options = {
-  color: '#59b97a',
+  color: '#ccedd7',
   failedColor: '#1d252d',
   thickness: '3px',
   transition: {

@@ -1,41 +1,36 @@
 <template>
   <!-- Container -->
   <div class="container-fluid">
-    <!-- Title -->
-    <dashboard-title :text="title" full></dashboard-title>
     <!-- Row -->
     <div class="row">
       <!-- Col -->
-      <div class="col-12">
-        <div class="row d-flex align-items-center">
-
-          <!-- Search form -->
-          <div class="col-12 mb-4">
-            <form class="search-form mx-auto my-3 my-lg-1 shadow-sm">
-              <div class="input-group">
-                <input type="text" class="form-control" v-model="input_data" placeholder="Buscar médico: dni, nombre, apellido ..." aria-label="Buscar" aria-describedby="search-addon">
-                <div class="input-group-append">
-                  <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
-                </div>
-              </div>
-            </form>
-          </div>
-          <!-- /.Search form -->
-
-          <!-- Modal de carga de paciente -->
-          <div class="col-12 mb-4 text-right">
-            <modal @reload-medics="fetchMedics()"></modal>
-          </div>
-          <!-- /.Modal de carga de paciente -->
-
-        </div>
+      <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+        <span>
+          <dashboard-title :text="title" :margin="false"></dashboard-title>
+        </span>
+        <!-- Modal de carga de paciente -->
+        <span>
+          <modal @reload-medics="fetchMedics()"></modal>
+        </span>
+        <!-- /.Modal de carga de paciente -->
       </div>
       <!-- /.Col -->
-    </div>
-    <!-- /.Row -->
 
-    <!-- Row -->
-    <div class="row">
+      <!-- Col -->
+      <div class="col-12 mb-4">
+        <!-- Search form -->
+        <form class="search-form mx-auto my-3 my-lg-1 shadow-sm">
+          <div class="input-group">
+            <input type="text" class="form-control" v-model="input_data" placeholder="Buscar médico: dni, nombre, apellido ..." aria-label="Buscar" aria-describedby="search-addon">
+            <div class="input-group-append">
+              <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
+            </div>
+          </div>
+        </form>
+        <!-- /.Search form -->
+      </div>
+      <!-- /.Col -->
+
       <!-- Col -->
       <div class="col-12">
         <!-- Tabla de pacientes -->

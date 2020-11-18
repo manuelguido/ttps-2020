@@ -1,5 +1,5 @@
 <template>
-  <mdb-navbar id="dashboard-navbar" color="white" light class="dashboard-navbar shadow-none py-3 py-lg-2 py-xl-3 px-4">
+  <mdb-navbar id="dashboard-navbar" light class="dashboard-navbar shadow-sm py-3 py-lg-2 py-xl-3 px-4">
 
 		<!-- Brand -->
     <router-link to="/" class="navbar-brand brand">
@@ -79,7 +79,6 @@
 .dashboard-navbar {
 	z-index: 1040 !important;
 	background: var(--primary) !important;
-	/* border-bottom: 1px solid #eee; */
 }
 
 @media (max-width: 11992px) {
@@ -97,7 +96,7 @@
 
 /* Buttons */
 .btn-dropdown {
-	background: var(--black-alpha-03);
+	background: #fff;
 	box-shadow: none !important;
 	border-radius: 50px !important;
 }

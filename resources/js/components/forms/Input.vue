@@ -1,17 +1,20 @@
 <template>
-  <input
-    class="v-input mb-1"
-    v-bind:value="value"
-    v-on:input="$emit('input', $event.target.value)"
-    :type="type"
-    :placeholder="placeholder"
-    />
+  <div>
+    <label>{{label}}</label>
+    <input
+      class="v-input mb-1"
+      v-bind:value="value"
+      v-on:input="$emit('input', $event.target.value)"
+      :type="type"
+      :placeholder="placeholder"
+      />
+  </div>
     <!-- :class="['v-input [invalid ? 'is-invalid' : '']]" -->
 </template>
 
 <script>
 export default {
-  props: ['value', 'type', 'placeholder'],
+  props: ['value', 'type', 'placeholder', 'label'],
 }
 </script>
 
@@ -37,5 +40,10 @@ export default {
 
 .v-input::placeholder {
   color: #454545 !important;
+}
+
+label {
+  color: #aaa;
+  font-weight: 600;
 }
 </style>

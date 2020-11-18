@@ -16,6 +16,8 @@ Route::middleware('auth:api')->get('/user/system', 'UserController@system');
 Route::middleware('auth:api')->get('/user/routes', 'UserController@routes');
 // Retorna el usuario con el rol, sus rutas(de url) y su sistema correspondiente
 Route::middleware('auth:api')->get('/user/full', 'UserController@fullUser');
+// Actualizar el perfil de usuario
+Route::middleware('auth:api')->post('/user/profile/update', 'UserController@updateProfile');
 
 
 /**
