@@ -1,5 +1,5 @@
 <template>
-  <mdb-navbar id="dashboard-navbar" light class="dashboard-navbar shadow-sm py-3 py-lg-2 py-xl-3 px-4">
+  <mdb-navbar id="dashboard-navbar" light class="navbar fixed-top dashboard-navbar shadow-sm py-3 px-4">
 
 		<!-- Brand -->
     <router-link to="/" class="navbar-brand brand">
@@ -20,7 +20,7 @@
 
 				<!-- Dropdown de cuenta -->
 				<mdb-dropdown tag="li" class="nav-item mobile-hide uns" dropleft>
-          <mdb-dropdown-toggle tag="a" navLink class="btn btn-dropdown black-alpha-60" slot="toggle" waves-fixed><i class="fad fa-user-alt black-alpha-50 mx-2"></i></mdb-dropdown-toggle>
+          <mdb-dropdown-toggle tag="a" navLink class="btn btn-dropdown black-alpha-60 p-2" slot="toggle" waves-fixed><i class="fad fa-user-alt black-alpha-50 mx-1"></i></mdb-dropdown-toggle>
           <mdb-dropdown-menu>
 						<h6 class="dropdown-header text-left pl-2 black-alpha-60">Cuenta</h6>
 						<mdb-dropdown-item to="/profile">Perfil</mdb-dropdown-item>
@@ -79,14 +79,6 @@
 .dashboard-navbar {
 	z-index: 1040 !important;
 	background: var(--primary) !important;
-}
-
-@media (max-width: 11992px) {
-	.dashboard-navbar {
-		position: fixed !important;
-		width: 100vw;
-		box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-	}
 }
 
 .brand,

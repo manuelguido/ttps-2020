@@ -6,7 +6,7 @@
       <!-- Col -->
       <div class="col-12 col-lg-9">
         <!-- Card -->
-        <div class="card">
+        <div class="card c-card">
           <!-- Card body -->
           <div class="card-body p-md-4 p-lg-5">
             <!-- Row -->
@@ -140,7 +140,7 @@ export default {
     },
 
     /**
-     * Editar perfil de usuario
+     * Resetear la info del formulario
      */
     resetForm() {
       this.newUserData = { ... this.user};

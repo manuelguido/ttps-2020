@@ -178,7 +178,7 @@ th, td {
 }
 
 .card, .btn {
-  border-radius: 8px !important;
+  border-radius: 5px !important;
   overflow: hidden !important;
 }
 
@@ -221,4 +221,11 @@ input[type=number] {
  100%{
   opacity: 1;
  }
+}
+
+
+/* Custom card */
+.c-card {
+  border: 1px solid #ebeefb !important;
+  box-shadow: none !important;
 }

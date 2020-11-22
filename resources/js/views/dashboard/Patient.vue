@@ -101,7 +101,6 @@
 import { mdbListGroup, mdbListGroupItem } from 'mdbvue';
 import evolutionModal from '../../components/dashboard/patients/EvolutionModal';
 import changeSystemModal from '../../components/dashboard/patients/ChangeSystemModal';
-
 export default {
   name: 'Patient',
   props: ['patient_id'],
@@ -136,7 +135,6 @@ export default {
     fetchPatient () {
       const path = '/api/patient/show/' + this.patient_id;
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
-
       axios.get(path, {
         headers: {
           'Accept': 'application/json',
@@ -150,15 +148,12 @@ export default {
         console.log(err)
       })
     },
-
-
     /** 
      * Obtener sistemas.
      */
     fetchSystems () {
       const path = '/api/system/index';
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
-
       axios.get(path, {
         headers: {
           'Accept': 'application/json',
@@ -170,15 +165,12 @@ export default {
         console.log(err)
       });
     },
-
-
     /** 
      * Obtener hospitalizaciones.
      */
     fetchHospitalizations () {
       const path = '/api/patient/hospitalizations/' + this.patient_id;
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
-
       axios.get(path, {
         headers: {
           'Accept': 'application/json',
@@ -190,7 +182,6 @@ export default {
         console.log(err)
       });
     },
-
     /**
      * Hace el formato de DNI
      */
@@ -198,13 +189,11 @@ export default {
       let val = (this.patient.dni/1).toFixed(0).replace('.')
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
-
     place() {
       var aux_room = (this.patient.room != null) ? (', '+this.patient.room) : '';
       var aux_bed = (this.patient.bed_number != null) ? (', Cama '+ this.patient.bed_number) : '';
       return this.patient.system + aux_room + aux_bed;
     }
   }
-
 }
 </script>

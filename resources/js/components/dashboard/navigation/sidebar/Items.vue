@@ -41,7 +41,7 @@ export default {
   font-size: 18px;
   font-weight: 400;
   padding: 1em 1em;
-  transition: 0.04s all !important;
+  transition: .4s all !important;
   margin: 0 !important;
 }
 

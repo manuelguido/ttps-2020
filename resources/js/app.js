@@ -21,9 +21,9 @@ import assetMixin from './mixins/assetMixin';
 
 
 // Waves
-import Waves from 'vue-waves-effect';
-import 'vue-waves-effect/dist/vueWavesEffect.css';
-Vue.use(Waves);
+// import Waves from 'vue-waves-effect';
+// import 'vue-waves-effect/dist/vueWavesEffect.css';
+// Vue.use(Waves);
 
 
 

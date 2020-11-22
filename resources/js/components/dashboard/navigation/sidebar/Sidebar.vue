@@ -45,7 +45,7 @@ export default {
     left: 0;
     top: 0;
     z-index: 1030;
-    margin-top: 80px;
+    padding-top: 10vh !important;
     border-right: 1px solid #eee !important;
   }
 }

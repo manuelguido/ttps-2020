@@ -10,11 +10,8 @@
       <div class="row justify-content-center">
         <!-- Panel content -->
         <section class="panel-container py-5 px-0 px-md-1 px-lg-3 px-xl-4">
-          <!-- Rotative content -->
-          <!-- <section> -->
-            <!-- Router view -->
-            <router-view></router-view>
-          <!-- </section> -->
+          <!-- Router view -->
+          <router-view></router-view>
           <!-- /.Rotative content -->
         </section>
         <!-- /.Panel content -->

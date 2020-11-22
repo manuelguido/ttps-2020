@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-5">
+  <div :class="margin ? 'mb-5' : 'mb-0'">
     <span class="align-middle">
       <button v-on:click="goBack()" class="backlink btn shadow-none m-0 p-3">
         <i class="fad fa-chevron-left color-a my-0"></i>
@@ -19,6 +19,10 @@ export default {
     text: {
       type: String,
       default: 'Atrás',
+    },
+    margin: {
+      type: Boolean,
+      default: true,
     }
   },
   methods: {
@@ -35,7 +39,7 @@ export default {
 
 <style scoped>
 .backlink {
-  background: var(--primary-light);
+  background: #fff;
   color: var(--primary);
 }
 .backlink:hover {

@@ -68,7 +68,7 @@ export default {
 .nav-item.router-link-active,
 .nav-item.router-link-exact-active {
   background: rgba(255, 255, 255, .25);
-  color: var(--primary   );
+  color: var(--primary);
 }
 
 </style>

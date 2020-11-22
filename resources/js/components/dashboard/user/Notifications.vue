@@ -1,6 +1,6 @@
 <template>
   <mdb-list-group>
-    <mdb-list-group-item v-for="n in notifications" :key="n.alert_id" :class="{ 'seen' : n.seen }">
+    <mdb-list-group-item v-for="n in notifications" :key="n.alert_id" :class="['border-light', n.seen ? 'seen' : '' ]">
       <!-- Container -->
       <div class="container-fluid">
         <!-- Row -->
@@ -55,7 +55,7 @@ export default {
 
 <style scoped>
 .seen {
-  background-color: #eee !important;
+  background-color: #fcfcfc !important;
 }
 
 .action-button {
@@ -78,4 +78,7 @@ export default {
   margin: 0;
 }
 
+.border-light {
+  border-color:#ebeefb !important;
+}
 </style>
