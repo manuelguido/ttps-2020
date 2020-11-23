@@ -88,7 +88,6 @@ export default {
 
     fetchMedics () {
       const path = (this.system_id) ? '/api/medic/index/'+this.system_id : '/api/medic/index';
-      console.log('Busco en '+path);
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
 
       axios.get(path, {
@@ -101,6 +100,7 @@ export default {
         this.$Progress.finish();
         this.loading = false;
       }).catch((err) => {
+        this.errorHandler(err.response.status);
         console.log(err)
       });
     },
@@ -120,7 +120,8 @@ export default {
       }).then((res) => {
         this.loadSystem(res.data);
       }).catch((err) => {
-        console.log(err)
+        this.errorHandler(err.response.status);
+        console.log(err);
       });
     },
 

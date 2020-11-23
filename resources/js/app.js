@@ -15,16 +15,15 @@ import router from './router';
 import store from './store';
 
 
-// Mixins
+/**
+ * Mixins
+ */
+import errorHandlingMixin from './mixins/errorHandlingMixin';
 import alertMixin from './mixins/alertMixin';
 import assetMixin from './mixins/assetMixin';
-
-
-// Waves
-// import Waves from 'vue-waves-effect';
-// import 'vue-waves-effect/dist/vueWavesEffect.css';
-// Vue.use(Waves);
-
+Vue.mixin(errorHandlingMixin);
+Vue.mixin(alertMixin);
+Vue.mixin(assetMixin);
 
 
 /**
@@ -47,7 +46,6 @@ const options = {
 }
 
 Vue.use(VueProgressBar, options)
-
 
 // Vue moment para fechas
 import moment from 'moment'
@@ -72,11 +70,6 @@ Vue.filter('formatDateForm', function (value) {
   }
 })
 
-
-// Mixins
-Vue.mixin(alertMixin);
-Vue.mixin(assetMixin);
-
 /**----------------------------------
  * 
  * Componentes
@@ -94,7 +87,6 @@ Vue.component('navbar', require('./components/Navbar.vue').default);
  */
 // Backlink
 Vue.component('backlink', require('./components/BackLink.vue').default);
-
 
 
 /**
@@ -141,8 +133,7 @@ Vue.component('loading-overlay', require('./components/loading/Overlay.vue').def
 Vue.component('loading-dots', require('./components/loading/Dots.vue').default);
 
 
-
-// Loading Overlay
+// Tabla de datos
 Vue.component('data-table', require('./components/Table.vue').default);
 
 

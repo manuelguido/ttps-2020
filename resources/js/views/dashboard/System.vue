@@ -108,8 +108,6 @@ export default {
   methods: {
     calcBedPercentage() {
       this.bed_percentage = (((this.system.occupied_beds * 100) / this.system.total_beds).toFixed(1)) + '%';
-      // var current = data.toFixed(1);
-      //  = current + '%';
     },
     /**
      * Obtiene el sistema con sus habitaciones y camas
@@ -131,7 +129,8 @@ export default {
         this.calcBedPercentage();
         this.loading = false;
       }).catch((err) => {
-        console.log(err)
+        this.errorHandler(err.response.status);
+        console.log(err);
       })
     }
   }

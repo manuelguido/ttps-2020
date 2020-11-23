@@ -129,12 +129,12 @@ export default {
     this.fetchHospitalizations();
   },
   methods: {
-    /**
-     * Obtiene las obras sociales
-     */
+
+    // Obtener información del paciente.
     fetchPatient () {
       const path = '/api/patient/show/' + this.patient_id;
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
+
       axios.get(path, {
         headers: {
           'Accept': 'application/json',
@@ -145,15 +145,16 @@ export default {
         this.loading = false;
         this.$Progress.finish();
       }).catch((err) => {
-        console.log(err)
+        this.errorHandler(err.response.status);
+        console.log(err);
       })
     },
-    /** 
-     * Obtener sistemas.
-     */
+
+    // Obtener sistemas.
     fetchSystems () {
       const path = '/api/system/index';
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
+
       axios.get(path, {
         headers: {
           'Accept': 'application/json',
@@ -165,12 +166,12 @@ export default {
         console.log(err)
       });
     },
-    /** 
-     * Obtener hospitalizaciones.
-     */
+ 
+    // Obtener hospitalizaciones.
     fetchHospitalizations () {
       const path = '/api/patient/hospitalizations/' + this.patient_id;
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
+
       axios.get(path, {
         headers: {
           'Accept': 'application/json',
@@ -182,13 +183,13 @@ export default {
         console.log(err)
       });
     },
-    /**
-     * Hace el formato de DNI
-     */
+
+    // Hace el formato de DNI.
     dni() {
-      let val = (this.patient.dni/1).toFixed(0).replace('.')
-      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      return (this.patient.dni/1).toFixed(0).replace('.').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     },
+
+    // Fomatear el lugar donde se encuentra el paciente (Sistema, cama, sala).
     place() {
       var aux_room = (this.patient.room != null) ? (', '+this.patient.room) : '';
       var aux_bed = (this.patient.bed_number != null) ? (', Cama '+ this.patient.bed_number) : '';

@@ -127,7 +127,8 @@ export default {
         this.loading_patient = false;
         this.fetchMedics();
       }).catch((err) => {
-        console.log(err)
+        this.errorHandler(err.response.status);
+        console.log(err);
       })
     },
 
@@ -149,7 +150,8 @@ export default {
         this.loading_medics = false;
         this.$Progress.finish();
       }).catch((err) => {
-        console.log(err)
+        this.errorHandler(err.response.status);
+        console.log(err);
       })
     },
 
@@ -174,7 +176,8 @@ export default {
         }
         console.log(res)
       }).catch((err) => {
-        console.log(err)
+        this.errorHandler(err.response.status);
+        console.log(err);
       })
     },
 
@@ -197,7 +200,8 @@ export default {
         }
         console.log(res)
       }).catch((err) => {
-        console.log(err)
+        this.errorHandler(err.response.status);
+        console.log(err);
       })
     },
 
