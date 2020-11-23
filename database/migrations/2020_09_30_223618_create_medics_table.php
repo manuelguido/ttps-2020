@@ -14,7 +14,8 @@ class CreateMedicsTable extends Migration
     public function up()
     {
         Schema::create('medics', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->unique();
+            $table->bigIncrements('medic_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
         });
     }

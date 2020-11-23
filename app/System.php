@@ -33,7 +33,19 @@ class System extends Model
     public $timestamps = false;
 
     /**
-     * Retorna los usuarios del sistema
+     * Obtener las notificaciones del sistema.
+     * 
+     * @return App\Alert.
+     */
+    public function alerts()
+    {
+        return $this->hasMany('App\Alert');
+    }
+
+    /**
+     * Obtener los usuarios del sistema.
+     * 
+     * @return App\User.
      */
     public function users()
     {
@@ -41,7 +53,9 @@ class System extends Model
     }
 
     /**
-     * Retorna los pacientes del sistema
+     * Obtener los pacientes del sistema.
+     * 
+     * @return App\Patient.
      */
     public function patients()
     {
@@ -49,7 +63,9 @@ class System extends Model
     }
 
     /**
-     * Retorna las habitaciones del sistema
+     * Obtener las habitaciones del sistema.
+     * 
+     * @return App\Room.
      */
     public function rooms()
     {
@@ -57,86 +73,78 @@ class System extends Model
     }
 
     /**
-     * Retorna el total de salas del sistema
+     * Obtener el total de salas del sistema
+     * 
+     * @return Integer.
      */
     public function totalRooms()
     {
-        // Resultado de consulta
-        $result = DB::table('rooms')
-            ->where('system_id', '=', $this->system_id)
-            ->get();
-
-        // Retorna el resultado
-        return count($result);
+        return DB::table('rooms')->where('system_id', '=', $this->system_id)->get()->count();
     }
 
     /**
-     * Retorna el total de camas del sistema
+     * Obtener el total de camas del sistema
+     * 
+     * @return Integer.
      */
     public function totalBeds()
     {
-        // Resultado de consulta
-        $result = DB::table('rooms')
-            ->where('rooms.system_id', '=', $this->system_id)
-            ->join('beds', 'beds.room_id', '=', 'rooms.room_id')
-            ->get();
-
-        // Retorna el resultado
-        return count($result);
+        return DB::table('rooms')->where('rooms.system_id', '=', $this->system_id)->join('beds', 'beds.room_id', '=', 'rooms.room_id')->get()->count();
     }
 
     /**
-     * Retorna el total de habitaciones ocupadas del sistema
+     * Obtener el total de habitaciones ocupadas del sistema
+     * 
+     * @return Integer.
      */
     public function occupiedBeds()
     {
-        // Resultado de consulta
-        $result = DB::table('rooms')
+        return DB::table('rooms')
             ->where([
                 ['rooms.system_id', '=', $this->system_id],
                 ['beds.is_occupied', '=', true],
             ])
             ->join('beds', 'beds.room_id', '=', 'rooms.room_id')
-            ->get();
-
-        return count($result);
+            ->get()
+            ->count();
     }
 
     /**
-     * Retorna el total de habitaciones ocupadas del sistema
+     * Obtener el total de habitaciones ocupadas del sistema
+     * 
+     * @return Integer.
      */
     public function freeBeds()
     {
-        // Resultado de consulta
-        $result = DB::table('rooms')
+        return DB::table('rooms')
             ->where([
                 ['rooms.system_id', '=', $this->system_id],
                 ['beds.is_occupied', '=', false],
             ])
             ->join('beds', 'beds.room_id', '=', 'rooms.room_id')
-            ->get();
-
-        return count($result);
+            ->get()
+            ->count();
     }
 
-
-    
     /**
-     * Retorna si el sistema tiene camas disponibles
+     * Obtener si el sistema tiene camas disponibles
+     * 
+     * @return Boolean.
      */
     public function hasBeds()
     {
         return ($this->freeBeds() > 0);
     }
 
-
     /**
-     * Carga una nueva cama en el sistema (La siguiente disponible) 
+     * Cargar una nueva cama en el sistema (La siguiente disponible)
+     * 
+     * @return void.
      */
     public function ocuppyNewBed($patient_id)
     {
         $bed = Bed::where([
-            ['beds.is_occupied', '=', FALSE],
+            ['beds.is_occupied', '=', false],
             ['rooms.system_id', '=', $this->system_id]
             ])
             ->join('rooms', 'rooms.room_id', '=', 'beds.room_id')

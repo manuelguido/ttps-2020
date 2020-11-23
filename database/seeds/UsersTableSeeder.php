@@ -16,114 +16,152 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        $newUserList = [
+            [
+                'name' => 'Juan',
+                'lastname' => 'Perez',
+                'email' => 'admin1@gmail.com',
+                'role' => Role::ROLE_ADMIN,
+            ],
+            [
+                'name' => 'Ana',
+                'lastname' => 'Lopez',
+                'email' => 'admin2@gmail.com',
+                'role' => Role::ROLE_ADMIN,
+            ],
+            [
+                'name' => 'Juana',
+                'lastname' => 'Mendez',
+                'email' => 'medico1@gmail.com',
+                'role' => Role::ROLE_MEDIC,
+                'system' => System::SYSTEM_GUARD,
+            ],
+            [
+                'name' => 'Mirta',
+                'lastname' => 'Lopez',
+                'email' => 'medico2@gmail.com',
+                'role' => Role::ROLE_MEDIC,
+                'system' => System::SYSTEM_GUARD,
+            ],
+            [
+                'name' => 'Agustin',
+                'lastname' => 'Mendez',
+                'email' => 'medico3@gmail.com',
+                'role' => Role::ROLE_MEDIC,
+                'system' => System::SYSTEM_GUARD,
+            ],
+            [
+                'name' => 'Juan',
+                'lastname' => 'Gutierrez',
+                'email' => 'medico4@gmail.com',
+                'role' => Role::ROLE_MEDIC,
+                'system' => System::SYSTEM_COVID_FLOOR,
+            ],
+            [
+                'name' => 'Ana',
+                'lastname' => 'Gutierrez',
+                'email' => 'medico5@gmail.com',
+                'role' => Role::ROLE_MEDIC,
+                'system' => System::SYSTEM_UTI,
+            ],
+            [
+                'name' => 'Laura',
+                'lastname' => 'Mendez',
+                'email' => 'medico6@gmail.com',
+                'role' => Role::ROLE_MEDIC,
+                'system' => System::SYSTEM_UTI,
+            ],
+            [
+                'name' => 'Darío',
+                'lastname' => 'Benítez',
+                'email' => 'medico7@gmail.com',
+                'role' => Role::ROLE_MEDIC,
+                'system' => System::SYSTEM_UTI,
+            ],
+            [
+                'name' => 'Marcos',
+                'lastname' => 'Gonzalez',
+                'email' => 'medico8@gmail.com',
+                'role' => Role::ROLE_MEDIC,
+                'system' => System::SYSTEM_UTI,
+            ],
+            [
+                'name' => 'Mauro',
+                'lastname' => 'Boler',
+                'email' => 'medico9@gmail.com',
+                'role' => Role::ROLE_MEDIC,
+                'system' => System::SYSTEM_HOTEL,
+            ],
+            [
+                'name' => 'Denise',
+                'lastname' => 'Baston',
+                'email' => 'medico10@gmail.com',
+                'role' => Role::ROLE_MEDIC,
+                'system' => System::SYSTEM_HOME,
+            ],
+            [
+                'name' => 'María',
+                'lastname' => 'Lopez',
+                'email' => 'configurador@gmail.com',
+                'role' => Role::ROLE_RULE_SETTER,
+            ],
+            [
+                'name' => 'Grupo',
+                'lastname' => '7',
+                'email' => 'ttps2020.grupo7@gmail.com',
+                'role' => Role::ROLE_ADMIN,
+            ],
+            [
+                'name' => 'Juan',
+                'lastname' => 'Lopez',
+                'email' => 'jefe_guardia@gmail.com',
+                'role' => Role::ROLE_SYSTEM_CHIEF,
+                'system' => System::SYSTEM_GUARD,
+            ],
+            [
+                'name' => 'Maria',
+                'lastname' => 'Mendez',
+                'email' => 'jefe_piso_covid@gmail.com',
+                'role' => Role::ROLE_SYSTEM_CHIEF,
+                'system' => System::SYSTEM_COVID_FLOOR,
+            ],
+            [
+                'name' => 'Mirta',
+                'lastname' => 'Gutierrez',
+                'email' => 'jefe_uti@gmail.com',
+                'role' => Role::ROLE_SYSTEM_CHIEF,
+                'system' => System::SYSTEM_UTI,
+            ],
+            [
+                'name' => 'Nadia',
+                'lastname' => 'Lopez',
+                'email' => 'jefe_hotel@gmail.com',
+                'role' => Role::ROLE_SYSTEM_CHIEF,
+                'system' => System::SYSTEM_HOTEL,
+            ],
+            [
+                'name' => 'Carlos',
+                'lastname' => 'Perez',
+                'email' => 'jefe_domicilio@gmail.com',
+                'role' => Role::ROLE_SYSTEM_CHIEF,
+                'system' => System::SYSTEM_HOME,
+            ],
+        ];
+
         /**
-         * Nuevo usuario
+         * Creacion de usuarios
          */
-        function newUser($email, $password, $name, $lastname)
-        {
-            $user = new User;
-            $user->name = $name;
-            $user->lastname = $lastname;
-            $user->email = $email;
-            $user->phone = mt_rand(1000000, 99999999);
-            $user->dni = mt_rand(1000000, 99999999);
-            $user->password = bcrypt($password);
-            $user->save();
-            return $user;
+        foreach ($newUserList as $newUserData) {
+            $newUserData['password'] = 'ttpscovid';
+            $newUserData['phone'] = mt_rand(1000000, 99999999);
+            $newUserData['dni'] = mt_rand(1000000, 99999999);
+
+            $user = User::create($newUserData);
+            $user->setRole($newUserData['role']);
+            if ($newUserData['role'] == Role::ROLE_MEDIC || $newUserData['role'] == Role::ROLE_SYSTEM_CHIEF)
+            {
+                $user->setSystem($newUserData['system']);
+            }
         }
-
-        /**
-         * Creacion de administradores
-         */
-        $admin = newUser('admin1@gmail.com', 'password', 'Juan', 'Perez');
-        $admin->setRole(Role::ROLE_ADMIN);
-
-        $admin = newUser('admin2@gmail.com', 'password', 'Ana', 'Lopez');
-        $admin->setRole(Role::ROLE_ADMIN);
-
-
-        /**
-         * Creacion de médicos
-         */
-        $medic = newUser('medico1@gmail.com', 'password', 'Juana', 'Mendez');
-        $medic->setRole(Role::ROLE_MEDIC);
-        $medic->setSystem(System::SYSTEM_GUARD);
-
-        $medic = newUser('medico2@gmail.com', 'password', 'Mirta', 'López');
-        $medic->setRole(Role::ROLE_MEDIC);
-        $medic->setSystem(System::SYSTEM_GUARD);
-
-        $medic = newUser('medico3@gmail.com', 'password', 'Agustin', 'Mendez');
-        $medic->setRole(Role::ROLE_MEDIC);
-        $medic->setSystem(System::SYSTEM_GUARD);
-
-        $medic = newUser('medico4@gmail.com', 'password', 'Juan', 'Gutierrez');
-        $medic->setRole(Role::ROLE_MEDIC);
-        $medic->setSystem(System::SYSTEM_COVID_FLOOR);
-
-        $medic = newUser('medico5@gmail.com', 'password', 'Ana', 'Gutierrez');
-        $medic->setRole(Role::ROLE_MEDIC);
-        $medic->setSystem(System::SYSTEM_UTI);
-
-        $medic = newUser('medico6@gmail.com', 'password', 'Laura', 'Mendez');
-        $medic->setRole(Role::ROLE_MEDIC);
-        $medic->setSystem(System::SYSTEM_UTI);
-
-        $medic = newUser('medico7@gmail.com', 'password', 'Darío', 'Benítez');
-        $medic->setRole(Role::ROLE_MEDIC);
-        $medic->setSystem(System::SYSTEM_UTI);
-
-        $medic = newUser('medico8@gmail.com', 'password', 'Marcos', 'Gonzalez');
-        $medic->setRole(Role::ROLE_MEDIC);
-        $medic->setSystem(System::SYSTEM_UTI);
-
-        $medic = newUser('medico9@gmail.com', 'password', 'Mauro', 'Boler');
-        $medic->setRole(Role::ROLE_MEDIC);
-        $medic->setSystem(System::SYSTEM_HOTEL);
-
-        $medic = newUser('medico10@gmail.com', 'password', 'Denise', 'Baston');
-        $medic->setRole(Role::ROLE_MEDIC);
-        $medic->setSystem(System::SYSTEM_HOME);
-
-        
-        /**
-         * Creación de configurador de reglas
-         */
-        $rule_setter = newUser('configurador@gmail.com', 'password', 'María', 'Lopez');
-        $rule_setter->setRole(Role::ROLE_RULE_SETTER);
-
-        /**
-         * Creación de administrador con usuario de gmail para gooogle auth
-         */
-        $admin = newUser('ttps2020.grupo7@gmail.com', 'password', 'Grupo', '7');
-        $admin->setRole(Role::ROLE_ADMIN);
-
-        /**
-         * Creación de Jefes de sistema
-         */
-        // Creacion de jefe de sistema (Guardia)
-        $system_chief = newUser('jefe_guardia@gmail.com', 'password', 'Juan', 'Lopez');
-        $system_chief->setRole(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->setSystem(System::SYSTEM_GUARD);
-
-        // Creacion de jefe de sistema (Piso Covid)
-        $system_chief = newUser('jefe_piso_covid@gmail.com', 'password', 'Maria', 'Mendez');
-        $system_chief->setRole(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->setSystem(System::SYSTEM_COVID_FLOOR);
-        
-        // Creacion de jefe de sistema (UTI)
-        $system_chief = newUser('jefe_uti@gmail.com', 'password', 'Mirta', 'Gutierrez');
-        $system_chief->setRole(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->setSystem(System::SYSTEM_UTI);
-
-        // Creacion de jefe de sistema (Hotel)
-        $system_chief = newUser('jefe_hotel@gmail.com', 'password', 'Nadia', 'Lopez');
-        $system_chief->setRole(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->setSystem(System::SYSTEM_HOTEL);
-
-        // Creacion de jefe de sistema (Domicilio)
-        $system_chief = newUser('jefe_domicilio@gmail.com', 'password', 'Carlos', 'Perez');
-        $system_chief->setRole(Role::ROLE_SYSTEM_CHIEF);
-        $system_chief->setSystem(System::SYSTEM_HOME);
     }
 }

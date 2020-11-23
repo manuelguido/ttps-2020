@@ -28,8 +28,117 @@ class Patient extends Model
     public $timestamps = true;
 
     /**
+     * Obtener la cama del paciente.
+     * 
+     * @return App\Bed.
+     */
+    public function bed()
+    {
+        return $this->hasOne('App\Bed');
+    }
+
+    /**
+     * Obtener el estado del paciente.
+     * 
+     * @return App\PatientSate.
+     */
+    public function state()
+    {
+        return $this->belongsTo('App\PatientSate', 'patient_state_id');
+    }
+
+    /**
+     * Obtener la obra social del paciente.
+     * 
+     * @return App\MedicalEnsurance.
+     */
+    public function medicalEnsurance()
+    {
+        return $this->belongsTo('App\MedicalEnsurance');
+    }
+
+    /**
+     * Obtener el sistema en el que se encuentra el usuario.
+     * 
+     * @return App\System.
+     */
+    public function system()
+    {
+        return $this->belongsTo('App\System', 'system_id');
+    }
+
+    /**
+     * Obtener las entradas al hospital del paciente.
+     * 
+     * @return App\Emtry Collection.
+     */
+    public function entries()
+    {
+        return $this->hasMany('App\Entry');
+    }
+
+    /**
+     * Obtener los cambios de sistema del paciente.
+     * 
+     * @return App\SystemChange Collection.
+     */
+    public function systemChanges()
+    {
+        return $this->hasMany('App\SystemChange');
+    }
+
+    /**
+     * Obtener las notificaciones del paciente.
+     * 
+     * @return App\Alert.
+     */
+    public function alerts()
+    {
+        return $this->hasMany('App\Alert');
+    }
+
+    /**
+     * Obtener los pacientes asignados del médico.
+     * 
+     * @return App\Patient.
+     */
+    public function medics()
+    {
+        return $this->belongsToMany('App\Patient');
+    }
+
+    /**
+     * Obtener los pacientes asignados del médico.
+     * 
+     * @return App\Patient.
+     */
+    public function medicsFull()
+    {
+        return $this->medics()->join('users', 'users.user_id', '=', 'medics.user_id')->get();
+    }
+
+    /**
+     * Obtener los médicos posibles para que puedan ser asignados al paciente.
+     * Solo se obtienen los de su mismo sistema.
+     * 
+     * @return Object Collection.
+     */
+    public function posibleMedics()
+    {
+        return User::where('roles.role', '=', Role::ROLE_MEDIC)
+            ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
+            ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
+            ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
+            ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
+            ->whereNotIn('users.user_id', $this->medics()->toArray())
+            ->get();
+    }
+
+
+    /**
      * Obtener todos los pacientes.
      * 
+     * @return Object Collection.
      */
     public static function allFull()
     {
@@ -45,6 +154,7 @@ class Patient extends Model
     /**
      * Obtener los pacientes de un sistema específico.
      * 
+     * @return Object.
      */
     public static function allFullBySystem($system_id)
     {
@@ -59,6 +169,8 @@ class Patient extends Model
 
     /**
      * Obtener el paciente con toda su información externa a la entidad.
+     * 
+     * @return Object.
      */
     public static function full($patient_id)
     {
@@ -73,115 +185,19 @@ class Patient extends Model
     }
 
     /**
-     * Determina (true false) si el paciente con el DNI existe.
+     * Determina si el paciente con el DNI existe.
      * 
+     * @return Boolean.
      */
     public static function dniExists($dni)
     {
-        $result = Patient::where('dni', '=', $dni)->count();
-        return ($result > 0);
+        return (Patient::where('dni', '=', $dni)->count() > 0);
     }
-
-
-    /**
-     * Obtener la obra social del paciente.
-     * 
-     * 
-     */
-    public function medicalEnsurance()
-    {
-        return $this->belongsTo('App\MedicalEnsurance');
-    }
-
-
-    /**
-     * Obtener el sistema en el que se encuentra el usuario.
-     * 
-     */
-    public function system()
-    {
-        return $this->belongsTo('App\System', 'system_id');
-    }
-
-
-    /**
-     * Obtener el estado del paciente.
-     * 
-     */
-    public function state()
-    {
-        return $this->belongsTo('App\PatientSate', 'patient_state_id');
-    }
-
-
-    /**
-     * Obtener la cama del paciente.
-     * 
-     */
-    public function bed()
-    {
-        return $this->hasOne('App\Bed');
-    }
-
-
-    /**
-     * Obtener los médicos del paciente.
-     * 
-     */
-    public function medics()
-    {
-        return User::where([
-            ['patient_user.patient_id', '=', $this->patient_id],
-            ['roles.role', '=', Role::ROLE_MEDIC],
-            ])
-            ->join('patient_user', 'patient_user.user_id', '=', 'users.user_id')
-            ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
-            ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
-            ->select('users.*')
-            ->get();
-    }
-
-    /**
-     * Obtener los médicos asignables del paciente.
-     * SOLO LOS DE SU MISMO SISTEMA QUE NO TIENE ASIGNADOS AÜN.
-     * 
-     */
-    public function posibleMedics()
-    {
-        return User::where('roles.role', '=', Role::ROLE_MEDIC)
-            ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
-            ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
-            ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
-            ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
-            ->whereNotIn('users.user_id', $this->medics()->toArray())
-            ->get();
-        // return User::where([
-        //     ['roles.role', '=', Role::ROLE_MEDIC],
-        //     ])
-        //     ->join('patient_user', 'patient_user.user_id', '=', 'users.user_id')
-        //     ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
-        //     ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
-        //     ->select('users.*')
-        //     ->whereNotIn('users.user_id',
-        //         $this->medics()->toArray()
-        //     )
-        //     ->get();
-    }
-
-
-    /**
-     * Obtener los cambios de sistema del paciente.
-     * 
-     */
-    public function systemChanges()
-    {
-        return $this->hasMany('App\SystemChange');
-    }
-
 
     /**
      * Asentar el cambio de sistema.
      * 
+     * @return void.
      */
     public function storeSystemChange($old, $new, $user_id)
     {
@@ -195,13 +211,16 @@ class Patient extends Model
 
 
     /**
-     * Liberar la cama del paciente
+     * Liberar la cama del paciente.
+     * 
+     * @return void.
      */
     public function freeCurrentBed()
     {
-        $bed = Bed::where('patient_id', '=', $this->patient_id)->first();
+        $bed = Bed::where('patient_id', '=', $this->patient_id)->first(); //Obtener cama actual
 
-        if ($bed != NULL) {
+        if ($bed != NULL)
+        {
             $bed->is_occupied = False;
             $bed->patient_id = NULL;
             $bed->save();
@@ -210,27 +229,24 @@ class Patient extends Model
 
 
     /**
-     * Cambiar paciente de sistema
+     * Cambiar paciente de sistema.
+     * 
+     * @return void.
      */
     public function setNewSystemById($new_system_id)
     {
-        // Liberar la cama actual del sistema
-        $this->freeCurrentBed();
-        
-        // // Aumentar en 1 las camas del nuevo sistema
-        $system = System::find($new_system_id);
-
-        // Enviar al sistema que ocupe una nueva cama para este paciente
-        $system->ocuppyNewBed($this->patient_id);
-
-        // Acutalizo el id de sistema del paciente
-        $this->system_id = $new_system_id;
+        $this->freeCurrentBed(); // Liberar la cama actual del sistema
+        $system = System::find($new_system_id); // Obtener nuevo sistema
+        $system->ocuppyNewBed($this->patient_id); // Enviar al sistema que ocupe una nueva cama para este paciente
+        $this->system_id = $new_system_id; // Acutalizo el id de sistema del paciente 
         $this->save();
     }
 
 
     /**
-     * Chequea si el paciente tiene asignado a un medico por su ID
+     * Chequea si el paciente tiene asignado a un medico por el id de usuario del médico.
+     * 
+     * @return Boolean.
      */
     public function hasMedic($user_id)
     {
@@ -246,25 +262,23 @@ class Patient extends Model
 
 
     /**
-     * Añade un médico por su id
+     * Añade un médico por su id.
+     * 
+     * @return void.
      */
     public function addMedic($user_id)
     {
-        DB::table('patient_user')->insert([
-            'user_id' => $user_id,
-            'patient_id' => $this->patient_id,
-        ]);
+        DB::table('patient_user')->insert(['user_id' => $user_id, 'patient_id' => $this->patient_id]);
     }
 
 
     /**
-     * Añade un médico por su id
+     * Elimina a un médico por su id.
+     * 
+     * @return void.
      */
     public function removeMedic($user_id)
     {
-        DB::table('patient_user')->where([
-            'user_id' => $user_id,
-            'patient_id' => $this->patient_id,
-        ])->delete();
+        DB::table('patient_user')->where(['user_id' => $user_id, 'patient_id' => $this->patient_id])->delete();
     }
 }

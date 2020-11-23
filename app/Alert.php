@@ -19,8 +19,38 @@ class Alert extends Model
      * @var array
      */
     protected $fillable = [
-        'patient_id', 'user_id', 'seen',
+        'patient_id', 'user_id', 'user_id', 'seen',
     ];
 
     public $timestamps = true;
+
+    /**
+     * Obtener el usuario de la notificación.
+     * 
+     * @return App\User.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Obtener el paciente de la notificación.
+     * 
+     * @return App\Patient.
+     */
+    public function medics()
+    {
+        return $this->belongsTo('App\Patient');
+    }
+
+    /**
+     * Obtener el sistema de la notificación.
+     * 
+     * @return App\System.
+     */
+    public function system()
+    {
+        return $this->belongsTo('App\System');
+    }
 }

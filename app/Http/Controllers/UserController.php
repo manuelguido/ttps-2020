@@ -10,6 +10,8 @@ class UserController extends Controller
 {
     /**
      * Rutas del usuario administrador
+     * 
+     * @return Array.
      */
     private function adminRoutes()
     {
@@ -21,9 +23,10 @@ class UserController extends Controller
         ];
     }
 
-
     /**
      * Rutas del usuario jefe de sistema
+     * 
+     * @return Array.
      */
     private function systemChiefRoutes()
     {
@@ -35,9 +38,10 @@ class UserController extends Controller
         ];
     }
 
-
     /**
      * Rutas del usuario médico
+     * 
+     * @return Array.
      */
     private function medicRoutes()
     {
@@ -47,9 +51,10 @@ class UserController extends Controller
         ];
     }
 
-
     /**
      * Rutas del usuario configurador de reglas
+     * 
+     * @return Array.
      */
     private function ruleSetterRoutes()
     {
@@ -59,9 +64,10 @@ class UserController extends Controller
         ];
     }
 
-
     /**
-     * Determina las rutas del usuario y las retorna
+     * Determinar las rutas del usuario y las retorna.
+     * 
+     * @return Array.
      */    
     private function getRoutes($role)
     {
@@ -74,9 +80,10 @@ class UserController extends Controller
         }
     }
 
-
     /**
-     * Retorna las rutas del usuario en modo JSON para la la API
+     * Obtener las rutas del usuario.
+     * 
+     * @return JSON.
      */
     public function routes(Request $request)
     {
@@ -85,27 +92,30 @@ class UserController extends Controller
         return response()->json($data);
     }
 
-
     /**
      * Retorna el usuario
+     * 
+     * @return JSON.
      */
     public function user(Request $request)
     {
         return $request->user();
     }
 
-
     /**
      * Retorna el rol del usuario
+     * 
+     * @return JSON.
      */
     public function role(Request $request)
     {
         return $request->user()->roles()->first()->role;
     }
 
-
     /**
      * Retorna el sistema del usuario
+     * 
+     * @return JSON.
      */
     public function system(Request $request)
     {
@@ -114,7 +124,9 @@ class UserController extends Controller
 
 
     /**
-     * Retorna el usuario con el rol, sus rutas(de url) y su sistema correspondiente y sus permisos
+     * Obtener usuario loggeado con su rol, rutas(URL's) permitidas, su sistema correspondiente y sus permisos
+     * 
+     * @return JSON.
      */
     public function fullUser(Request $request)
     {
@@ -133,29 +145,25 @@ class UserController extends Controller
         return response()->json($data);
     }
 
-
-
     /**
-     * Retora todos los médicos
+     * Actualizar perfil de usuario
+     * 
+     * @return JSON.
      */
-    public function indexMedic()
-    {
-        return response()->json(User::medics());
-    }
-
-
-     /**
-     * Retora todos los médicos de un sistema
-     */
-    public function indexMedicBySystem($system_id)
-    {
-        return response()->json(User::medicsBySystem($system_id));
-    }
-
-
     public function updateProfile(Request $request) {
         try {
+            // Obtener usuario
             $user = $request->user();
+
+            // Chequear que el email no exista en el sistema
+            $newEmail = $request['email'];
+            $newEmailExists = User::getByEmail($request['email']);
+            if ($user->email != $newEmail && $newEmailExists) {
+                $message = ['status' => 'warning', 'message' => 'El email ya existe en el sistema.'];
+                return response()->json($message, 200);
+            }
+            
+            // Actualizar usuario
             $user->name = $request['name'];
             $user->lastname = $request['lastname'];
             $user->email = $request['email'];
@@ -170,39 +178,4 @@ class UserController extends Controller
 
         return response()->json($message, 200);
     }
-
-    /**
-     * Almacena un médico
-     */
-    public function store(Request $data)
-    {
-        // Rol try
-        // if (! $data->user()->hasPermission(Permission::MEDIC_STORE)) {
-        //     $message = ['status' => 'warning', 'message' => 'No tienes el permiso para realizar esta acción'];
-        //     return response()->json($message, 200);
-        // } else {
-        //     if (Medic::dniExists($data->dni)) {
-        //         $message = ['status' => 'warning', 'message' => 'El méidco con ese DNI ya existe en el sistema'];
-        //         return response()->json($message, 200);
-        //     }
-        //     // Information try
-        //     try {
-        //         // $this->validatePatient();
-        //         $medic = new User;
-
-        //         $store_data = $data;
-        //         // $store_data->system_id = System::where('system', '=', System::SYSTEM_GUARD)->first()->system_id;
-                
-        //         $this->save($medic, $store_data);
-
-        //         // Returning the view
-        //         $message = ['status' => 'success', 'message' => 'Paciente guardado'];
-        //     } catch (\Exception $e) {
-        //         $message = ['status' => 'warning', 'message' => $e->errorInfo[2]];
-        //     }
-
-        //     return response()->json($message, 200);
-        // }
-    }
-
 }

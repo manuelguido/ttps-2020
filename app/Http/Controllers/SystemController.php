@@ -8,7 +8,9 @@ use App\System;
 class SystemController extends Controller
 {
     /**
-     * Validación de id de systema
+     * Validación de id de sistema
+     * 
+     * @return Boolean.
      */
     private function validateId()
     {
@@ -18,7 +20,9 @@ class SystemController extends Controller
     }
 
     /**
-     * Retorna todos los sistemas
+     * Obtener todos los sistemas
+     * 
+     * @return JSON.
      */
     public function index()
     {
@@ -26,7 +30,9 @@ class SystemController extends Controller
     }
 
     /**
-     * Retorna un sistema con toda su información de camas y habitaciones
+     * Obtener un sistema con toda su información de camas y habitaciones
+     * 
+     * @return JSON.
      */
     private function getFullSystem($system)
     {

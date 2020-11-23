@@ -107,12 +107,10 @@ class PermissionsTableSeeder extends Seeder
         add_permission(Role::ROLE_MEDIC, Permission::PATIENT_UPDATE);
         add_permission(Role::ROLE_MEDIC, Permission::PATIENT_DESTROY);
 
-
         /**
          * Añadir a permisos CONFIGURADOR DE REGLAS
          */
         add_permission(Role::ROLE_RULE_SETTER, Permission::RULE_CRUD);
-
         add_permission(Role::ROLE_RULE_SETTER, Permission::SYSTEM_INDEX);
         add_permission(Role::ROLE_RULE_SETTER, Permission::SYSTEM_SHOW);
     }

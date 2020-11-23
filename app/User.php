@@ -51,36 +51,44 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function getByEmail($email)
+    public static function create($data)
     {
-        $user = User::where('email', '=', $email)->get();
-        
-        if (count($user) == 0) {
-            return false;
-        } else {
-            return $user->first();
-        }
+        $user = new User;
+        $user->name = $data['name'];
+        $user->lastname = $data['lastname'];
+        $user->email = $data['email'];
+        $user->phone = $data['phone'];
+        $user->dni = $data['dni'];
+        $user->password = bcrypt($data['password']);
+        $user->save();
+        return $user;
     }
 
     /**
      * Retorna el usuario correspondiente al médico
+     * 
+     * @return App\Medic.
      */
     public function medic()
     {
-        return $this->belongsTo('App\Medic', 'user_id', 'user_id')->get();
+        return $this->belongsTo('App\Medic');
     }
     
     /**
      * Retorna los roles del usuario
+     * 
+     * @return App\Role.
      */
     public function roles()
     {
-        return $this->belongsToMany('App\Role', 'role_user', 'user_id', 'role_id')->get();
+        return $this->belongsToMany('App\Role', 'role_user', 'user_id', 'role_id');
     }
 
 
     /**
      * Retorna los permisos del usuario
+     * 
+     * @return App\Permission.
      */
     public function permissions()
     {
@@ -94,36 +102,58 @@ class User extends Authenticatable
 
     /**
      * Retorna los sistemas en los que se encuentra el usuario
+     * 
+     * @return App\System.
      */
     public function systems()
     {
-        return $this->belongsToMany('App\System', 'system_user', 'user_id', 'system_id')->get();
+        return $this->belongsToMany('App\System', 'system_user', 'user_id', 'system_id');
     } 
 
 
     /**
      * Obtener los cambios de sistema que generó el usuario.
      * 
+     * @return App\SystemChange.
      */
     public function systemChanges()
     {
         return $this->hasMany('App\SystemChange');
     }
 
+    /**
+     * Obtener el usuario si ya existe, sino retornar falso.
+     * 
+     * @return App\User. Boolean.
+     */
+    public static function getByEmail($email)
+    {
+        $user = User::where('email', '=', $email)->get();
+        $userExists = (count($user) == 0); 
+        return $userExists ? false : $user->first();
+    }
 
     /**
      * Agregar un nuevo rol a un usuario.
      * 
+     * @return void.
      */
-    public function setRole($role)
+    public function setRole($roleName)
     {
-        // Get role_id
-        $role_id = Role::where('role', $role)->get()->first()->role_id;
-        // Saves the role
+        // Obtener objeto rol por su nombre
+        $role = Role::where('role', $roleName)->get()->first();
+        // Crear la relación en role_user
         DB::table('role_user')->insert([
             'user_id' => $this->user_id,
-            'role_id' => $role_id,
+            'role_id' => $role->role_id,
         ]);
+
+        if ($roleName == Role::ROLE_MEDIC)
+        {
+            $medic = new Medic;
+            $medic->user_id = $this->user_id;
+            $medic->save();
+        }
     }
 
     /**
@@ -188,37 +218,4 @@ class User extends Authenticatable
             'system_id' => $system_id,
         ]);
     }
-
-
-    /**
-     * Obtiene todos los médicos.
-     * 
-     */
-    public static function medics()
-    {
-        return User::where('roles.role', '=', Role::ROLE_MEDIC)
-            ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
-            ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
-            ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
-            ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
-            ->get();
-    }
-
-    /**
-     * Obtiene todos los médicos de un sistema
-     */
-    
-    public static function medicsBySystem($system_id)
-    {
-        return User::where([
-            ['roles.role', '=', Role::ROLE_MEDIC],
-            ['systems.system_id', '=', $system_id]
-            ])
-            ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
-            ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
-            ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
-            ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
-            ->get();
-    }
-
 }
