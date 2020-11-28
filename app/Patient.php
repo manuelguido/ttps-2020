@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\SystemChange;
+use Carbon\Carbon;
+use App\Medic;
 use App\User;
 use DB;
 
@@ -22,10 +24,26 @@ class Patient extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'lastname', 'address', 'phone', 'birth_date', 'personal_background', 'medical_ensurance_id', 'patient_state_id', 'system_id',
+        'name', 'lastname', 'address', 'phone', 'birth_date', 'personal_background', 'family_data',
+        'medical_ensurance_id', 'patient_state_id', 'system_id',
+        'email', 'contact_name', 'contact_lastname', 'contact_phone',
     ];
 
     public $timestamps = true;
+
+    /**
+     * Crear paciente
+     * 
+     * @return App\Patient;
+     */
+    public static function createPatient($data)
+    {
+        $patient = new Patient;
+        $patient->saveData($data);
+        $newEntry = $patient->addEntry();
+        $newEntry->addHospitalization(System::where('system', System::SYSTEM_GUARD)->first()->system_id);
+        return $patient;
+    }
 
     /**
      * Obtener la cama del paciente.
@@ -74,7 +92,8 @@ class Patient extends Model
      */
     public function entries()
     {
-        return $this->hasMany('App\Entry');
+        return Entry::where('patient_id', '=', $this->patient_id);
+        // return $this->hasMany('App\Entry', 'entry_id', 'patient_id');
     }
 
     /**
@@ -84,7 +103,7 @@ class Patient extends Model
      */
     public function systemChanges()
     {
-        return $this->hasMany('App\SystemChange');
+        return $this->hasMany('App\SystemChange', 'system_change_id', 'patient_id');
     }
 
     /**
@@ -104,7 +123,8 @@ class Patient extends Model
      */
     public function medics()
     {
-        return $this->belongsToMany('App\Patient');
+        return Medic::join('patient_medic', 'patient_medic.medic_id', '=', 'medics.medic_id')->where('patient_medic.patient_id', '=', $this->patient_id);
+        // return $this->belongsToMany('App\Medic', 'patient_medic', 'patient_id', 'medic_id');
     }
 
     /**
@@ -125,12 +145,10 @@ class Patient extends Model
      */
     public function posibleMedics()
     {
-        return User::where('roles.role', '=', Role::ROLE_MEDIC)
-            ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
-            ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
-            ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
-            ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
-            ->whereNotIn('users.user_id', $this->medics()->toArray())
+        return Medic::join('users', 'medics.user_id', '=', 'users.user_id')
+            // ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
+            // ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
+            // ->whereNotIn('users.user_id', $this->medics()->toArray())
             ->get();
     }
 
@@ -182,6 +200,73 @@ class Patient extends Model
             ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
             ->select('patients.*', 'systems.system', 'patient_states.*', 'medical_ensurances.*', 'rooms.room', 'beds.number AS bed_number')
             ->first();
+    }
+
+    public function lastEvolutions()
+    {
+        return Evolution::where('entries.patient_id', $this->patient_id)
+            ->join('hospitalizations', 'hospitalizations.hospitalization_id', '=', 'evolutions.hospitalization_id')
+            ->join('entries', 'entries.entry_id', '=', 'hospitalizations.entry_id')
+            ->orderBy('evolutions.date', 'DESC')
+            ->select('evolutions.*')
+            ->limit(8)
+            ->get();
+    }
+
+    /**
+     * Actualizar información de un paciente
+     * 
+     * @return void.
+     */
+    public function updateData($data)
+    {
+        $this->saveData($data);
+    }
+
+    /**
+     * Actualizar información de un paciente
+     * 
+     * @return void.
+     */
+    private function saveData($data)
+    {
+        $this->name = $data->name;
+        $this->lastname = $data->lastname;
+        $this->dni = $data->dni;
+        $this->address = $data->address;
+        $this->phone = $data->phone;
+        $this->birth_date = $data->birth_date;
+        $this->patient_state_id = $data->patient_state_id;
+        $this->system_id = $data->system_id;
+        $this->personal_background = $data->personal_background;
+        $this->family_data = $data->family_data;
+        $this->medical_ensurance_id = $data->medical_ensurance_id;
+        $this->save();
+    }
+
+    /**
+     * Añadir una entrada del paciente al hospital.
+     * El conjuto de entradas es la historia clinica del paciente.
+     * La entrada tiene hospitalizaciones.
+     * Las hospitalizaciones tienen las evoluciones.
+     * 
+     * @return App\Entry.
+     */
+    public function addEntry($data)
+    {
+        $entry = new Entry;
+        $entry->patient_id = $this->patient_id;
+        $entry->date = Carbon::now('America/Argentina/Buenos_Aires');
+        $entry->time = Carbon::now('America/Argentina/Buenos_Aires');
+        $entry->actual_disease = $data['actual_disease'];
+        $entry->date_of_symptoms = $data['date_of_symptoms'];
+        $entry->date_of_diagnosis = $data['date_of_diagnosis'];
+        $entry->date_of_admission = $data['date_of_admission'];
+        $entry->date_of_death = $data['date_of_death'];
+        $entry->date_of_exit = $data['date_of_exit'];
+
+        $entry->save();
+        return $entry;
     }
 
     /**
@@ -248,13 +333,12 @@ class Patient extends Model
      * 
      * @return Boolean.
      */
-    public function hasMedic($user_id)
+    public function hasMedic($medic_id)
     {
-        $result = User::where([
-            ['patient_user.user_id', '=', $user_id],
-            ['patient_user.patient_id', '=', $this->patient_id]
+        $result = DB::table('patient_medic')->where([
+            ['medic_id', '=', $medic_id],
+            ['patient_id', '=', $this->patient_id]
             ])
-            ->join('patient_user', 'patient_user.user_id', '=', 'users.user_id')
             ->count();
 
         return ($result > 0);
@@ -266,9 +350,9 @@ class Patient extends Model
      * 
      * @return void.
      */
-    public function addMedic($user_id)
+    public function addMedic($medic_id)
     {
-        DB::table('patient_user')->insert(['user_id' => $user_id, 'patient_id' => $this->patient_id]);
+        DB::table('patient_medic')->insert(['medic_id' => $medic_id, 'patient_id' => $this->patient_id]);
     }
 
 
@@ -277,8 +361,22 @@ class Patient extends Model
      * 
      * @return void.
      */
-    public function removeMedic($user_id)
+    public function removeMedic($medic_id)
     {
-        DB::table('patient_user')->where(['user_id' => $user_id, 'patient_id' => $this->patient_id])->delete();
+        DB::table('patient_medic')->where(['medic_id' => $medic_id, 'patient_id' => $this->patient_id])->delete();
+    }
+
+    /**
+     * Obtener la hospitalización actual del paciente.
+     * 
+     * @return App\Hospitalization.
+     */
+    public function currentHospitalization()
+    {
+        return Hospitalization::where('entries.patient_id', '=', $this->patient_id)
+            ->join('entries', 'entries.entry_id', '=', 'hospitalizations.entry_id')
+            ->orderBy('hospitalizations.hospitalization_id', 'DESC')
+            ->select('hospitalizations.*')
+            ->first();
     }
 }
