@@ -37,6 +37,9 @@ export default {
       })
     },
 
+    /**
+     * Almacenar información de usuario localmente
+     */
     storeUser (data) {
       localStorage.setItem('user', JSON.stringify(data.user));
       localStorage.setItem('role', JSON.stringify(data.role));
@@ -49,7 +52,10 @@ export default {
      * Redirecciona al dashboard
      */
     redirect () {
-      this.$router.push({ name: "dashboard" });
+      if (localStorage.routes) {
+        const route = JSON.parse(localStorage.getItem('routes'))[0].url;
+        this.$router.push({ path: route });
+      }
     },
   }
 }

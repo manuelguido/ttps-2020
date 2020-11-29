@@ -1,23 +1,25 @@
 // Dashboard
-import dashboard from '../layouts/Dashboard'
+import dashboard from '../layouts/Dashboard';
 // Home
-import home from '.././views/dashboard/Home'
+import home from '.././views/dashboard/Home';
 // reportes
 // import reports from '.././views/dashboard/Reports'
 // Pacientes
-import patients from '.././views/dashboard/Patients'
+import patients from '.././views/dashboard/Patients';
 // Paciente
-import patient from '.././views/dashboard/Patient'
+import patient from '.././views/dashboard/Patient';
 // Asignación de medicos a pacientes
-import patientAssigment from '.././views/dashboard/PatientAssigment'
+import patientAssigment from '.././views/dashboard/PatientAssigment';
 // Medicos
-import medics from '.././views/dashboard/Medics'
+import medics from '.././views/dashboard/Medics';
 // Systems
-import systems from '.././views/dashboard/Systems'
+import systems from '.././views/dashboard/Systems';
 // Systems
-import system from '.././views/dashboard/System'
+import system from '.././views/dashboard/System';
+// Settings
+import settingsComponent from '.././views/dashboard/Settings';
 // Data Load
-import dataLoad from '.././views/auth/DataLoad'
+import dataLoad from '.././views/auth/DataLoad';
 
 const routes = [
   /**
@@ -158,6 +160,14 @@ const routes = [
         name: 'system',
         component: system,
         props: true,
+      },
+      /**
+       * Reportes
+       */
+      {
+        path: '/dashboard/settings',
+        name: 'Settings',
+        component: settingsComponent
       },
     ]
   },

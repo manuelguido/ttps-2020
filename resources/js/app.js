@@ -96,6 +96,8 @@ Vue.component('backlink', require('./components/BackLink.vue').default);
 Vue.component('v-input', require('./components/forms/Input.vue').default);
 // Search Input
 Vue.component('search-input', require('./components/forms/SearchInput.vue').default);
+// Input
+Vue.component('switcher', require('./components/forms/Switcher.vue').default);
 
 
 /**

@@ -10,7 +10,7 @@
   --primary: #59b97a !important;
   --primary-light: #e4f3de !important;
 
-  --success: #a3f858 !important;
+  --success: rgb(38, 222, 129) !important;
   --error: #ff7b82 !important;
   --warning: #ffe22e !important;
   
@@ -34,14 +34,26 @@
 
 /* Buttons */
 .btn {
-  border-radius: 4px !important;
+  border-radius: 5px !important;
   font-size: 1em !important;
   font-weight: 400 !important;
   padding-left: 1.1rem !important;
   padding-right: 1.1rem !important;
   text-transform: none !important;
+  box-shadow: 0 2px .225em rgba(0,0,0,.05);
+  transition: 0s all !important;
+}
+.btn:hover {
+  box-shadow: 0 5px .5em rgba(0,0,0,.2);
 }
 
+.button-success {
+  background: var(--success);
+  color: #fff;
+}
+.button-success:hover {
+  color: #fff;
+}
 
 /* Genericos */
 .shadow-none {

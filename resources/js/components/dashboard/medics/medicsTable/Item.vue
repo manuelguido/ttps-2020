@@ -5,7 +5,7 @@
     <td>{{medic.system}}</td>
     <td>{{medic.email}}</td>
     <td>{{medic.phone}}</td>
-    <td class="text-lg-right">
+    <td class="text-lg-right py-1">
       <change-system-modal :medic="medic" :systems="systems" @reload-medics="reloadMedics()"></change-system-modal>
     </td>
   </tr>

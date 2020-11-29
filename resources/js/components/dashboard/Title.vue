@@ -31,5 +31,6 @@ export default {
   font-size: 1.45em;
   font-weight: 400;
   color: #676767;
+  /* color: var(--primary); */
 }
 </style>

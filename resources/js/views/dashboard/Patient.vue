@@ -6,7 +6,7 @@
       <!-- Col -->
       <div class="col-12 col-lg-10">
         <!-- Card -->
-        <div class="card">
+        <div class="card c-card">
           <!-- Card Body -->
           <div class="card-body p-md-4 p-lg-5">
             <!-- Title -->
@@ -33,7 +33,7 @@
               <!-- Información -->
               <div class="col-12">
                 <info-data data="DNI" :value="dni()"></info-data>
-                <info-data data="Teléfono" :value="patient.phone"></info-data>
+                <info-data data="Teléfono" :value="(patient.phone).toString()"></info-data>
                 <info-data data="Fecha de nacimiento" :value="patient.birth_date | formatDateFull"></info-data>
                 <info-data data="Antecedentes personales" :value="patient.personal_background"></info-data>
                 <info-data data="Información familiar" :value="patient.family_data"></info-data>
@@ -48,38 +48,18 @@
                 <hr>
               </div>
 
-              <!-- Hospitalizaciones -->
-              <div class="col-12 d-flex justify-content-between mb-4">
-                <p class="h4-responsive">
-                  <span class="black-alpha-50">Hospitalizaciones</span>
-                </p>
-                <span>
-                  <evolution-modal></evolution-modal>
-                </span>
-              </div>
-              <!-- /.Hospitalizaciones -->
-
               <!-- Hospitalizaciones (Listado) -->
               <!-- Son cambios de sistema + evoluciones -->
               <div class="col-12 mb-3">
-                <mdb-list-group class="list shadow-sm">
-                  <mdb-list-group-item v-for="h in hospitalizations" :key="h.created_at" class="d-flex justify-content-between align-items-center">
-                    
-                    <!-- Cambio de sistema -->
-                    <span v-if="h.system_change_id" class="d-flex flex-column">
-                      <span class="black-alhpa-50">{{h.created_at | formatDate}}</span>
-                      <span>Cambio de sistema {{h.old_system}} a {{h.new_system}}.</span>
-                    </span>
-                    <!-- Cambio de sistema -->
-
-                    <!-- Evolución -->
-                    <span v-else>
-                      {{h.created_at}}
-                    </span>
-                    <!-- /.Evolución -->
-
-                  </mdb-list-group-item>
-                </mdb-list-group>
+                <clinic-data
+                  @reload-data="fetchClinicData()"
+                  :patient_id="patient_id"
+                  :clinicData="clinicData"
+                  :lastEvolutions="lastEvolutions">
+                </clinic-data>
+                <!-- <mdb-list-group class="list shadow-sm">
+                  {{clinicData}}
+                </mdb-list-group> -->
               </div>
               <!-- /.Hospitalizaciones -->
 
@@ -99,34 +79,32 @@
 
 <script>
 import { mdbListGroup, mdbListGroupItem } from 'mdbvue';
-import evolutionModal from '../../components/dashboard/patients/EvolutionModal';
+import ClinicData from '../../components/dashboard/patients/ClinicData.vue';
 import changeSystemModal from '../../components/dashboard/patients/ChangeSystemModal';
+
 export default {
   name: 'Patient',
   props: ['patient_id'],
   components: {
     mdbListGroup,
     mdbListGroupItem,
-    'evolution-modal': evolutionModal,
-    'change-system-modal': changeSystemModal
+    'change-system-modal': changeSystemModal,
+    'clinic-data': ClinicData,
   },
   data () {
     return {
       patient: {},
       systems: [],
       loading: true,
-      /**
-       * Type 1 es cambio de sistema
-       * Type 2 es evolución
-       */
-      hospitalizations: []
+      clinicData: [],
+      lastEvolutions: [],
     }
   },
   created () {
     this.$Progress.start();
     this.fetchPatient();
     this.fetchSystems();
-    this.fetchHospitalizations();
+    this.fetchClinicData();
   },
   methods: {
 
@@ -168,8 +146,8 @@ export default {
     },
  
     // Obtener hospitalizaciones.
-    fetchHospitalizations () {
-      const path = '/api/patient/hospitalizations/' + this.patient_id;
+    fetchClinicData () {
+      const path = '/api/patient/clinic_data/' + this.patient_id;
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
 
       axios.get(path, {
@@ -178,7 +156,8 @@ export default {
           'Authorization': AuthStr
         }
       }).then((res) => {
-        this.hospitalizations = res.data;
+        this.clinicData = res.data.clinicData;
+        this.lastEvolutions = res.data.lastEvolutions;
       }).catch((err) => {
         console.log(err)
       });
@@ -186,7 +165,7 @@ export default {
 
     // Hace el formato de DNI.
     dni() {
-      return (this.patient.dni/1).toFixed(0).replace('.').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+      return (this.patient.dni/1).toFixed(0).replace('.').toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
 
     // Fomatear el lugar donde se encuentra el paciente (Sistema, cama, sala).
@@ -194,7 +173,7 @@ export default {
       var aux_room = (this.patient.room != null) ? (', '+this.patient.room) : '';
       var aux_bed = (this.patient.bed_number != null) ? (', Cama '+ this.patient.bed_number) : '';
       return this.patient.system + aux_room + aux_bed;
-    }
+    },
   }
 }
 </script>
