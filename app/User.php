@@ -188,10 +188,12 @@ class User extends Authenticatable
      */
     public function hasRole($role)
     {
-        $result = Role::where([['roles.role', '=', $role],['role_user.user_id', '=', $this->id]])
+        $result = Role::where([
+                ['roles.role', '=', $role],
+                ['role_user.user_id', '=', $this->user_id],
+            ])
             ->join('role_user', 'role_user.role_id', '=', 'roles.role_id')
             ->count();
-        
         return ($result > 0);
     }
 

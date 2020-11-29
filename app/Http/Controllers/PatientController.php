@@ -9,6 +9,7 @@ use App\Permission;
 use App\Patient;
 use App\System;
 use App\Role;
+use App\User;
 
 class PatientController extends Controller
 {
@@ -32,11 +33,34 @@ class PatientController extends Controller
     }
 
     /**
-     * Retorna los pacientes
+     * Obtener todos los pacientes.
+     * 
+     * @return JSON.
      */
     public function index()
     {
         return response()->json(Patient::allFull());
+    }
+
+    /**
+     * Obtener todos los pacientes asignados al usuario médico o jefe de sistema.
+     * 
+     * @return JSON.
+     */
+    public function indexAssigned(Request $request)
+    {
+        $user = User::find($request->user()->user_id);        
+        $data = [];
+        if ($user->hasRole(Role::ROLE_MEDIC))
+        {
+            $data = $user->medic()->get()->patients()->get();
+        }
+        else if ($user->hasRole(Role::ROLE_SYSTEM_CHIEF))
+        {
+            $system_id = $user->systems()->first()->system_id;
+            $data = Patient::allFullBySystem($system_id);
+        }
+        return response()->json($data);
     }
 
     /**

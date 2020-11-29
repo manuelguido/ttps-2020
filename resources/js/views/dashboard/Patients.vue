@@ -70,22 +70,15 @@ export default {
   },
   data () {
     return {
-      title: '',
+      title: 'Pacientes',
       loading: true,
       patients: [],
       input_data: '',
-      system: null,
     }
   },
   created () {
     this.$Progress.start();
     this.fetchPatients();
-
-    if (this.system_id) {
-      this.fetchSystem();
-    } else {
-      this.title = "Pacientes";
-    }
   },
   methods: {
     loadPatients (data) {
@@ -97,8 +90,7 @@ export default {
     },
 
     fetchPatients () {
-      const path = (this.system_id) ? '/api/patient/index/'+this.system_id : '/api/patient/index';
-      console.log('Busco en '+path);
+      const path = '/api/patient/assigned/index';
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
 
       axios.get(path, {
@@ -108,36 +100,13 @@ export default {
         }
       }).then((res) => {
         this.loadPatients(res.data);
+        console.log(res.data);
         this.$Progress.finish();
         this.loading = false;
       }).catch((err) => {
         this.errorHandler(err.response.status);
         console.log(err);
       });
-    },
-
-    fetchSystem () {
-     const path = '/api/system/full';
-      const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
-
-      axios.get(path, {
-        params: {
-          system_id: this.system_id,
-        },
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': AuthStr
-        }
-      }).then((res) => {
-        this.loadSystem(res.data);
-      }).catch((err) => {
-        console.log(err);
-      });
-    },
-
-    loadSystem (data) {
-      this.system = data;
-      this.title = 'Pacientes de '+this.system.system;
     },
 
     matchData (value) {

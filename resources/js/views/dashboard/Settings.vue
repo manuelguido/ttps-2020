@@ -23,8 +23,6 @@
               
                 <p>1) Texto cuando el paciente tiene somnolencia</p>
                 
-
-                
               </form>
               <!-- /.Col -->
             </div>
