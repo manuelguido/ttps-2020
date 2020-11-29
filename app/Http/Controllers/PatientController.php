@@ -15,13 +15,19 @@ class PatientController extends Controller
     /**
      * Validación de datos de paciente
      */
-    private function validatePatient()
+    private function validatePatient($data)
     {
-        return request()->validate([
+        $this->validate($data, [
             'name' => 'required|string|max:255',
-            'desc' => 'sometimes|string',
-            'image' => 'required|file|image|mimes:jpeg,png,gif,jpg,webp',
-            'icon' => 'required|file|image|mimes:jpeg,png,gif,jpg,webp',
+            'lastname' => 'required|string|max:255',
+            'address' => 'sometimes|string|max:255',
+            'phone' => 'required|integer',
+            'birth_date' => 'required|date',
+            'personal_background' => 'string|nullable',
+            'family_data' => 'string|nullable',
+            'medical_ensurance_id' => 'required|integer|min:1',
+            'patient_state_id' => 'integer|min:1',
+            'system_id' => 'integer|min:1',
         ]);
     }
 
@@ -74,15 +80,8 @@ class PatientController extends Controller
      */
     public function store(Request $data)
     {
-        $guard = System::where('system', '=', System::SYSTEM_GUARD)->first();
-
-        // Chequeo que tenga permiso
-        if (! $data->user()->hasPermission(Permission::PATIENT_STORE))
-        {
-            $message = ['status' => 'warning', 'message' => 'No tienes el permiso para realizar esta acción'];
-        }
-        // Chqueo que haya camas en la guardia
-        else if (! $guard->hasBeds())
+        // Chequeo de camas disponibles
+        if (! System::where('system', '=', System::SYSTEM_GUARD)->first()->hasBeds())
         {
             $message = ['status' => 'warning', 'message' => 'No hay camas disponibles en guardia'];
         }
@@ -94,30 +93,26 @@ class PatientController extends Controller
         else
         {
             // Information try
-            try {
+            // try {
                 // Validación de paciente
-                // $this->validatePatient();
-                
+                $this->validatePatient($data);
                 // Nuevo paciente
-                $patient = new Patient;
-
+                // $patient = new Patient;
                 // // Almacenamiento de información
                 $store_data = $data;
                 $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
-                $store_data->system_id = System::where('system', '=', System::SYSTEM_GUARD)->first()->system_id;
+                $store_data->system_id = System::find(1)->system_id;
                 
-                $this->save($patient, $store_data);
-
+                $patient = Patient::createPatient($store_data);
                 $patient->setNewSystemById($store_data->system_id);
-                $patient->save();
 
                 // Returning the view
-                $message = ['status' => 'success', 'message' => 'Paciente guardado'];
-            }
-            catch (\Exception $e)
-            {
-                $message = ['status' => 'warning', 'message' => $e->errorInfo[2]];
-            }
+                $message = ['status' => 'success', 'message' => 'Paciente guardado.'];
+            // }
+            // catch (\Exception $e)
+            // {
+                // $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
+            // }
         }
         return response()->json($message, 200);
     }
@@ -212,7 +207,7 @@ class PatientController extends Controller
         $patient = Patient::find($patient_id);
         
         return response()->json([
-            'medics' => $patient->medics(),
+            'medics' => $patient->medicsFull(),
             'posible_medics' => $patient->posibleMedics(),
         ]);
     }
@@ -223,14 +218,15 @@ class PatientController extends Controller
      */
     public function addMedic(Request $data)
     {
-        $patient = Patient::find($data->patient_id); 
-        if ($patient->hasMedic($data->user_id))
+        $patient = Patient::find($data->patient_id);
+
+        if ($patient->hasMedic($data->medic_id))
         {
             $message = ['status' => 'warning', 'message' => 'El paciente ya tiene asignado al médico.'];
         }
         else
         {
-            $patient->addMedic($data->user_id);
+            $patient->addMedic($data->medic_id);
 
             // Returning the view
             $message = ['status' => 'success', 'message' => 'Medico asignado con éxito'];
@@ -244,14 +240,15 @@ class PatientController extends Controller
      */
     public function removeMedic(Request $data)
     {
-        $patient = Patient::find($data->patient_id); 
-        if (! $patient->hasMedic($data->user_id))
+        $patient = Patient::find($data->patient_id);
+
+        if (! $patient->hasMedic($data->medic_id))
         {
             $message = ['status' => 'warning', 'message' => 'El paciente no tiene asignado al médico.'];
         }
         else
         {
-            $patient->removeMedic($data->user_id);
+            $patient->removeMedic($data->medic_id);
 
             // Returning the view
             $message = ['status' => 'success', 'message' => 'El médico ya no está asignado al paciente.'];
@@ -264,8 +261,30 @@ class PatientController extends Controller
         /**
      * Retorna los medicos asignados al paciente y los posibles médicos a asignar
      */
-    public function hospitalizations($patient_id)
+    public function clinicData($patient_id)
     {
-        return response()->json(SystemChange::where('patient_id', '=', $patient_id)->orderBy('created_at', 'DESC')->get());
+        $patient = Patient::find($patient_id); // Obtener paciente
+        
+        $clinicData = []; // Inicializar para la información completa del paciente
+
+        $entries = $patient->entries()->orderBy('date', 'DESC')->get(); // Obtener entradas al hospital
+
+        foreach ($entries as $entry) { // Para cada entrada obtener las hospitalizaciones
+            
+            $hospitalizations = $entry->hospitalizations()->join('systems', 'systems.system_id', '=','hospitalizations.system_id')->orderBy('date_of_admission', 'DESC')->get();
+
+            foreach ($hospitalizations as $hospitalization) { // Para cada entrada obtener las hospitalizaciones
+                $hospitalization['evolutions'] = $hospitalization->evolutions()->orderBy('date', 'DESC')->get();
+            }
+
+            $completeEntry = $entry;
+            $completeEntry['hospitalizations'] = $hospitalizations;
+            array_push($clinicData, $completeEntry);
+        }
+
+        return response()->json([
+            'clinicData' => $clinicData,
+            'lastEvolutions' => $patient->lastEvolutions(),
+            ]);
     }
 }

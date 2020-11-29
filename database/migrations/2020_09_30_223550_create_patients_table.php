@@ -19,8 +19,8 @@ class CreatePatientsTable extends Migration
             $table->string('name');
             $table->string('lastname');
             $table->string('address');
-            $table->integer('phone');
-            $table->integer('dni')->unique();
+            $table->bigInteger('phone');
+            $table->bigInteger('dni')->unique();
             $table->date('birth_date');
             $table->mediumText('personal_background')->nullable();
             $table->mediumText('family_data')->nullable();

@@ -41,7 +41,7 @@ class Medic extends Model
      */
     public function patients()
     {
-        return $this->belongsToMany('App\Patient');
+        return $this->belongsToMany('App\Patient', 'patient_medic', 'medic_id', 'patient_id');
     }
 
 

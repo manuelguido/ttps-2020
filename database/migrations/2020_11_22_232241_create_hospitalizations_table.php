@@ -19,13 +19,14 @@ class CreateHospitalizationsTable extends Migration
             $table->unsignedBigInteger('entry_id');
             $table->foreign('entry_id')->references('entry_id')->on('entries');
             // System id
-            $table->unsignedBigInteger('system_id')->unique();
+            $table->unsignedBigInteger('system_id');
             $table->foreign('system_id')->references('system_id')->on('systems');
-            $table->string('actual_disease');
-            $table->dateTime('date_of_diagnosis');
-            $table->dateTime('date_of_admission');
-            $table->dateTime('date_of_death')->nullable()->default(NULL);
-            $table->dateTime('date_of_exit')->nullable()->default(NULL);
+            // Previous system id
+            $table->unsignedBigInteger('previous_system_id')->nullable()->default(NULL);
+            $table->foreign('previous_system_id')->references('system_id')->on('systems');
+
+            $table->timestamp('date_of_admission')->nullable()->default(NULL);
+            $table->timestamp('date_of_exit')->nullable()->default(NULL);
         });
     }
 

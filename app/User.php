@@ -16,6 +16,32 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
 
     /**
+     * User routes.
+     */
+    const ADMIN_ROUTES = [
+        // ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
+        ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
+        ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
+        ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
+    ];
+
+    const SYSTEM_CHIEF_ROUTES = [
+        // ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
+        ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
+        ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
+        ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
+    ];
+
+    const MEDIC_ROUTES = [
+        ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
+        ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
+    ];
+
+    const RULE_SETTER_ROUTES = [
+        ['icon' => 'fad fa-cog', 'name' => 'Configuración', 'url' => '/dashboard/settings'],
+    ];
+
+    /**
      * Attributes
      */
     protected $table = 'users';

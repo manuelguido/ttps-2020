@@ -72,10 +72,10 @@ class UserController extends Controller
     private function getRoutes($role)
     {
         switch ($role) {
-            case ROLE::ROLE_ADMIN: return $this->adminRoutes();
-            case ROLE::ROLE_SYSTEM_CHIEF: return $this->systemChiefRoutes();
-            case ROLE::ROLE_MEDIC: return $this->medicRoutes();
-            case ROLE::ROLE_RULE_SETTER: return $this->ruleSetterRoutes();
+            case Role::ROLE_ADMIN: return User::ADMIN_ROUTES;
+            case Role::ROLE_SYSTEM_CHIEF: return User::SYSTEM_CHIEF_ROUTES;
+            case Role::ROLE_MEDIC: return User::MEDIC_ROUTES;
+            case Role::ROLE_RULE_SETTER: return User::RULE_SETTER_ROUTES;
             default: return [''];
         }
     }

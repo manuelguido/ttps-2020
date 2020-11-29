@@ -19,7 +19,7 @@ class Hospitalization extends Model
      * @var array
      */
     protected $fillable = [
-        'entry_id', 'system_id', 'actual_disease', 'date_of_diagnosis', 'date_of_admission', 'date_of_death', 'date_of_exit',
+        'entry_id', 'system_id', 'previous_system_id', 'date_of_entry', 'date_of_exit',
     ];
 
     public $timestamps = false;
@@ -41,6 +41,7 @@ class Hospitalization extends Model
      */
     public function evolutions()
     {
-        return $this->hasMany('App\Evolution');
+        return Evolution::where('hospitalization_id', '=', $this->hospitalization_id);
+
     }
 }
