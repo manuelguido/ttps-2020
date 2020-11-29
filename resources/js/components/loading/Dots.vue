@@ -16,7 +16,7 @@ export default {
 	props: {
 		message: {
 			type: String,
-			default: 'Buscando nueva información'
+			default: 'Obteniendo información'
 		}
 	}
 }

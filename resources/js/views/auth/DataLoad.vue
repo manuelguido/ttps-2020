@@ -32,7 +32,7 @@ export default {
       }).catch((err) => {
         // Vuelve a intentar la operación
         var $this = this;
-        setTimeout(function(){ $this.loadUser(); }, 1000);
+        setTimeout(function(){ $this.loadUser(); }, 1300);
         console.log('Fetching user again: '+err);
       })
     },

@@ -2,7 +2,6 @@
   <tr>
     <th scope="row">{{medic.lastname}}, {{medic.name}}</th>
     <td>{{dni()}}</td>
-    <td>{{medic.system}}</td>
     <td>{{medic.email}}</td>
     <td>{{medic.phone}}</td>
     <td class="text-lg-right py-1">

@@ -1,27 +1,23 @@
 <template>
-  <div class="card shadow-sm">
+  <div class="card c-card">
     <loading-dots v-if="loading"></loading-dots>
     <div v-else class="table-responsive text-nowrap">
       <!-- Table -->
       <table class="table my-0 table-hover">
         <thead>
           <tr>
-            <th scope="col">Paciente</th>
+            <th scope="col">Médico</th>
             <th scope="col">DNI</th>
-            <th scope="col">Sistema</th>
-            <th scope="col">Sala</th>
-            <th scope="col">Cama</th>
-            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           <item 
-            v-for="p in patients"
-            :key="p.patient_id"
-            v-if="p.show"
-            :patient="p"
+            v-for="m in medics"
+            :key="m.medic_id"
+            v-if="m.show"
+            :medic="m"
             :systems="systems"
-            @reload-data="reloadData()"
+            @reload-medics="reloadMedics()"
           ></item>
         </tbody>
       </table>
@@ -35,7 +31,7 @@ import item from './Item';
 
 export default {
   props: {
-    patients: {
+    medics: {
       type: Array,
       default: [],
     },
@@ -72,8 +68,8 @@ export default {
       });
     },
 
-    reloadData () {
-      this.$emit('reload-data');
+    reloadMedics () {
+      this.$emit('reload-medics');
     }
   }
 }

@@ -1,13 +1,17 @@
 <template>
   <!-- Container -->
   <div class="container-fluid">
-    <!-- Title -->
-    <dashboard-title text="Sistemas" full></dashboard-title>
     <!-- Row -->
-    <div class="row">
-      <!-- /.Col -->
+    <div class="row justify-content-center">
       <!-- Col -->
-      <div class="col-12 text-left">
+      <div class="col-12 col-lg-10 text-left">
+        <!-- Title -->
+        <dashboard-title text="Sistemas"></dashboard-title>
+      </div>
+      <!-- /.Col -->
+
+      <!-- Col -->
+      <div class="col-12 col-lg-10 text-left">
         <systems-table></systems-table>
       </div>
       <!-- /.Col -->

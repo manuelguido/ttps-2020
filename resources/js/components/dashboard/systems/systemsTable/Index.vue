@@ -1,5 +1,5 @@
 <template>
-  <div class="card shadow-sm uns">
+  <div class="card c-card uns">
     <loading-dots v-if="loading"></loading-dots>
     <div v-else class="table-responsive text-nowrap">
       <!-- Table -->
@@ -23,8 +23,6 @@
             <td class="w-600 black-alpha-60">{{ calcBedPercentage(s) }}</td>
             <td class="text-right px-5 px-lg-3">
               <router-link :to="'/dashboard/system/'+s.system_id" class="btn btn-outline-primary btn-sm">Ver</router-link>
-              <router-link :to="'/dashboard/patients/'+s.system_id" class="btn btn-outline-primary btn-sm">Ver pacientes</router-link>
-              <router-link class="btn btn-outline-primary btn-sm mr-3 mr-lg-0" :to="'/dashboard/medics/'+s.system_id">Ver médicos</router-link>
             </td>
           </tr>
         </tbody>
@@ -41,7 +39,7 @@ export default {
   data () {
     return {
       loading: true,
-      systems: []
+      systems: [],
     }
   },
   mounted () {

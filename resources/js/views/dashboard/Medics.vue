@@ -19,7 +19,7 @@
       <!-- Col -->
       <div class="col-12 mb-4">
         <!-- Search form -->
-        <form class="search-form mx-auto my-3 my-lg-1 shadow-sm">
+        <form class="search-form mx-auto my-3 my-lg-1 c-card">
           <div class="input-group">
             <input type="text" class="form-control" v-model="input_data" placeholder="Buscar médico: dni, nombre, apellido ..." aria-label="Buscar" aria-describedby="search-addon">
             <div class="input-group-append">
@@ -46,12 +46,10 @@
 
 <script>
 import modal from '../../components/dashboard/medics/NewMedicModal';
-import medicsTable from '../../components/dashboard/medics/MedicsTable/Index';
 
 export default {
   components: {
     modal,
-    'medics-table': medicsTable
   },
   props: {
     system_id: {
@@ -87,7 +85,7 @@ export default {
     },
 
     fetchMedics () {
-      const path = (this.system_id) ? '/api/medic/index/'+this.system_id : '/api/medic/index';
+      const path = '/api/medic/assigned/index';
       const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
 
       axios.get(path, {
@@ -103,31 +101,6 @@ export default {
         this.errorHandler(err.response.status);
         console.log(err)
       });
-    },
-
-    fetchSystem () {
-     const path = '/api/system/full';
-      const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
-
-      axios.get(path, {
-        params: {
-          system_id: this.system_id,
-        },
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': AuthStr
-        }
-      }).then((res) => {
-        this.loadSystem(res.data);
-      }).catch((err) => {
-        this.errorHandler(err.response.status);
-        console.log(err);
-      });
-    },
-
-    loadSystem (data) {
-      this.system = data;
-      this.title = 'Médicos de '+this.system.system;
     },
 
     matchData (value) {

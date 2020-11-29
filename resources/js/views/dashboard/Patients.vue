@@ -22,7 +22,7 @@
 
           <!-- Search form -->
           <div class="col-12 mb-4">
-            <form class="search-form mx-auto my-3 my-lg-1 shadow-sm">
+            <form class="search-form mx-auto my-3 my-lg-1 c-card">
               <div class="input-group">
                 <input type="text" class="form-control" v-model="input_data" placeholder="Buscar paciente: dni, nombre, apellido ..." aria-label="Buscar" aria-describedby="search-addon">
                 <div class="input-group-append">
@@ -56,12 +56,10 @@
 
 <script>
 import modal from '../../components/dashboard/patients/NewPatientModal';
-import patientsTable from '../../components/dashboard/patients/PatientsTable/Index';
 
 export default {
   components: {
     modal,
-    'patients-table': patientsTable
   },
   props: {
     system_id: {

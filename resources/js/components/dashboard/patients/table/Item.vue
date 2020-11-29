@@ -2,7 +2,6 @@
   <tr>
     <th scope="row">{{patient.lastname}}, {{patient.name}}</th>
     <td>{{patient.dni}}</td>
-    <td>{{patient.system}}</td>
     <td>
       <span v-if="patient.room">{{patient.room}}</span>
       <span v-else class="text-danger">No asignada</span>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Medic;
+use App\Role;
+use App\User;
 
 class MedicController extends Controller
 {
@@ -15,6 +17,23 @@ class MedicController extends Controller
     public function index()
     {
         return response()->json(Medic::allWithUserData());
+    }
+
+    /**
+     * Obtener todos los pacientes asignados al usuario médico o jefe de sistema.
+     * 
+     * @return JSON.
+     */
+    public function indexAssigned(Request $request)
+    {
+        $user = User::find($request->user()->user_id);        
+        $data = [];
+        if ($user->hasRole(Role::ROLE_SYSTEM_CHIEF))
+        {
+            $system_id = $user->systems()->first()->system_id;
+            $data = Medic::allWithUserDataBySystem($system_id);
+        }
+        return response()->json($data);
     }
 
     /**

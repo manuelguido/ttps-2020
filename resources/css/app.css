@@ -189,7 +189,7 @@ th, td {
   vertical-align: middle !important;
 }
 
-.card, .btn {
+.btn {
   border-radius: 5px !important;
   overflow: hidden !important;
 }
