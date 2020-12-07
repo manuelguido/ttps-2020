@@ -2,7 +2,7 @@
   <div>
     <mdb-btn color="primary" @click.native="modal = true" class="mr-0 ml-5">
       <i class="fad fa-user-plus mr-2"></i>
-      Nuevo paciente
+      Nuevo ingreso
     </mdb-btn>
     <mdb-modal :show="modal" size="lg" @close="modal = false">
       <mdb-modal-header>

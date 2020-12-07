@@ -38,9 +38,9 @@ export default {
 .item {
   border-left: 6px solid transparent;
   color: #5f6368;
-  font-size: 18px;
+  font-size: 1.05em;
   font-weight: 400;
-  padding: 1em 1em;
+  padding: 1.3em 1em;
   transition: .4s all !important;
   margin: 0 !important;
 }

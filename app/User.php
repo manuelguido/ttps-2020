@@ -26,9 +26,9 @@ class User extends Authenticatable
     ];
 
     const SYSTEM_CHIEF_ROUTES = [
-        // ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
+        ['icon' => 'fad fa-user-tag', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
         ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
-        ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
+        ['icon' => 'fad fa-user-plus', 'name' => 'Nueva internación', 'url' => '/dashboard/new_entry'],
         ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
     ];
 

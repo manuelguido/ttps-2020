@@ -42,7 +42,6 @@ class Entry extends Model
     public function hospitalizations()
     {
         return Hospitalization::where('entry_id', '=', $this->entry_id);
-        // return $this->hasMany('App\Hospitalization');
     }
 
     /**
@@ -50,15 +49,12 @@ class Entry extends Model
      * 
      * @return App\Hospitalization.
      */
-    public function addHospitalization($system_id)
+    public function addHospitalization($system_id, $previous_system_id = NULL)
     {
         $hospitalization = new Hospitalization;
         $hospitalization->entry_id = $this->entry_id;
         $hospitalization->system_id = $system_id;
-        $hospitalization->actual_disease = 'Actual Disease';
-        $hospitalization->date_of_diagnosis = Carbon::now('America/Argentina/Buenos_Aires');
-        $hospitalization->date_of_death = NULL;
-        $hospitalization->date_of_exit = NULL;
+        $hospitalization->previous_system_id = $previous_system_id;
         $hospitalization->save();
         return $hospitalization;
     }

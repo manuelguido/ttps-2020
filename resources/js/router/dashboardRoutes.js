@@ -2,8 +2,8 @@
 import dashboard from '../layouts/Dashboard';
 // Home
 import home from '.././views/dashboard/Home';
-// reportes
-// import reports from '.././views/dashboard/Reports'
+// Nueva entrada al sistema
+import NewEntryView from '../views/dashboard/NewEntry'
 // Pacientes
 import patients from '.././views/dashboard/Patients';
 // Paciente
@@ -97,27 +97,27 @@ const routes = [
       /**
        * Salas
        */
-      {
-        path: '/dashboard/rooms',
-        name: 'patients',
-        component: patients
-      },
+      // {
+      //   path: '/dashboard/rooms',
+      //   name: 'patients',
+      //   component: patients
+      // },
       /**
        * Camas
        */
-      {
-        path: '/dashboard/beds',
-        name: 'patients',
-        component: patients
-      },
-      /**
-       * Reportes
-       */
       // {
-      //   path: '/dashboard/reports',
-      //   name: 'reports',
-      //   component: reports
+      //   path: '/dashboard/beds',
+      //   name: 'patients',
+      //   component: patients
       // },
+      /**
+       * Nueva Entrada
+       */
+      {
+        path: '/dashboard/new_entry',
+        name: 'NewEntry',
+        component: NewEntryView
+      },
       /**
        * Medicos
        */

@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use App\PatientState;
 use App\SystemChange;
-use Carbon\Carbon;
+use App\System;
 use App\Medic;
-use App\User;
 use DB;
 
 class Patient extends Model
@@ -24,9 +25,9 @@ class Patient extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'lastname', 'address', 'phone', 'birth_date', 'personal_background', 'family_data',
+        'name', 'lastname', 'address', 'phone', 'birth_date', 'personal_background', 'email',
         'medical_ensurance_id', 'patient_state_id', 'system_id',
-        'email', 'contact_name', 'contact_lastname', 'contact_phone',
+        'contact_name', 'contact_lastname', 'contact_phone',
     ];
 
     public $timestamps = true;
@@ -40,8 +41,8 @@ class Patient extends Model
     {
         $patient = new Patient;
         $patient->saveData($data);
-        $newEntry = $patient->addEntry();
-        $newEntry->addHospitalization(System::where('system', System::SYSTEM_GUARD)->first()->system_id);
+        $newEntry = $patient->addEntry($data);
+        $patient->setNewSystemById(System::find(1)->system_id, $newEntry);
         return $patient;
     }
 
@@ -60,9 +61,10 @@ class Patient extends Model
      * 
      * @return App\PatientSate.
      */
-    public function state()
+    public function patientState()
     {
-        return $this->belongsTo('App\PatientSate', 'patient_state_id');
+        return PatientState::where('patient_state_id', '=', $this->patient_state_id)->first();
+        // return $this->belongsTo('App\PatientState', 'patient_state_id');
     }
 
     /**
@@ -152,6 +154,15 @@ class Patient extends Model
             ->get();
     }
 
+    /**
+     * Obtener entrada actual del paciente al hospital.
+     * 
+     * @return App\Entry.
+     */
+    public function currentEntry()
+    {
+        return Entry::where('patient_id', '=', $this->patient_id)->orderBy('date', 'DESC')->first();
+    }
 
     /**
      * Obtener todos los pacientes.
@@ -162,6 +173,25 @@ class Patient extends Model
     {
         return Patient::join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
             ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
+            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
+            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
+            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+    }
+
+    /**
+     * Obtener todos los pacientes por estados.
+     * 
+     * @return Object Collection.
+     */
+    public static function allFullByState($state)
+    {
+        return Patient::where('patient_states.patient_state', '=', $state)
+            ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
+            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
             ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
             ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
             ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
@@ -179,6 +209,28 @@ class Patient extends Model
         return Patient::where('patients.system_id', '=', $system_id)
             ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
             ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
+            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
+            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
+            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
+            ->get();
+    }
+
+
+    /**
+     * Obtener los pacientes de un sistema específico por estado.
+     * 
+     * @return Object.
+     */
+    public static function allFullBySystemByState($system_id, $state)
+    {
+        return Patient::where([
+            ['patients.system_id', '=', $system_id],
+            ['patient_states.patient_state', '=', $state],
+            ])
+            ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
+            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
             ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
             ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
             ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
@@ -239,8 +291,11 @@ class Patient extends Model
         $this->patient_state_id = $data->patient_state_id;
         $this->system_id = $data->system_id;
         $this->personal_background = $data->personal_background;
-        $this->family_data = $data->family_data;
         $this->medical_ensurance_id = $data->medical_ensurance_id;
+        $this->email = $data->email;
+        $this->contact_name = $data->contact_name;
+        $this->contact_lastname = $data->contact_lastname;
+        $this->contact_phone = $data->contact_phone;
         $this->save();
     }
 
@@ -318,8 +373,11 @@ class Patient extends Model
      * 
      * @return void.
      */
-    public function setNewSystemById($new_system_id)
+    public function setNewSystemById($new_system_id, $patientEntry = NULL)
     {
+        $entry = (!$patientEntry) ? $this->currentEntry() : $patientEntry;     
+        
+        $entry->addHospitalization(System::where('system', System::SYSTEM_GUARD)->first()->system_id); // Añadir hospitalización a la internación actual
         $this->freeCurrentBed(); // Liberar la cama actual del sistema
         $system = System::find($new_system_id); // Obtener nuevo sistema
         $system->ocuppyNewBed($this->patient_id); // Enviar al sistema que ocupe una nueva cama para este paciente
@@ -378,5 +436,16 @@ class Patient extends Model
             ->orderBy('hospitalizations.hospitalization_id', 'DESC')
             ->select('hospitalizations.*')
             ->first();
+    }
+
+    /**
+     * Obtener si el paciente ya se encuentra hospitalizado.
+     * 
+     * @return Booelan.
+     */
+    public function isOnInternation()
+    {
+        $state = $this->patientState()->patient_state;
+        return ($state == PatientState::STATE_HOSPITALIZED);
     }
 }

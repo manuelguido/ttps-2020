@@ -7,6 +7,7 @@
 
     <!-- Stepper content -->
     <div class="stepper-content">
+      <loading-overlay v-if="loading"></loading-overlay>
       <!-- Step 1  -->
       <div v-if="current == 1" class="step-content">
         <stepper-title :text="steps[0].name"></stepper-title>
@@ -111,7 +112,7 @@
                 v-model="respiratory.ventilatory_mechanic_id"
                 class="browser-default custom-select"
               >
-                <option value="0" selected>Seleccionar</option>
+                <option :value="null" selected>Seleccionar</option>
                 <option value="1">Buena</option>
                 <option value="2">Regular</option>
                 <option value="3">Mal</option>
@@ -151,7 +152,7 @@
                     v-model="respiratory.required_oxigen_type_id"
                     class="browser-default custom-select"
                   >
-                    <option value="0" selected>Seleccionar</option>
+                    <option :value="null" selected>Seleccionar</option>
                     <option value="1">Canula nasal de oxígeno</option>
                     <option value="2">Máscara con reservorio</option>
                   </select>
@@ -220,7 +221,7 @@
                     v-model="respiratory.dyspnoea_id"
                     class="browser-default custom-select"
                   >
-                    <option value="0" selected>Seleccionar</option>
+                    <option :value="null" selected>Seleccionar</option>
                     <option value="1">0</option>
                     <option value="2">1</option>
                     <option value="3">2</option>
@@ -339,7 +340,7 @@
                 v-model="actualTreatments.feeding_type_id"
                 class="browser-default custom-select"
               >
-                <option value="0" selected>Seleccionar</option>
+                <option :value="null" selected>Seleccionar</option>
                 <option value="1">Oral</option>
                 <option value="2">Enteral</option>
                 <option value="3">Parenteral</option>
@@ -561,6 +562,7 @@ export default {
       current: 1,
       loading: false,
       message: "",
+      // Steps data
       steps: [
         {
           order: 1,
@@ -593,46 +595,44 @@ export default {
           icon: "fad fa-notes-medical",
         },
       ],
-      date: Date.now(),
-      time: "",
-      // Step 1
+      // Step 1 data
       evolution: {
-        temperature: '',
-        heart_rate: '',
-        breathing_rate: '',
-        systolic_ta: '',
-        diastolic_ta: '',
+        temperature: 1,
+        heart_rate: 1,
+        breathing_rate: 1,
+        systolic_ta: 1,
+        diastolic_ta: 1,
       },
-      // Step 2
+      // Step 2 data
       respiratory: {
-        ventilatory_mechanic_id: 0,
+        ventilatory_mechanic_id: null,
         requires_oxigen: false,
-        required_oxigen_type_id: 0,
+        required_oxigen_type_id: null,
         required_oxigen_value: null,
         pafi: false,
-        pafi_value: 0,
+        pafi_value: null,
         prone: false,
         cough: false,
-        dyspnoea_id: 0,
+        dyspnoea_id: null,
         respiratory_irregularities: false,
       },
-      // Step 3
+      // Step 3 data
       otherSymptoms: {
         drowsiness: false,
         anosmia: false,
         dysgeucia: false,
       },
+      // Step 4 data
       studies: {
-        // Step 4
         rxtx: false,
         tac: false,
         ecg: false,
         pcr: false,
         laboratory: false,
       },
-      // Step 5
+      // Step 5 data
       actualTreatments: {
-        feeding_type_id: 0,
+        feeding_type_id: null,
         feeding_note: '',
         drug: '',
         drug_dosis: '',
@@ -648,9 +648,9 @@ export default {
         research_study: false,
         research_study_data: '',
       },
-      // Step 6
+      // Step 6 data
       observations: {
-        observations: "",
+        observations: '',
       }
     };
   },
@@ -687,9 +687,10 @@ export default {
     },
 
     newEvolution() {
+      this.loading = true;
       const path = "/api/evolution/store";
       const AuthStr = "Bearer "+localStorage.getItem("access_token").toString();
-      const jsonData = JSON.stringify({
+      const jsonData = {
         patient_id: parseInt(this.patient_id),
         evolution: this.evolution,
         respiratory: this.respiratory,
@@ -697,7 +698,7 @@ export default {
         studies: this.studies,
         actualTreatments: this.actualTreatments,
         observations: this.observations,
-      });
+      };
 
 
       axios.post(path, jsonData, {
@@ -712,7 +713,9 @@ export default {
           // }
           console.log(res);
         }).catch((err) => {
-          console.log(err)
+          console.log(err);
+        }).finally(() => {
+          this.loading = false;
         });
     }
   },
@@ -722,9 +725,12 @@ export default {
 <style scoped>
 /* Content */
 .stepper-content {
-  /* min-height: 500px; */
-  padding: 1em 5vw;
   margin: 2em 0;
+}
+
+.stepper-content,
+.stepper-footer {
+  padding: 1em 2.5vw;
 }
 
 /* Transition */

@@ -12,7 +12,7 @@ class PatientStatesTableSeeder extends Seeder
      */
     public function run()
     {
-        function new_patient_state($name)
+        function newPatientState($name)
         {
             $state = new PatientState;
             $state->patient_state = $name;
@@ -20,8 +20,8 @@ class PatientStatesTableSeeder extends Seeder
             return $state;
         }
 
-        new_patient_state(PatientState::STATE_HOSPITALIZED);
-        new_patient_state(PatientState::STATE_DISCHARGED);
-        new_patient_state(PatientState::STATE_DEATH);
+        newPatientState(PatientState::STATE_HOSPITALIZED);
+        newPatientState(PatientState::STATE_DISCHARGED);
+        newPatientState(PatientState::STATE_DEATH);
     }
 }

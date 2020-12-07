@@ -9,9 +9,9 @@
           <dashboard-title :text="title" :margin="false"></dashboard-title>
         </span>
         <!-- Modal de carga de paciente -->
-        <span>
-          <modal @reload-patients="fetchPatients()"></modal>
-        </span>
+        <!-- <span> -->
+          <!-- <modal @reload-patients="fetchPatients()"></modal> -->
+        <!-- </span> -->
         <!-- /.Modal de carga de paciente -->
       </div>
       <!-- /.Col -->
@@ -55,12 +55,12 @@
 </template>
 
 <script>
-import modal from '../../components/dashboard/patients/NewPatientModal';
+// import modal from '../../components/dashboard/patients/NewEntryModal/Index';
 
 export default {
-  components: {
-    modal,
-  },
+  // components: {
+  //   modal,
+  // },
   props: {
     system_id: {
       default: null,

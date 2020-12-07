@@ -101,6 +101,9 @@ Route::prefix('/patient')->group(function() {
   // Actualizar el perfil de usuario
   Route::post('/update', 'PatientController@update')->middleware('auth:api', 'permission:patient_update'); // ?
 
+  // Actualizar el perfil de usuario
+  Route::post('/search/', 'PatientController@searchByDni')->middleware('auth:api', 'permission:patient_show'); // ?
+
   // Retorna toda la información hospitalizaciones de un paciente
   Route::get('/clinic_data/{patient_id}', 'PatientController@clinicData'); //->middleware('auth:api', 'permission:patient_show'); // ?
 
@@ -126,7 +129,7 @@ Route::prefix('/patient')->group(function() {
 Route::prefix('/evolution')->group(function() {
 
   // Almacena un paciente
-  Route::post('/store', 'EvolutionController@store')->middleware('auth:api', 'permission:patient_store'); // Funciona
+  Route::post('/store', 'EvolutionController@store')->middleware('auth:api', 'permission:patient_store'); // ?
 
   // Actualizar el perfil de usuario
   Route::post('/update', 'EvolutionController@update')->middleware('auth:api', 'permission:patient_update'); // ?

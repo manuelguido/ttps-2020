@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'Switch',
+  name: 'Switcher',
   model: {
     prop: 'checked',
     event: 'change'

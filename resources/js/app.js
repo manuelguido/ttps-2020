@@ -19,9 +19,13 @@ import store from './store';
  * Mixins
  */
 import errorHandlingMixin from './mixins/errorHandlingMixin';
+import formValidationMixin from './mixins/formValidationMixin';
+import formatsMixin from './mixins/formatsMixin';
 import alertMixin from './mixins/alertMixin';
 import assetMixin from './mixins/assetMixin';
 Vue.mixin(errorHandlingMixin);
+Vue.mixin(formValidationMixin);
+Vue.mixin(formatsMixin);
 Vue.mixin(alertMixin);
 Vue.mixin(assetMixin);
 
@@ -86,7 +90,9 @@ Vue.component('navbar', require('./components/Navbar.vue').default);
  * Botones
  */
 // Backlink
-Vue.component('backlink', require('./components/BackLink.vue').default);
+Vue.component('backlink', require('./components/buttons/BackLink.vue').default);
+// Botón de guardado
+Vue.component('save-button', require('./components/buttons/Save.vue').default);
 
 
 /**
@@ -94,6 +100,10 @@ Vue.component('backlink', require('./components/BackLink.vue').default);
  */
 // Input
 Vue.component('v-input', require('./components/forms/Input.vue').default);
+// Input
+Vue.component('v-input-select', require('./components/forms/Select.vue').default);
+// Input
+Vue.component('v-textarea', require('./components/forms/Textarea.vue').default);
 // Search Input
 Vue.component('search-input', require('./components/forms/SearchInput.vue').default);
 // Input

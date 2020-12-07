@@ -1,5 +1,7 @@
 <template>
-  <h2 class="dashboard-subtitle">{{text}}</h2>
+  <h2 :class="['subtitle', colored ? 'text-primary' : 'black-alpha-50']">
+    {{ text }}
+  </h2>
 </template>
 
 <script>
@@ -7,15 +9,18 @@ export default {
   props: {
     text: {
       type: String,
-      default: ''
-    }
-  }
-}
+      default: "",
+    },
+    colored: {
+      type: Boolean,
+      default: false,
+    },
+  },
+};
 </script>
 
 <style scoped>
-.dashboard-subtitle {
-  font-size: 1.5em;
-  color: var(--black);
+.subtitle {
+  font-size: 1.2em;
 }
 </style>

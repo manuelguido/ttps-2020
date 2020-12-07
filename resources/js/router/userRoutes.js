@@ -1,15 +1,15 @@
 // Dashboard
-import dashboard from '../layouts/Dashboard'
+import Dashboard from '../layouts/Dashboard'
 // Profile
-import profile from '.././views/user/Profile'
+import Profile from '.././views/user/Profile'
 // Notifications
-import notifications from '.././views/user/Notifications'
-import notificationsHistory from '.././views/user/NotificationsHistory'
+import Notifications from '.././views/user/Notifications'
+import NotificationsHistory from '.././views/user/NotificationsHistory'
 const routes = [
   {
     path: '/user',
-    name: 'user',
-    component: dashboard,
+    name: 'User',
+    component: Dashboard,
     redirect: '/user/profile',
     meta: {
       requiresAuth: true,
@@ -17,18 +17,18 @@ const routes = [
     children: [
       {
         path: '/user/profile',
-        name: 'profile',
-        component: profile
+        name: 'Profile',
+        component: Profile
       },
       {
         path: '/user/notifications',
-        name: 'notifications',
-        component: notifications
+        name: 'Notifications',
+        component: Notifications
       },
       {
         path: '/user/notifications/history',
-        name: 'notifications',
-        component: notificationsHistory
+        name: 'NotificationsHistory',
+        component: NotificationsHistory
       }
     ]
   },

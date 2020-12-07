@@ -23,7 +23,6 @@ class CreatePatientsTable extends Migration
             $table->bigInteger('dni')->unique();
             $table->date('birth_date');
             $table->mediumText('personal_background')->nullable();
-            $table->mediumText('family_data')->nullable();
             $table->unsignedBigInteger('medical_ensurance_id');
             $table->foreign('medical_ensurance_id')->references('medical_ensurance_id')->on('medical_ensurances');
         });

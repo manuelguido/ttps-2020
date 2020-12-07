@@ -19,17 +19,17 @@
   --white: #ffffff !important;
 
   /* --black: #5f6368; */
-  --black-alpha-03: rgba(0,0,0,.03) !important;
-  --black-alpha-06: rgba(0,0,0,.06) !important;
-  --black-alpha-10: rgba(0,0,0,.1) !important;
-  --black-alpha-20: rgba(0,0,0,.2) !important;
-  --black-alpha-30: rgba(0,0,0,.3) !important;
-  --black-alpha-40: rgba(0,0,0,.4) !important;
-  --black-alpha-50: rgba(0,0,0,.5) !important;
-  --black-alpha-60: rgba(0,0,0,.6) !important;
-  --black-alpha-70: rgba(0,0,0,.7) !important;
-  --black-alpha-80: rgba(0,0,0,.8) !important;
-  --black-alpha-90: rgba(0,0,0,.9) !important;
+  --black-alpha-03: rgba(0,0,0,.03);
+  --black-alpha-06: rgba(0,0,0,.06);
+  --black-alpha-10: rgba(0,0,0,.1);
+  --black-alpha-20: rgba(0,0,0,.2);
+  --black-alpha-30: rgba(0,0,0,.3);
+  --black-alpha-40: rgba(0,0,0,.4);
+  --black-alpha-50: rgba(0,0,0,.5);
+  --black-alpha-60: rgba(0,0,0,.6);
+  --black-alpha-70: rgba(0,0,0,.7);
+  --black-alpha-80: rgba(0,0,0,.8);
+  --black-alpha-90: rgba(0,0,0,.9);
 }
 
 /* Buttons */
@@ -107,7 +107,7 @@
 
 /* Font color */
 .primary {
-  color: var(--primary);
+  color: var(--primary) !important;
 }
 
 a,
@@ -127,37 +127,37 @@ a:active,
 
 
 .black-alpha-03 {
-  color: var(--black-alpha-03);
+  color: var(--black-alpha-03) !important;
 }
 .black-alpha-06 {
-  color: var(--black-alpha-06);
+  color: var(--black-alpha-06) !important;
 }
 .black-alpha-10 {
-  color: var(--black-alpha-10);
+  color: var(--black-alpha-10) !important;
 }
 .black-alpha-20 {
-  color: var(--black-alpha-20);
+  color: var(--black-alpha-20) !important;
 }
 .black-alpha-30 {
-  color: var(--black-alpha-30);
+  color: var(--black-alpha-30) !important;
 }
 .black-alpha-40 {
-  color: var(--black-alpha-40);
+  color: var(--black-alpha-40) !important;
 }
 .black-alpha-50 {
-  color: var(--black-alpha-50);
+  color: var(--black-alpha-50) !important;
 }
 .black-alpha-60 {
-  color: var(--black-alpha-60);
+  color: var(--black-alpha-60) !important;
 }
 .black-alpha-70 {
-  color: var(--black-alpha-70);
+  color: var(--black-alpha-70) !important;
 }
 .black-alpha-80 {
-  color: var(--black-alpha-80);
+  color: var(--black-alpha-80) !important;
 }
 .black-alpha-90 {
-  color: var(--black-alpha-90);
+  color: var(--black-alpha-90) !important;
 }
 
 /* Buttons */

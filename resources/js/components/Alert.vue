@@ -33,7 +33,7 @@ export default {
     alert: Object,
     duration: {
       type: Number,
-      default: 4000
+      default: 6000
     },
     bordered: {
       type: Boolean,
