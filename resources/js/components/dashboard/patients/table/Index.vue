@@ -49,6 +49,7 @@ export default {
   data () {
     return {
       systems: [],
+      patientsData: [],
     }
   },
   created () {
@@ -73,7 +74,7 @@ export default {
 
     reloadData () {
       this.$emit('reload-data');
-    }
+    },
   }
 }
 </script>

@@ -117,8 +117,6 @@ Vue.component('switcher', require('./components/forms/Switcher.vue').default);
 Vue.component('line-chart', require('./components/charts/LineChart.vue').default);
 // Scatter
 Vue.component('scatter-chart', require('./components/charts/ScatterChart.vue').default);
-// Data Table
-Vue.component('data-table', require('./components/Table.vue').default);
 
 
 /**
@@ -146,20 +144,18 @@ Vue.component('loading-dots', require('./components/loading/Dots.vue').default);
 
 
 // Tabla de datos
-Vue.component('data-table', require('./components/Table.vue').default);
+Vue.component('data-table', require('./components/DataTable.vue').default);
 
 
 /**
  * Tablas
  */
 // Listado de medicos
-Vue.component('v-table', require('./components/Table.vue').default);
-// Listado de medicos
-Vue.component('medics-table', require('./components/dashboard/medics/table/Index.vue').default);
+// Vue.component('medics-table', require('./components/dashboard/medics/table/Index.vue').default);
 // Listado de medicos
 Vue.component('medics-short-table', require('./components/dashboard/medics/shortTable/Index.vue').default);
 // Listado de pacientes 
-Vue.component('patients-table', require('./components/dashboard/patients/table/Index.vue').default);
+// Vue.component('patients-table', require('./components/dashboard/patients/table/Index.vue').default);
 // Listado de pacientes 
 Vue.component('patients-short-table', require('./components/dashboard/patients/shortTable/Index.vue').default);
 
