@@ -31,7 +31,7 @@ export default {
     return {
       user: JSON.parse(localStorage.getItem('user')),
       role: JSON.parse(localStorage.getItem('role')),
-      system: JSON.parse(localStorage.getItem('system')),
+      system: JSON.parse(localStorage.getItem('system')).system,
     }
   }
 }

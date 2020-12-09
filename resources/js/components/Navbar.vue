@@ -10,7 +10,7 @@
     </router-link>
     <mdb-navbar-toggler>
       <mdb-navbar-nav right>
-        <router-link class="shadow-none btn btn-login my-0" to="/login" v-waves
+        <router-link class="shadow-none btn btn-login my-0" to="/login"
           >Iniciar sesion</router-link
         >
       </mdb-navbar-nav>

@@ -85,7 +85,7 @@ export default {
           password: this.password
         })
         .then(response => {
-          this.$router.push({ name: "dataLoad" });
+          this.$router.push({ name: "DataLoad" });
         })
         .catch(error => {
           this.error = error.response.data;
@@ -96,7 +96,7 @@ export default {
       this.$store
         .dispatch("retrieveTokenByGoogle")
         .then(response => {
-          this.$router.push({ name: "dashboard" });
+          this.$router.push({ name: "Dashboard" });
         })
         .catch(error => {
           this.error = error.response.data;

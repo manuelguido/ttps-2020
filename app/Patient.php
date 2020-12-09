@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use App\PatientState;
-use App\SystemChange;
 use App\System;
 use App\Medic;
 use DB;
@@ -42,7 +41,7 @@ class Patient extends Model
         $patient = new Patient;
         $patient->saveData($data);
         $newEntry = $patient->addEntry($data);
-        $patient->setNewSystemById(System::find(1)->system_id, $newEntry);
+        $patient->setInitialSystem(System::find(1)->system_id, $newEntry);
         return $patient;
     }
 
@@ -96,16 +95,6 @@ class Patient extends Model
     {
         return Entry::where('patient_id', '=', $this->patient_id);
         // return $this->hasMany('App\Entry', 'entry_id', 'patient_id');
-    }
-
-    /**
-     * Obtener los cambios de sistema del paciente.
-     * 
-     * @return App\SystemChange Collection.
-     */
-    public function systemChanges()
-    {
-        return $this->hasMany('App\SystemChange', 'system_change_id', 'patient_id');
     }
 
     /**
@@ -213,6 +202,7 @@ class Patient extends Model
             ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
             ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
             ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
+            ->orderBy('updated_at', 'DESC')
             ->get();
     }
 
@@ -234,6 +224,7 @@ class Patient extends Model
             ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
             ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
             ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
+            ->orderBy('updated_at', 'DESC')
             ->get();
     }
 
@@ -339,14 +330,18 @@ class Patient extends Model
      * 
      * @return void.
      */
-    public function storeSystemChange($old, $new, $user_id)
+    public function changeSystem($old_system, $new_system, $userId)
     {
-        $system_change = new SystemChange;
-        $system_change->patient_id = $this->patient_id;
-        $system_change->user_id = $user_id;
-        $system_change->old_system = $old;
-        $system_change->new_system = $new;
-        $system_change->save();
+        // Chequear reglas
+        // ...
+
+        // Cambiar el sistema en si
+        $entry = $this->currentEntry();
+        $entry->addHospitalization($new_system->system_id); // Añadir hospitalización a la internación actual
+        $this->freeCurrentBed(); // Liberar la cama actual del sistema
+        $new_system->ocuppyNewBed($this->patient_id); // Enviar al sistema que ocupe una nueva cama para este paciente
+        $this->system_id = $new_system->system_id; // Acutalizo el id de sistema del paciente 
+        $this->save();
     }
 
 
@@ -373,7 +368,7 @@ class Patient extends Model
      * 
      * @return void.
      */
-    public function setNewSystemById($new_system_id, $patientEntry = NULL)
+    public function setInitialSystem($new_system_id, $patientEntry = NULL)
     {
         $entry = (!$patientEntry) ? $this->currentEntry() : $patientEntry;     
         

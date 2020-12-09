@@ -22,7 +22,7 @@ class Hospitalization extends Model
         'entry_id', 'system_id', 'previous_system_id', 'date_of_entry', 'date_of_exit',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * Obtener la entrada al hospital a la que pertenece la hospitalización.

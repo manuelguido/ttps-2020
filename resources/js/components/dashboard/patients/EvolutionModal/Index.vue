@@ -63,14 +63,14 @@ export default {
   },
   data() {
     return {
-      modal: true,
+      modal: false,
     };
   },
   methods: {
-    reloadData () {
+    reloadData() {
       this.modal = false;
-      this.$emit('reload-data');
-    }
-  }
+      this.$emit("reload-data");
+    },
+  },
 };
 </script>

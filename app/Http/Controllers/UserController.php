@@ -140,7 +140,7 @@ class UserController extends Controller
             'routes' => $this->getRoutes($role),
         ];
 
-        $data['system'] = ($request->user()->hasSystem()) ? $request->user()->systems()->first()->system : 'Sistema completo';
+        $data['system'] = ($request->user()->hasSystem()) ? $request->user()->systems()->first() : 'Sistema completo';
 
         return response()->json($data);
     }

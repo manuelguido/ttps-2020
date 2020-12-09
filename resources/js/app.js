@@ -18,13 +18,15 @@ import store from './store';
 /**
  * Mixins
  */
-import errorHandlingMixin from './mixins/errorHandlingMixin';
 import formValidationMixin from './mixins/formValidationMixin';
+import errorHandlingMixin from './mixins/errorHandlingMixin';
+import permissionsMixin from './mixins/permissionsMixin';
 import formatsMixin from './mixins/formatsMixin';
 import alertMixin from './mixins/alertMixin';
 import assetMixin from './mixins/assetMixin';
-Vue.mixin(errorHandlingMixin);
 Vue.mixin(formValidationMixin);
+Vue.mixin(errorHandlingMixin);
+Vue.mixin(permissionsMixin);
 Vue.mixin(formatsMixin);
 Vue.mixin(alertMixin);
 Vue.mixin(assetMixin);
@@ -80,6 +82,13 @@ Vue.filter('formatDateForm', function (value) {
  * 
  ----------------------------------*/
 /**
+ * Botones
+ */
+// Layout de tarjeta de dashboard
+Vue.component('dasbboard-card', require('./layouts/DashboardCard.vue').default);
+
+
+/**
  * Navegación
  */
 // Navbar
@@ -91,6 +100,8 @@ Vue.component('navbar', require('./components/Navbar.vue').default);
  */
 // Backlink
 Vue.component('backlink', require('./components/buttons/BackLink.vue').default);
+Vue.component('back-link', require('./components/buttons/BackLink.vue').default);
+Vue.component('back-arrow', require('./components/buttons/BackArrow.vue').default);
 // Botón de guardado
 Vue.component('save-button', require('./components/buttons/Save.vue').default);
 
@@ -151,11 +162,7 @@ Vue.component('data-table', require('./components/DataTable.vue').default);
  * Tablas
  */
 // Listado de medicos
-// Vue.component('medics-table', require('./components/dashboard/medics/table/Index.vue').default);
-// Listado de medicos
 Vue.component('medics-short-table', require('./components/dashboard/medics/shortTable/Index.vue').default);
-// Listado de pacientes 
-// Vue.component('patients-table', require('./components/dashboard/patients/table/Index.vue').default);
 // Listado de pacientes 
 Vue.component('patients-short-table', require('./components/dashboard/patients/shortTable/Index.vue').default);
 

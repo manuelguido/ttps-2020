@@ -95,7 +95,7 @@ export default {
       ],
     };
   },
-  created() {
+  mounted() {
     this.$Progress.start();
     this.fetchPatients();
   },
@@ -108,15 +108,27 @@ export default {
     loadPatients(data) {
       for (let i = 0; i < data.length; i++) {
         this.patients.push({
-          'lastname': data[i].lastname,
-          'name':  data[i].name,
-          'dni': data[i].dni,
-          'room': data[i].room,
-          'bed': "Cama " + data[i].bed_number,
-          'show': '<a href="/dashboard/patient/'+data[i].patient_id +'" class="btn btn-primary btn-sm table-button">Ver</a>',
-          'assign': '<a href="/dashboard/patient/assignment/'+data[i].patient_id +'" class="btn btn-indigo btn-sm table-button">Asignar médico</a>',
-          'change': '<a href="/dashboard/patient/system/change'+data[i].patient_id +'" class="btn btn-deep-purple btn-sm table-button">Cambiar sistema</a>',
-          'evolve': '<a href="/dashboard/patient/evolution/add'+data[i].patient_id +'" class="btn btn-purple btn-sm table-button">Evolucionar</a>',
+          lastname: data[i].lastname,
+          name: data[i].name,
+          dni: data[i].dni,
+          room: data[i].room,
+          bed: "Cama " + data[i].bed_number,
+          show:
+            '<a href="/dashboard/patient/' +
+            data[i].patient_id +
+            '" class="btn btn-primary btn-sm table-button">Ver</a>',
+          assign:
+            '<a href="/dashboard/patient/assignment/' +
+            data[i].patient_id +
+            '" class="btn btn-indigo btn-sm table-button">Asignar médico</a>',
+          change:
+            '<a href="/dashboard/patient/system/change/' +
+            data[i].patient_id +
+            '" class="btn btn-deep-purple btn-sm table-button">Cambiar sistema</a>',
+          evolve:
+            '<a href="/dashboard/patient/evolution/add' +
+            data[i].patient_id +
+            '" class="btn btn-purple btn-sm table-button">Evolucionar</a>',
         });
       }
     },
@@ -148,49 +160,6 @@ export default {
           this.errorHandler(err.response.status);
           console.log(err);
         });
-    },
-
-    /**
-     * Ver si la información es la misma.
-     *
-     * @return boolean.
-     */
-    matchData(value) {
-      return value.toLowerCase().match(this.input_data.toLowerCase());
-    },
-
-    /**
-     * Ver si la búsqueda es la misma.
-     *
-     * @return boolean.
-     */
-    mathSearch(patient) {
-      var aux_room = patient.room != null ? patient.room : "";
-      var aux_bed =
-        patient.bed_number != null ? "Cama " + patient.bed_number : "";
-      return (
-        this.matchData(patient.name) ||
-        this.matchData(patient.lastname) ||
-        this.matchData(patient.name + " " + patient.lastname) ||
-        this.matchData(patient.lastname + " " + patient.name) ||
-        this.matchData(patient.system) ||
-        this.matchData(aux_room) ||
-        this.matchData(aux_bed) ||
-        this.matchData(patient.dni.toString())
-      );
-    },
-
-    calcPagination() {
-      this.pages = Math.round(this.patients.length / this.paginationValue);
-    },
-  },
-  watch: {
-    // Funcion de busqueda
-    input_data: function () {
-      this.patients.forEach((patient) => {
-        patient.show = this.mathSearch(patient);
-      });
-      this.calcPagination();
     },
   },
 };

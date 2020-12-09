@@ -49,7 +49,7 @@ class System extends Model
      */
     public function users()
     {
-        return $this->belongsToMany('App\User','role_user', 'role_id', 'user_id');
+        return $this->belongsToMany('App\User', 'role_user', 'role_id', 'user_id');
     }
 
     /**
@@ -133,7 +133,17 @@ class System extends Model
      */
     public function hasBeds()
     {
-        return ($this->freeBeds() > 0);
+        // Domicilio siempre tiene camas
+        if ($this->system == System::SYSTEM_HOME) {
+            return true;
+        }
+        // Si no es domicilio y no es guardia, calcula la cantida de camas 
+        else if (($this->system != System::SYSTEM_GUARD) || ($this->system == System::SYSTEM_GUARD && !$this->infinite_beds)) {
+            return ($this->freeBeds() > 0);
+        // Si es guardia, chequea que haya camas ilimitadas
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -146,7 +156,7 @@ class System extends Model
         $bed = Bed::where([
             ['beds.is_occupied', '=', false],
             ['rooms.system_id', '=', $this->system_id]
-            ])
+        ])
             ->join('rooms', 'rooms.room_id', '=', 'beds.room_id')
             ->orderBy('number', 'ASC')
             ->first();
@@ -154,5 +164,49 @@ class System extends Model
         $bed->patient_id = $patient_id;
         $bed->is_occupied = True;
         $bed->save();
+    }
+
+    /**
+     * Cargar una nueva cama en el sistema (La siguiente disponible)
+     * 
+     * @return App\System Collection.
+     */
+    public function allowedSystemsToChange()
+    {
+        // Todos los sistemas
+        $systems = System::all();
+        // Selección
+        switch ($this->system)
+        {
+            case System::SYSTEM_GUARD:
+                $filteredData = $systems->filter(function ($system) {
+                    return ($system->system == System::SYSTEM_UTI || $system->system == System::SYSTEM_COVID_FLOOR);
+                });
+                break;
+            case System::SYSTEM_COVID_FLOOR:
+                $filteredData = $systems->filter(function ($system) {
+                    return ($system->system == System::SYSTEM_UTI || $system->system == System::SYSTEM_HOTEL || $system->system == System::SYSTEM_HOME);
+                });
+                break;
+            case System::SYSTEM_UTI:
+                $filteredData = $systems->filter(function ($system) {
+                    return ($system->system == System::SYSTEM_COVID_FLOOR || $system->system == System::SYSTEM_GUARD);
+                });
+                break;
+            case System::SYSTEM_HOTEL:
+                $filteredData = $systems->filter(function ($system) {
+                    return ($system->system == System::SYSTEM_COVID_FLOOR);
+                });
+                break;
+            case System::SYSTEM_HOME:
+                $filteredData = $systems->filter(function ($system) {
+                    return ($system->system == System::SYSTEM_COVID_FLOOR);
+                });
+                break;
+            default:
+                return [''];
+        }
+
+        return $filteredData;
     }
 }

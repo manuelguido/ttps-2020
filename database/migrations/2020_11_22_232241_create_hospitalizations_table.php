@@ -15,6 +15,7 @@ class CreateHospitalizationsTable extends Migration
     {
         Schema::create('hospitalizations', function (Blueprint $table) {
             $table->bigIncrements('hospitalization_id');
+            $table->timestamps();
             // Entry id
             $table->unsignedBigInteger('entry_id');
             $table->foreign('entry_id')->references('entry_id')->on('entries');

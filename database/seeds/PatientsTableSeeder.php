@@ -53,16 +53,16 @@ class PatientsTableSeeder extends Seeder
             $patient->contact_lastname = randomLastname();
             $patient->contact_phone = rand(10000000, 50000000);
             $patient->save();
-            $patient->setNewSystemById(System::find(1)->system_id);
-
             $patient->addEntry([
-                'actual_disease' => Carbon::now('America/Argentina/Buenos_Aires'),
+                'patient_id' => $patient->patient_id,
+                'actual_disease' => 'Covid',
                 'date_of_symptoms' => Carbon::now('America/Argentina/Buenos_Aires'),
                 'date_of_diagnosis' => Carbon::now('America/Argentina/Buenos_Aires'),
                 'date_of_admission' => Carbon::now('America/Argentina/Buenos_Aires'),
-                'date_of_death' => NULL,
-                'date_of_exit' => NULL,
+                'date_of_death' => null,
+                'date_of_exit' => null,
             ]);
+            $patient->setInitialSystem(System::find(1)->system_id);
         }
     }
 }

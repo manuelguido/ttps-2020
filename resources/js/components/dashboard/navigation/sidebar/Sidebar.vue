@@ -5,32 +5,32 @@
     <user-data :user="user"></user-data>
 
     <!-- Items -->
-    <items :routes=routes></items>
+    <items :routes="routes"></items>
     <!-- /.Items -->
   </div>
   <!-- /.Sidenav -->
 </template>
 
 <script>
-import items from './Items';
-import userData from './Userdata';
+import Items from "./Items.vue";
+import UserData from "./Userdata.vue";
 
 export default {
-  name: 'sideNav',
+  name: "SideBar",
   props: {
     routes: Array,
-    user: Object
+    user: Object,
   },
   components: {
-    'items': items,
-    'user-data': userData
+    Items,
+    UserData,
   },
-  data () {
+  data() {
     return {
-      sidebar_title: 'SeCo'
-    }
-  }
-}
+      sidebar_title: "SeCo",
+    };
+  },
+};
 </script>
 
 <style scoped>

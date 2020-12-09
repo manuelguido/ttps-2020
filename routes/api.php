@@ -58,13 +58,16 @@ Route::get('/medical_ensurance/index', 'MedicalEnsuranceController@index');
 Route::prefix('/system')->middleware('auth:api')->group(function() {
 
   // Retorna todos los sistemas
-  Route::get('/index', 'SystemController@index');
+  Route::get('/index', 'SystemController@index'); // Funciona
   
   // Retorna todos los sistemas con su información de camas y habitaciones
-  Route::get('/index/full', 'SystemController@indexFull');
-  
+  Route::get('/index/full', 'SystemController@indexFull'); // Funciona
+
+  // Retorna todos los sistemas habiilitados (bajo regla) para hacer el cambio de sistema.
+  Route::post('/allowed/index', 'SystemController@allowedIndex'); // Funciona
+
   // Retorna todo un sistema con su información de camas y habitaciones
-  Route::get('/full', 'SystemController@showFull');  
+  Route::get('/full', 'SystemController@showFull'); // Funciona
 });
 
 
@@ -105,10 +108,10 @@ Route::prefix('/patient')->group(function() {
   Route::post('/search/', 'PatientController@searchByDni')->middleware('auth:api', 'permission:patient_show'); // ?
 
   // Retorna toda la información hospitalizaciones de un paciente
-  Route::get('/clinic_data/{patient_id}', 'PatientController@clinicData'); //->middleware('auth:api', 'permission:patient_show'); // ?
+  // Route::get('/clinic_data/{patient_id}', 'PatientController@clinicData'); //->middleware('auth:api', 'permission:patient_show'); // ?
 
   // Cambia un paciente de sistema
-  Route::post('/change_system', 'PatientController@changeSystem')->middleware('auth:api', 'permission:patient_update'); // ?
+  Route::post('/system/change', 'PatientController@changeSystem')->middleware('auth:api', 'permission:patient_update'); // ?
 
   // Retorna los medicos asignados al paciente y los posibles médicos a asignar
   Route::get('/medics/{patient_id}', 'PatientController@medics')->middleware('auth:api', 'permission:patient_show'); // ?

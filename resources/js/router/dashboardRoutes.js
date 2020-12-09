@@ -1,25 +1,29 @@
 // Dashboard
-import dashboard from '../layouts/Dashboard';
+import Dashboard from '../layouts/Dashboard';
 // Home
-import home from '.././views/dashboard/Home';
+import Home from '../views/dashboard/Home';
 // Nueva entrada al sistema
-import NewEntryView from '../views/dashboard/NewEntry'
+import NewEntry from '../views/dashboard/NewEntry'
 // Pacientes
-import patients from '.././views/dashboard/Patients';
+import Patients from '../views/dashboard/Patients';
 // Paciente
-import patient from '.././views/dashboard/Patient';
+import Patient from '../views/dashboard/Patient';
 // Asignación de medicos a pacientes
-import patientAssigment from '.././views/dashboard/PatientAssigment';
+import PatientAssigment from '../views/dashboard/PatientAssigment';
+// Patient Evolution Add
+import PatientChangeSystem from '../views/dashboard/PatientChangeSystem';
+// Patient Evolution Add
+import PatientEvolutionAdd from '../views/dashboard/PatientEvolutionAdd';
 // Medicos
-import medics from '.././views/dashboard/Medics';
+import Medics from '../views/dashboard/Medics';
 // Systems
-import systems from '.././views/dashboard/Systems';
+import Systems from '../views/dashboard/Systems';
 // Systems
-import system from '.././views/dashboard/System';
+import System from '../views/dashboard/System';
 // Settings
-import settingsComponent from '.././views/dashboard/Settings';
+import Settings from '../views/dashboard/Settings';
 // Data Load
-import dataLoad from '.././views/auth/DataLoad';
+import DataLoad from '../views/auth/DataLoad';
 
 const routes = [
   /**
@@ -27,129 +31,131 @@ const routes = [
    */
   {
     path: '/dataload',
-    name: 'dataLoad',
-    component: dataLoad,
+    name: 'DataLoad',
+    component: DataLoad,
     meta: {
       requiresAuth: true,
     }
   },
   /**
-   * Ruta base
+   * Ruta base.
    */
-  { 
+  {
     path: '/admin',
     redirect: '/dashboard/home', //No necesita auth porque redirecciona a una ruta con auth siempre 
   },
   /**
-   * Ruta base
+   * Ruta base.
    */
   {
     path: '/dashboard',
-    name: 'dashboard',
-    component: dashboard,
+    name: 'Dashboard',
+    component: Dashboard,
     redirect: '/dashboard/home',
     meta: {
       requiresAuth: true,
       progress: {
         func: [
-          {call: 'color', modifier: 'temp', argument: '#ffb000'},
-          {call: 'fail', modifier: 'temp', argument: '#6e0000'},
-          {call: 'location', modifier: 'temp', argument: 'top'},
-          {call: 'transition', modifier: 'temp', argument: {speed: '1.5s', opacity: '0.6s', termination: 400}}
+          { call: 'color', modifier: 'temp', argument: '#ffb000' },
+          { call: 'fail', modifier: 'temp', argument: '#6e0000' },
+          { call: 'location', modifier: 'temp', argument: 'top' },
+          { call: 'transition', modifier: 'temp', argument: { speed: '1.5s', opacity: '0.6s', termination: 400 } }
         ]
       }
     },
     children: [
       /**
-       * Inicio
+       * Inicio.
        */
       {
         path: '/dashboard/home',
-        name: 'dashboardHome',
-        component: home
+        name: 'DashboardHome',
+        component: Home
       },
       /**
-       * Pacientes
+       * Pacientes.
        */
       {
         path: '/dashboard/patients',
-        name: 'patients',
-        component: patients,
+        name: 'Patients',
+        component: Patients,
       },
       /**
-       * Paciente
+       * Paciente.
        */
       {
         path: '/dashboard/patient/:patient_id',
-        name: 'patient',
-        component: patient,
+        name: 'Patient',
+        component: Patient,
         props: true,
       },
       /**
-       * Asignaciíon de medicos a paciente
+       * Asignaciíon de medicos a paciente.
        */
       {
         path: '/dashboard/patient/assignment/:patient_id',
-        name: 'patientAssigment',
-        component: patientAssigment,
+        name: 'PatientAssigment',
+        component: PatientAssigment,
         props: true,
       },
       /**
-       * Salas
+       * Cambiar paciente de sistema.
        */
-      // {
-      //   path: '/dashboard/rooms',
-      //   name: 'patients',
-      //   component: patients
-      // },
+      {
+        path: '/dashboard/patient/system/change/:patient_id',
+        name: 'PatientAssigment',
+        component: PatientChangeSystem,
+        props: true,
+      },
       /**
-       * Camas
+       * Agregar evolución a paciente.
        */
-      // {
-      //   path: '/dashboard/beds',
-      //   name: 'patients',
-      //   component: patients
-      // },
+      {
+        path: '/dashboard/patient/evolution/add/:patient_id',
+        name: 'PatientEvolutionAdd',
+        component: PatientEvolutionAdd,
+        props: true,
+      },
       /**
-       * Nueva Entrada
+       * Nueva Entrada al hospital.
        */
       {
         path: '/dashboard/new_entry',
         name: 'NewEntry',
-        component: NewEntryView
+        component: NewEntry
       },
       /**
-       * Medicos
+       * Medicos.
        */
       {
         path: '/dashboard/medics',
-        name: 'medics',
-        component: medics
+        name: 'Medics',
+        component: Medics
       },
       /**
-       * Sistemas
+       * Sistemas.
        */
       {
         path: '/dashboard/systems',
-        name: 'systems',
-        component: systems
+        name: 'Systems',
+        component: Systems
       },
       /**
-       * Sistema
+       * Sistema.
        */
       {
         path: '/dashboard/system/:system_id',
-        name: 'system',
-        component: system,
+        name: 'System',
+        component: System,
         props: true,
       },
       /**
-       * Reportes
+       * Configuración.
        */
       {
         path: '/dashboard/settings',
         name: 'Settings',
-        component: settingsComponent
+        component: Settings,
       },
     ]
   },

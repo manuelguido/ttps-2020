@@ -44,7 +44,9 @@ class SystemController extends Controller
     }
 
     /**
-     * Retorna todos los sistemas con su información de camas y habitaciones
+     * Obtener todos los sistemas con su información de camas y habitaciones.
+     * 
+     * @return JSON.
      */
     public function indexFull()
     {
@@ -61,7 +63,9 @@ class SystemController extends Controller
     }
 
     /**
-     * Retorna un sistema con su información de camas y habitaciones
+     * Obtener un sistema con su información de camas y habitaciones.
+     * 
+     * @return JSON.
      */
     public function showFull(Request $data)
     {
@@ -72,5 +76,20 @@ class SystemController extends Controller
         // Información a devolver
 
         return response()->json($this->getFullSystem($system));
+    }
+
+    /**
+     * Retorna un sistema con su información de camas y habitaciones.
+     * 
+     * @return JSON.
+     */
+    public function allowedIndex(Request $data)
+    {
+        // Validación
+        $this->validateId();
+        // Sistemas
+        $system = System::find($data->system_id);
+
+        return response()->json($system->allowedSystemsToChange());
     }
 }

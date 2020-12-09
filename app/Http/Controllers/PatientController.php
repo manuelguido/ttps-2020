@@ -65,6 +65,30 @@ class PatientController extends Controller
     }
 
     /**
+     * Validación de id de paciente
+     * 
+     * @return void.
+     */
+    private function validatePatientId($data)
+    {
+        $this->validate($data, [
+            'patient_id' => 'required|integer|min:1',
+        ]);
+    }
+
+    /**
+     * Validación de id de sistema
+     * 
+     * @return void.
+     */
+    private function validateSystemId($data)
+    {
+        $this->validate($data, [
+            'system_id' => 'required|integer|min:1',
+        ]);
+    }
+
+    /**
      * Obtener todos los pacientes.
      * 
      * @return JSON.
@@ -130,22 +154,22 @@ class PatientController extends Controller
         } else {
             // Information try
             // try {
-                // Validación de paciente
-                $this->validatePatient($data);
-                $this->validatePatientEntry($data);
+            // Validación de paciente
+            $this->validatePatient($data);
+            $this->validatePatientEntry($data);
 
-                // Nuevo paciente
-                $patient = new Patient;
-                $store_data = $data;
-                $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
-                $store_data->system_id = System::find(1)->system_id;
-                $patient = Patient::createPatient($store_data);
-                $patient->setNewSystemById($store_data->system_id);
+            // Nuevo paciente
+            $patient = new Patient;
+            $store_data = $data;
+            $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
+            $store_data->system_id = System::find(1)->system_id;
+            $patient = Patient::createPatient($store_data);
+            $patient->setNewSystemById($store_data->system_id);
 
-                // Returning the view
-                $message = ['status' => 'success', 'message' => 'Paciente guardado.'];
+            // Returning the view
+            $message = ['status' => 'success', 'message' => 'Paciente guardado.'];
             // } catch (\Exception $e) {
-                // $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
+            // $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
             // }
         }
         return response()->json($message, 200);
@@ -201,26 +225,25 @@ class PatientController extends Controller
      */
     public function changeSystem(Request $data)
     {
-        $new_system = System::find($data->system_id);
-        $old_system = System::find(Patient::find($data->patient_id)->system_id);
+        try {
+            $this->validatePatientId($data);
+            $this->validateSystemId($data);
 
-        if (!$new_system->hasBeds()) {
-            $message = ['status' => 'warning', 'message' => 'El sistema no tiene camas disponibles'];
-        } else {
-            // try {
-            // Validación de paciente
-            // $this->validateNewSystem();
-
-            // Nuevo paciente
             $patient = Patient::find($data->patient_id);
-            $patient->setNewSystemById($new_system->system_id);
-            // Asentar el cambio de sistema
-            $patient->storeSystemChange($old_system->system, $new_system->system, $data->user()->user_id);
-            $patient->save();
+            $newSystem = System::find($data->system_id);
+            $oldSystem = System::find($patient->system_id);
 
-            // Returning the view
-            $message = ['status' => 'success', 'message' => 'Cambiaste a ' . $patient->name . ' ' . $patient->lastname . ' de ' . $old_system->system . ' a ' . $new_system->system];
-        }
+            if (!$newSystem->hasBeds()) {
+                $message = ['status' => 'warning', 'message' => 'El sistema no tiene camas disponibles'];
+            } else {
+                // Cambiar sistema
+                $patient->changeSystem($oldSystem, $newSystem, $data->user()->user_id);
+            
+                $message = ['status' => 'success', 'message' => 'Cambiaste a ' . $patient->name . ' ' . $patient->lastname . ' de ' . $oldSystem->system . ' a ' . $newSystem->system, 'patient' => Patient::full($patient->patient_id)];
+            }
+        } catch (\Exception $e) {
+            $message = ['status' => 'error', $e[0]];
+        }    
         return response()->json($message, 200);
     }
 
@@ -295,7 +318,7 @@ class PatientController extends Controller
         $patient = Patient::where('dni', '=', $request->dni)->first();
         if ($patient) {
             if ($patient->isOnInternation()) {
-                $responseData = ['status' => 'warning', 'message' => 'El paciente ya se encuentra en internación.'];   
+                $responseData = ['status' => 'warning', 'message' => 'El paciente ya se encuentra en internación.'];
             } else {
                 $responseData = ['status' => 'success', 'message' => 'Se encontró el paciente.', 'patient' => $patient];
             }
