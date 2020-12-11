@@ -44,9 +44,10 @@ import {
   mdbModalFooter,
   mdbBtn,
 } from "mdbvue";
-import evolutionModalContent from "./Content";
+import EvolutionModalContent from "./Content";
 
 export default {
+  name: "EvolutionModal",
   components: {
     mdbModal,
     mdbModalHeader,
@@ -54,7 +55,7 @@ export default {
     mdbModalBody,
     mdbModalFooter,
     mdbBtn,
-    "evolution-modal-content": evolutionModalContent,
+    EvolutionModalContent,
   },
   props: {
     patient_id: {

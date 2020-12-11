@@ -3,35 +3,6 @@
   <div class="col-12">
     <!-- Row -->
     <div class="row">
-      <!-- Col -->
-      <div class="col-12">
-        <!-- Selector -->
-        <div class="select-container d-flex justify-content-between mb-5 uns">
-          <span
-            :class="[
-              'option-button d-flex align-items-center flex-column',
-              showEvolutions ? 'button-active' : '',
-            ]"
-            @click="showEvolutions = 1"
-          >
-            <i class="fad fa-list-ul fa-2x"></i>
-            <div class="mt-2">Ultimas evoluciones</div>
-          </span>
-          <span
-            :class="[
-              'option-button d-flex align-items-center flex-column',
-              showEvolutions ? '' : 'button-active',
-            ]"
-            @click="showEvolutions = 0"
-          >
-            <i class="fad fa-file-medical-alt fa-2x"></i>
-            <div class="mt-2">Historia clínica</div>
-          </span>
-        </div>
-        <!-- Selector -->
-      </div>
-      <!-- /.Col -->
-
       <div
         class="col-12 d-flex justify-content-between align-items-center mb-5"
       >
@@ -128,7 +99,7 @@
 </template>
 
 <script>
-import evolutionModal from "./EvolutionModal/Index";
+import EvolutionModal from "./EvolutionModal/Index";
 import { mdbListGroup, mdbListGroupItem } from "mdbvue";
 
 export default {
@@ -149,7 +120,7 @@ export default {
   components: {
     mdbListGroup,
     mdbListGroupItem,
-    "evolution-modal": evolutionModal,
+    EvolutionModal,
   },
   data() {
     return {

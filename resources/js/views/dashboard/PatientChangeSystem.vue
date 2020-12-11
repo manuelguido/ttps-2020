@@ -1,5 +1,6 @@
 <template>
-  <dasbboard-card title="Cambiar paciente de sistema" :backLink="backLink">
+  <!-- Dashboard card -->
+  <dashboard-card title="Cambiar paciente de sistema">
     <!-- Title -->
     <loading-overlay
       v-if="loading"
@@ -21,7 +22,10 @@
       <!-- /.Información de paciente -->
 
       <!-- Cambio de sistema -->
-      <div v-if="canEditPatient(patient)" class="col-12 col-md- 9 col-lg-3 col-xl-3 mt-5">
+      <div
+        v-if="canEditPatient(patient)"
+        class="col-12 col-md- 9 col-lg-3 col-xl-3 mt-5"
+      >
         <p class="h5 black-alpha-40">Puede pasar a</p>
         <!-- Form -->
         <form @submit.prevent="changeSystem">
@@ -50,12 +54,13 @@
       <!-- /.Cambio de sistema -->
     </div>
     <!-- /.Row -->
-  </dasbboard-card>
+  </dashboard-card>
+  <!-- /.Dashboard card -->
 </template>
 
 <script>
 export default {
-  name: "PatientChangeSystem",
+  name: "PatientChangeSystemView",
   props: ["patient_id"],
   data() {
     return {
@@ -68,7 +73,7 @@ export default {
         url: "/dashboard/patients",
         text: "Pacientes",
       },
-      userSystemId: JSON.parse(localStorage.getItem('system')), 
+      userSystemId: JSON.parse(localStorage.getItem("system")),
     };
   },
   created() {
@@ -140,7 +145,8 @@ export default {
      * Obtener sistemas.
      */
     changeSystem() {
-      const confirmMessage = "¿Estas seguro que quieres pasar al paciente de sistema?\n Todos los médicos que tenga asignados serán desasignados del paciente";
+      const confirmMessage =
+        "¿Estas seguro que quieres pasar al paciente de sistema?\n Todos los médicos que tenga asignados serán desasignados del paciente";
       if (confirm(confirmMessage)) {
         const path = "/api/patient/system/change";
         const AuthStr =

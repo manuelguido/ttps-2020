@@ -9,7 +9,7 @@
       <div class="col-auto mb-4">
         <div class="card">
           <div class="card-body">
-            <line-chart/>
+            <line-chart />
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
       <div class="col-auto mb-4">
         <div class="card">
           <div class="card-body">
-            <scatter-chart/>
+            <scatter-chart />
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
       <div class="col-auto mb-4">
         <div class="card">
           <div class="card-body">
-            <scatter-chart/>
+            <scatter-chart />
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
       <div class="col-auto mb-4">
         <div class="card">
           <div class="card-body">
-            <line-chart/>
+            <line-chart />
           </div>
         </div>
       </div>
@@ -45,7 +45,7 @@
       <div class="col-auto mb-4">
         <div class="card">
           <div class="card-body">
-            <line-chart/>
+            <line-chart />
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@
       <div class="col-auto mb-4">
         <div class="card">
           <div class="card-body">
-            <line-chart/>
+            <line-chart />
           </div>
         </div>
       </div>
@@ -64,3 +64,9 @@
   </div>
   <!-- Container -->
 </template>
+
+<script>
+export default {
+  name: "ReportsView",
+};
+</script>

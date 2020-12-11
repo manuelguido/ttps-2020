@@ -73,6 +73,22 @@ class System extends Model
     }
 
     /**
+     * Obtener el jefe del sistema.
+     * 
+     * @return App\User.
+     */
+    public function chief()
+    {
+        return User::where([
+            ['system_user.system_id', '=', $this->system_id],
+            ['roles.role', '=', Role::ROLE_SYSTEM_CHIEF],
+        ])
+        ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
+        ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
+        ->join('system_user', 'system_user.user_id', '=', 'users.user_id');
+    }
+
+    /**
      * Obtener el total de salas del sistema
      * 
      * @return Integer.

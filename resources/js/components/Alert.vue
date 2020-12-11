@@ -111,7 +111,7 @@ export default {
   z-index: 1080 !important;
   width: auto;
   background: #fff;
-  padding: 1em 1.4em;
+  padding: 1.25em 1.5em;
   border-radius: 8px !important;
   box-shadow: 0 1px 4em 0 rgba(0,0,0,.25);
 }

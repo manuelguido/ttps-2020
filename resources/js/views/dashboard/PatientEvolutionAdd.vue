@@ -1,7 +1,7 @@
 <template>
   <!-- Dashboard card -->
-  <dasbboard-card>
-    <loading-dots v-if="loading" message="Cargando paciente"></loading-dots>
+  <dashboard-card>
+    <loading-overlay v-if="loading" message="Cargando paciente" />
     <!-- Row -->
     <div v-else class="row">
       <div class="col-12">
@@ -14,84 +14,29 @@
           <span class="black-alpha-50">Paciente: </span>
           <span class="primary">{{ patient.name }} {{ patient.lastname }}</span>
         </p>
-        <span>
-          <router-link
-            class="btn btn-outline-primary btn-sm"
-            :to="'/dashboard/patient/assignment/' + patient.patient_id"
-            >Asignar médicos</router-link
-          >
-          <change-system-modal
-            :patient="patient"
-            :systems="systems"
-            @reload-data="fetchHospitalizations()"
-          ></change-system-modal>
-        </span>
       </div>
 
-      <!-- Información -->
-      <div class="col-12">
-        <info-data data="DNI" :value="dni()"></info-data>
-        <info-data
-          data="Teléfono"
-          :value="patient.phone.toString()"
-        ></info-data>
-        <info-data
-          data="Fecha de nacimiento"
-          :value="patient.birth_date | formatDateFull"
-        ></info-data>
-        <info-data
-          data="Antecedentes personales"
-          :value="patient.personal_background"
-        ></info-data>
-        <info-data
-          data="Información familiar"
-          :value="patient.family_data"
-        ></info-data>
-        <hr class="mb-4" />
-        <info-data
-          data="Obra social"
-          :value="patient.medical_ensurance"
-        ></info-data>
-        <info-data data="Se encuentra en" :value="place()"></info-data>
-        <info-data data="Estado" :value="patient.patient_state"></info-data>
-      </div>
-      <!-- /.Información -->
-
-      <div class="col-12 mb-4">
+      <div class="col-12 my-5">
         <hr />
       </div>
 
-      <!-- Hospitalizaciones (Listado) -->
-      <!-- Son cambios de sistema + evoluciones -->
-      <div class="col-12 mb-3">
-        <clinic-data
-          @reload-data="fetchClinicData()"
-          :patient_id="patient_id"
-          :clinicData="clinicData"
-          :lastEvolutions="lastEvolutions"
-        >
-        </clinic-data>
+      <div class="col-12">
+        <evolution-modal-content></evolution-modal-content>
       </div>
-      <!-- /.Hospitalizaciones -->
     </div>
     <!-- /.Row -->
-  </dasbboard-card>
+  </dashboard-card>
   <!-- /.Dashboard card -->
 </template>
 
 <script>
-import { mdbListGroup, mdbListGroupItem } from "mdbvue";
-import ClinicData from "../../components/dashboard/patients/ClinicData.vue";
-import changeSystemModal from "../../components/dashboard/patients/ChangeSystemModal";
+import EvolutionModalContent from "../../components/dashboard/patients/EvolutionModal/Content";
 
 export default {
-  name: "Patient",
+  name: "PatientEvolutionAddView",
   props: ["patient_id"],
   components: {
-    mdbListGroup,
-    mdbListGroupItem,
-    "change-system-modal": changeSystemModal,
-    "clinic-data": ClinicData,
+    EvolutionModalContent,
   },
   data() {
     return {

@@ -25,6 +25,14 @@ import Settings from '../views/dashboard/Settings';
 // Data Load
 import DataLoad from '../views/auth/DataLoad';
 
+function dashboardHome() {
+  if (localStorage.routes) {
+    return JSON.parse(localStorage.getItem("routes"))[0].url;
+  } else {
+    '/';
+  }
+}
+
 const routes = [
   /**
    * Carga de informacion local del usuario
@@ -51,7 +59,7 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
-    redirect: '/dashboard/home',
+    redirect: dashboardHome(),
     meta: {
       requiresAuth: true,
       progress: {
@@ -59,19 +67,11 @@ const routes = [
           { call: 'color', modifier: 'temp', argument: '#ffb000' },
           { call: 'fail', modifier: 'temp', argument: '#6e0000' },
           { call: 'location', modifier: 'temp', argument: 'top' },
-          { call: 'transition', modifier: 'temp', argument: { speed: '1.5s', opacity: '0.6s', termination: 400 } }
+          { call: 'transition', modifier: 'temp', argument: { speed: '2.5s', opacity: '0.6s', termination: 400 } }
         ]
       }
     },
     children: [
-      /**
-       * Inicio.
-       */
-      {
-        path: '/dashboard/home',
-        name: 'DashboardHome',
-        component: Home
-      },
       /**
        * Pacientes.
        */

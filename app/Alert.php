@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Alert extends Model
 {
@@ -19,7 +20,7 @@ class Alert extends Model
      * @var array
      */
     protected $fillable = [
-        'patient_id', 'user_id', 'user_id', 'seen',
+        'patient_id', 'user_id', 'seen', 'description',
     ];
 
     public $timestamps = true;
@@ -37,7 +38,7 @@ class Alert extends Model
     /**
      * Obtener el paciente de la notificación.
      * 
-     * @return App\Patient.
+     * @return App\Medic.
      */
     public function medics()
     {
@@ -52,5 +53,15 @@ class Alert extends Model
     public function system()
     {
         return $this->belongsTo('App\System');
+    }
+
+    public static function createAlert($patient_id, $user, $textData = "")
+    {
+        $alert = new Alert;
+        $alert->patient_id = $patient_id;
+        $alert->user_id = $user->user_id;
+        $alert->description = $textData;
+        $alert->seen = false;
+        $alert->save();
     }
 }

@@ -5,7 +5,7 @@
     responsive
     arrows
     striped
-    
+    :small="false"
     defaultRow="No hay información"
     noFoundMessage="No hay resultados"
     searchPlaceholder="Buscar"
@@ -57,7 +57,7 @@ export default {
   margin-top: 40px !important;
 }
 
-.table-button {
+.custom-table .table-button {
   display: block !important;
   margin: auto !important;
   max-width: 80% !important;
@@ -73,11 +73,19 @@ export default {
   width: 300px !important;
 }
 
-.dataTables_wrapper .dataTables_filter{
+.dataTables_wrapper .dataTables_filter {
   width: 100% !important;
 }
 
 .dataTables_wrapper input {
   padding: 0 1.5em;
+}
+
+.custom-table th {
+  padding: 1em 0.5em !important;
+  font-weight: 400;
+  color: var(--black-alpha-70);
+  letter-spacing: 0.05em;
+  cursor: pointer;
 }
 </style>

@@ -4,156 +4,164 @@
     <!-- Row -->
     <div class="row">
       <!-- Col -->
-      <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+      <div
+        class="col-12 d-flex justify-content-between align-items-center mb-4"
+      >
+        <!-- Title -->
         <span>
           <dashboard-title :text="title" :margin="false"></dashboard-title>
         </span>
-        <!-- Modal de carga de paciente -->
-        <span>
-          <modal @reload-medics="fetchMedics()"></modal>
-        </span>
-        <!-- /.Modal de carga de paciente -->
-      </div>
-      <!-- /.Col -->
-
-      <!-- Col -->
-      <div class="col-12 mb-4">
-        <!-- Search form -->
-        <form class="search-form mx-auto my-3 my-lg-1 c-card">
-          <div class="input-group">
-            <input type="text" class="form-control" v-model="input_data" placeholder="Buscar médico: dni, nombre, apellido ..." aria-label="Buscar" aria-describedby="search-addon">
-            <div class="input-group-append">
-              <span class="input-group-text" id="search-addon"><i class="fas fa-search"></i></span>
-            </div>
-          </div>
-        </form>
-        <!-- /.Search form -->
       </div>
       <!-- /.Col -->
 
       <!-- Col -->
       <div class="col-12">
-        <!-- Tabla de pacientes -->
-        <medics-table :medics="medics" :loading="loading" @reload-medics="fetchMedics()"></medics-table>
+        <div class="row d-flex align-items-center">
+          <!-- Search form -->
+          <div class="col-12 mb-4">
+            <div class="card c-card">
+              <div class="card-body p-lg-5">
+                <loading-overlay v-if="loadingMedics" />
+                <data-table :columns="tableColumns" :rows="medics"></data-table>
+              </div>
+            </div>
+          </div>
+          <!-- Search form -->
+        </div>
       </div>
       <!-- /.Col -->
     </div>
     <!-- /.Row -->
-
   </div>
   <!-- Container -->
 </template>
 
 <script>
-import modal from '../../components/dashboard/medics/NewMedicModal';
-
 export default {
-  components: {
-    modal,
-  },
-  props: {
-    system_id: {
-      default: null,
-    }
-  },
-  data () {
+  name: "Medics",
+  title: "Médicos",
+  data() {
     return {
-      title: '',
-      loading: true,
+      title: "",
+      loadingMedics: true,
       medics: [],
-      input_data: '',
-      system: null,
-    }
+      tableColumns: [
+        {
+          label: "Apellido",
+          field: "lastname",
+          sort: "asc",
+        },
+        {
+          label: "Nombre",
+          field: "name",
+          sort: "asc",
+        },
+        {
+          label: "DNI",
+          field: "dni",
+          sort: "asc",
+        },
+        {
+          label: "Email",
+          field: "email",
+          sort: "asc",
+        },
+        {
+          label: "Teléfono",
+          field: "phone",
+          sort: "asc",
+        },
+        {
+          label: "",
+          field: "show",
+        },
+        {
+          label: "",
+          field: "change",
+        },
+      ],
+    };
   },
-  created () {
+  created() {
+    this.hasPermission("medic_index");
+    this.setTitle();
+  },
+  mounted() {
     this.$Progress.start();
     this.fetchMedics();
-
-    if (this.system_id) {
-      this.fetchSystem();
-    } else {
-      this.title = "Médicos";
-    }
   },
   methods: {
-    loadMedics (data) {
-      var maindata = data;
-      maindata.forEach(element => {
-        element.show = true;
-      });
-      this.medics = maindata;
+    /**
+     * Determinar el titulo de la página.
+     *
+     * @return void.
+     */
+    setTitle() {
+      var condition = false;
+      const roleData = JSON.parse(localStorage.getItem("role"));
+      const systemData = JSON.parse(localStorage.getItem("system"));
+      const roleGuard = "Jefe de Sistema";
+      const roleMedic = "Médico";
+
+      this.title =
+        roleData == roleGuard || roleData == roleMedic
+          ? "Médicos de " + systemData.system
+          : "Médicos";
     },
 
-    fetchMedics () {
-      const path = '/api/medic/assigned/index';
-      const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
-
-      axios.get(path, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': AuthStr
-        }
-      }).then((res) => {
-        this.loadMedics(res.data);
+    /**
+     * Cargar información de médicos para la tabla.
+     *
+     * @return void.
+     */
+    loadMedics(data) {
+      for (let i = 0; i < data.length; i++) {
+        this.medics.push({
+          lastname: data[i].lastname,
+          name: data[i].name,
+          dni: this.formatDni(data[i].dni),
+          email: data[i].email,
+          phone: data[i].phone,
+          show:
+            '<a href="/dashboard/medic/' +
+            data[i].medic_id +
+            '" class="btn btn-primary btn-sm table-button">Ver</a>',
+          change:
+            '<a href="/dashboard/medic/system/change/' +
+            data[i].medic_id +
+            '" class="btn btn-deep-purple btn-sm table-button">Cambiar sistema</a>',
+        });
+        this.loadingMedics = false;
         this.$Progress.finish();
-        this.loading = false;
-      }).catch((err) => {
-        this.errorHandler(err.response.status);
-        console.log(err)
-      });
+      }
     },
 
-    matchData (value) {
-      return (value.toLowerCase().match(this.input_data.toLowerCase()))
+    /**
+     * Obtener todos los médicos del sistema.
+     *
+     * @return void.
+     */
+    fetchMedics() {
+      const path = "/api/medic/assigned/index";
+      const AuthStr =
+        "Bearer " + localStorage.getItem("access_token").toString();
+
+      axios
+        .get(path, {
+          headers: {
+            Accept: "application/json",
+            Authorization: AuthStr,
+          },
+        })
+        .then((res) => {
+          // this.medics = res.data;
+          this.loadMedics(res.data);
+        })
+        .catch((err) => {
+          this.errorHandler(err.response.status);
+          console.log(err);
+        });
     },
-    
-    mathSearch (medic) {
-      return (
-        this.matchData(medic.name) ||
-        this.matchData(medic.lastname) ||
-        this.matchData(medic.name+' '+medic.lastname) ||
-        this.matchData(medic.system) ||
-        this.matchData(medic.dni.toString())
-      );
-    }
   },
-  watch: {
-    // Search function
-		input_data: function() {
-      // Query
-      this.medics.forEach(medic => {
-        medic.show = this.mathSearch(medic);
-      });
-    }
-  }
-}
+};
 </script>
-
-<style scoped>
-/* Searchbar */
-.search-form {
-  /* background: var(--black-alpha-03); */
-  background: #fff;
-	border-radius: 8px;
-	border: 0 none;
-	padding: 10px;
-}
-
-.search-form input {
-	width: 100%;
-	height: 100%;
-}
-
-.search-form input,
-.search-form input:focus {
-	color: var(--white-a);
-}
-
-.search-form input:focus,
-.search-form * {
-	box-shadow: none;
-	background: none;
-	border: 0 none;
-	outline: none ;
-}
-</style>

@@ -7,6 +7,7 @@ use Illuminate\Support\Carbon;
 use App\PatientState;
 use App\System;
 use App\Medic;
+use App\Alert;
 use DB;
 
 class Patient extends Model
@@ -83,7 +84,8 @@ class Patient extends Model
      */
     public function system()
     {
-        return $this->belongsTo('App\System', 'system_id');
+        return System::where('system_id', '=', $this->system_id);
+        // return $this->belongsTo('App\System');
     }
 
     /**
@@ -115,11 +117,10 @@ class Patient extends Model
     public function medics()
     {
         return Medic::join('patient_medic', 'patient_medic.medic_id', '=', 'medics.medic_id')->where('patient_medic.patient_id', '=', $this->patient_id);
-        // return $this->belongsToMany('App\Medic', 'patient_medic', 'patient_id', 'medic_id');
     }
 
     /**
-     * Obtener los pacientes asignados del médico.
+     * Obtener los pacientes asignados del médico con la información de usuario.
      * 
      * @return App\Patient.
      */
@@ -136,11 +137,29 @@ class Patient extends Model
      */
     public function posibleMedics()
     {
-        return Medic::join('users', 'medics.user_id', '=', 'users.user_id')
-            // ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
-            // ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
-            // ->whereNotIn('users.user_id', $this->medics()->toArray())
+        $assigned = $this->medicsFull();
+
+        $allMedics = Medic::where('system_user.system_id', '=', $this->system_id)
+            ->join('users', 'medics.user_id', '=', 'users.user_id')
+            ->join('system_user', 'system_user.user_id', '=', 'users.user_id')
             ->get();
+
+        $notAssigned = [];
+        
+        foreach ($allMedics as $medic) {
+            $isIn = false;
+            foreach ($assigned as $current) {
+                if ($medic->medic_id == $current->medic_id) {
+                    $isIn = true;
+                    break;
+                }
+            }
+            if (!$isIn) {
+                array_push($notAssigned, $medic);
+            }
+        }
+
+        return $notAssigned;
     }
 
     /**
@@ -326,6 +345,16 @@ class Patient extends Model
     }
 
     /**
+     * Desasignar todos los médicos de un paciente.
+     * 
+     * @return void.
+     */
+    private function unassignMedics()
+    {
+        DB::table('patient_medic')->where('patient_id', '=', $this->patient_id)->delete();
+    }
+
+    /**
      * Asentar el cambio de sistema.
      * 
      * @return void.
@@ -334,6 +363,21 @@ class Patient extends Model
     {
         // Chequear reglas
         // ...
+
+        // Texto para la alerta
+        $textData = "El paciente ".$this->name." ".$this->lastname." fue cambiado del sistema ".$old_system->system." a ".$new_system->system." .";
+
+        // Crear alerta a los medicos
+        foreach ($this->medicsFull() as $medic) {
+            Alert::createAlert($this->patient_id, $medic, $textData);
+        }
+
+        // // Crear alerta al jefe del sistema
+        $chief = $this->system()->first()->chief()->first();
+        Alert::createAlert($this->patient_id, $chief, $textData);
+
+        // // Desasignar todos los pacientes
+        $this->unassignMedics();
 
         // Cambiar el sistema en si
         $entry = $this->currentEntry();

@@ -1,6 +1,6 @@
 <template>
   <!-- Dashboard card -->
-  <dasbboard-card>
+  <dashboard-card>
     <!-- Row -->
     <div v-if="!editing" class="row">
       <!-- Title -->
@@ -99,7 +99,7 @@
       <!-- /.Col -->
     </div>
     <!-- Row -->
-  </dasbboard-card>
+  </dashboard-card>
   <!-- /.Dashboard card -->
 </template>
 
@@ -111,7 +111,7 @@ export default {
     return {
       user: JSON.parse(localStorage.getItem("user")),
       role: JSON.parse(localStorage.getItem("role")),
-      system: JSON.parse(localStorage.getItem("system")),
+      system: JSON.parse(localStorage.getItem("system")).system,
       editing: false,
       newUserData: {
         name: "",

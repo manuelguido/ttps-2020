@@ -2,7 +2,7 @@
   <div :class="classList">
     <label>{{ label }}</label>
     <input
-      class="v-input mb-2"
+      class="v-input m-0"
       v-bind:value="value"
       v-on:input="$emit('input', $event.target.value)"
       @keypress="dataValidation($event)"
@@ -108,7 +108,7 @@ export default {
   border: 0 !important;
   border-radius: 6px;
   background: var(--primary-light);
-  padding: 10px 16px !important;
+  padding: 12px 16px !important;
   color: #232323 !important;
 }
 

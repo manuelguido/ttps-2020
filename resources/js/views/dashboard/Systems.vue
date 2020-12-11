@@ -12,7 +12,7 @@
 
       <!-- Col -->
       <div class="col-12 col-lg-10 text-left">
-        <systems-table></systems-table>
+        <systems-table />
       </div>
       <!-- /.Col -->
     </div>
@@ -22,11 +22,12 @@
 </template>
 
 <script>
-import systemsTable from '../../components/dashboard/systems/systemsTable/Index';
+import SystemsTable from "../../components/dashboard/systems/systemsTable/Index";
 
 export default {
+  name: "SystemsView",
   components: {
-    'systems-table': systemsTable
+    SystemsTable,
   },
-}
+};
 </script>

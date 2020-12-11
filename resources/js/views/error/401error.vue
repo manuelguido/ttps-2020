@@ -2,9 +2,9 @@
   <div
     class="container d-flex flex-column justify-content-center vertical-align-center"
   >
-    <h1 class="display-1 black-alpha-10 w-600">Error 404</h1>
+    <h1 class="display-1 black-alpha-10 w-600">Error 401</h1>
     <h1 class="h1 black-alpha-50 mb-5">
-      Esta página no existe.
+      No tienes permiso para realizar esta acción.
     </h1>
     <span class="btn btn-primary mx-0" @click="redirect"
       ><i class="fad fa-chevron-left mr-3"></i>Volver</span
@@ -14,8 +14,8 @@
 
 <script>
 export default {
-  name: "Error404Page",
-  title: "Error 404",
+  name: "Error401Page",
+  title: "Error 401",
   methods: {
     /**
      * Redirecciona al dashboard

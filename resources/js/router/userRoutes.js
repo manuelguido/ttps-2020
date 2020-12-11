@@ -1,10 +1,11 @@
 // Dashboard
 import Dashboard from '../layouts/Dashboard'
 // Profile
-import Profile from '.././views/user/Profile'
-// Notifications
-import Notifications from '.././views/user/Notifications'
-import NotificationsHistory from '.././views/user/NotificationsHistory'
+import Profile from '../views/user/Profile'
+// Alertas
+import Alerts from '../views/user/Alerts'
+import AlertsHistory from '../views/user/AlertsHistory'
+
 const routes = [
   {
     path: '/user',
@@ -21,25 +22,17 @@ const routes = [
         component: Profile
       },
       {
-        path: '/user/notifications',
-        name: 'Notifications',
-        component: Notifications
+        path: '/user/alerts',
+        name: 'Alerts',
+        component: Alerts
       },
       {
-        path: '/user/notifications/history',
-        name: 'NotificationsHistory',
-        component: NotificationsHistory
+        path: '/user/alerts/history',
+        name: 'AlertsHistory',
+        component: AlertsHistory
       }
-    ]
+    ],
   },
-  {
-    path: '/profile',
-    redirect: '/user/profile',
-  },
-  {
-    path: '/notifications',
-    redirect: '/user/notifications',
-  }
 ]
 
 export default routes

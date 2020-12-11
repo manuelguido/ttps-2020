@@ -138,13 +138,40 @@ class User extends Authenticatable
 
 
     /**
-     * Obtener los cambios de sistema que generó el usuario.
+     * Obtener todas las alertas del usuario.
      * 
-     * @return App\SystemChange.
+     * @return App\Alert Collection.
      */
-    public function systemChanges()
+    public function alerts()
     {
-        return $this->hasMany('App\SystemChange');
+        return Alert::where('user_id', $this->user_id)->orderBy('created_at', 'DESC');
+    }
+
+    /**
+     * Obtener todas las alertas del usuario con información adicional.
+     * 
+     * @return Collection.
+     */
+    public function alertsFull()
+    {
+        return Alert::where('user_id', $this->user_id)->orderBy('created_at', 'DESC')
+            ->join('patients', 'patients.patient_id', '=', 'alerts.patient_id')
+            ->select('alerts.*', 'patients.name', 'patients.lastname', 'patients.dni');
+    }
+
+    /**
+     * Obtener todas las alertas del usuario con información adicional.
+     * 
+     * @return Collection.
+     */
+    public function alertsBySeen($value)
+    {
+        return Alert::where([
+                ['user_id', $this->user_id],
+                ['seen', $value],
+            ])
+            ->join('patients', 'patients.patient_id', '=', 'alerts.patient_id')
+            ->select('alerts.*', 'patients.name', 'patients.lastname', 'patients.dni');
     }
 
     /**

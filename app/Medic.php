@@ -66,6 +66,7 @@ class Medic extends Model
             ->join('users', 'users.user_id', '=', 'medics.user_id')
             ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
             ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
+            ->select('medic_id', 'name', 'lastname', 'dni', 'email', 'phone')
             ->get();
     }
 }

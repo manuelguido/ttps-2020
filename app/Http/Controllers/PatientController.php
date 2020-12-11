@@ -225,7 +225,7 @@ class PatientController extends Controller
      */
     public function changeSystem(Request $data)
     {
-        try {
+        // try {
             $this->validatePatientId($data);
             $this->validateSystemId($data);
 
@@ -241,9 +241,9 @@ class PatientController extends Controller
             
                 $message = ['status' => 'success', 'message' => 'Cambiaste a ' . $patient->name . ' ' . $patient->lastname . ' de ' . $oldSystem->system . ' a ' . $newSystem->system, 'patient' => Patient::full($patient->patient_id)];
             }
-        } catch (\Exception $e) {
-            $message = ['status' => 'error', $e[0]];
-        }    
+        // } catch (\Exception $e) {
+            // $message = ['status' => 'error', $e[0]];
+        // }    
         return response()->json($message, 200);
     }
 

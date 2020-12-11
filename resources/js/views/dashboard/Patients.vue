@@ -21,6 +21,7 @@
           <div class="col-12 mb-4">
             <div class="card c-card">
               <div class="card-body p-lg-5">
+                <loading-overlay v-if="loadingPatients" />
                 <data-table
                   :columns="tableColumns"
                   :rows="patients"
@@ -28,27 +29,23 @@
               </div>
             </div>
           </div>
-          <!-- Search form -->
+          <!-- /.Search form -->
         </div>
       </div>
       <!-- /.Col -->
     </div>
     <!-- /.Row -->
   </div>
-  <!-- Container -->
+  <!-- /.Container -->
 </template>
 
 <script>
 export default {
-  name: "PatientsPage",
-  props: {
-    system_id: {
-      default: null,
-    },
-  },
+  name: "PatientsView",
   data() {
     return {
-      title: "Pacientes",
+      title: "",
+      loadingPatients: true,
       patients: [],
       tableColumns: [
         {
@@ -95,11 +92,33 @@ export default {
       ],
     };
   },
+  created() {
+    this.hasPermission("patient_index");
+    this.setTitle();
+  },
   mounted() {
     this.$Progress.start();
     this.fetchPatients();
   },
   methods: {
+    /**
+     * Determinar el titulo de la página.
+     *
+     * @return void.
+     */
+    setTitle() {
+      var condition = false;
+      const roleData = JSON.parse(localStorage.getItem("role"));
+      const systemData = JSON.parse(localStorage.getItem("system"));
+      const roleGuard = "Jefe de Sistema";
+      const roleMedic = "Médico";
+
+      this.title =
+        roleData == roleGuard || roleData == roleMedic
+          ? "Pacientes de " + systemData.system
+          : "Pacientes";
+    },
+
     /**
      * Cargar información de pacientes para la tabla.
      *
@@ -110,7 +129,7 @@ export default {
         this.patients.push({
           lastname: data[i].lastname,
           name: data[i].name,
-          dni: data[i].dni,
+          dni: this.formatDni(data[i].dni),
           room: data[i].room,
           bed: "Cama " + data[i].bed_number,
           show:
@@ -126,10 +145,12 @@ export default {
             data[i].patient_id +
             '" class="btn btn-deep-purple btn-sm table-button">Cambiar sistema</a>',
           evolve:
-            '<a href="/dashboard/patient/evolution/add' +
+            '<a href="/dashboard/patient/evolution/add/' +
             data[i].patient_id +
             '" class="btn btn-purple btn-sm table-button">Evolucionar</a>',
         });
+        this.loadingPatients = false;
+        this.$Progress.finish();
       }
     },
 
@@ -152,9 +173,6 @@ export default {
         })
         .then((res) => {
           this.loadPatients(res.data);
-          console.log(res.data);
-          this.$Progress.finish();
-          this.loading = false;
         })
         .catch((err) => {
           this.errorHandler(err.response.status);
@@ -164,32 +182,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Searchbar */
-.search-form {
-  /* background: var(--black-alpha-03); */
-  background: #fff;
-  border-radius: 8px;
-  border: 0 none;
-  padding: 10px;
-}
-
-.search-form input {
-  width: 100%;
-  height: 100%;
-}
-
-.search-form input,
-.search-form input:focus {
-  color: var(--white-a);
-}
-
-.search-form input:focus,
-.search-form * {
-  box-shadow: none;
-  background: none;
-  border: 0 none;
-  outline: none;
-}
-</style>

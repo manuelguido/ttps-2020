@@ -26,13 +26,12 @@ class MedicController extends Controller
      */
     public function indexAssigned(Request $request)
     {
-        $user = User::find($request->user()->user_id);        
-        $data = [];
-        if ($user->hasRole(Role::ROLE_SYSTEM_CHIEF))
-        {
-            $system_id = $user->systems()->first()->system_id;
-            $data = Medic::allWithUserDataBySystem($system_id);
-        }
+        $user = $request->user();        
+        
+        $system_id = $user->systems()->first()->system_id;
+        // if ( )
+        $data = Medic::allWithUserDataBySystem($system_id);
+        
         return response()->json($data);
     }
 

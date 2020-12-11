@@ -9,9 +9,19 @@
         <div class="card c-card">
           <!-- Card Body -->
           <div class="card-body p-md-4 p-lg-5">
+            <div v-if="!noBack" class="d-flex align-items-baseline">
+              <back-link />
+            </div>
             <div class="d-flex align-items-baseline">
-              <back-arrow v-if="backLink" :backLink="backLink"/>
-              <h1 v-if="title" class="h4 black-alpha-50 mb-3">{{ title }}</h1>
+              <h1
+                v-if="title"
+                :class="[
+                  'h4 mb-3 w-600',
+                  colored ? 'primary' : 'black-alpha-50',
+                ]"
+              >
+                {{ title }}
+              </h1>
             </div>
             <hr v-if="title" class="mb-5" />
             <!-- Slot -->
@@ -31,15 +41,19 @@
 
 <script>
 export default {
-  name: "DashboardCard",
+  name: "DashboardCardLayout",
   props: {
     title: {
       type: String,
       default: null,
     },
-    backLink: {
-      type: Object,
-      default: null,
+    noBack: {
+      type: Boolean,
+      default: false,
+    },
+    colored: {
+      type: Boolean,
+      default: false,
     },
   },
 };

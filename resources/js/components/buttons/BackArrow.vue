@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     goBack() {
-      if (this.backLink.url) {
+      if (this.backLink.url != '') {
         this.$router.push({ path: this.backLink.url });
       } else {
         this.$router.go(-1);

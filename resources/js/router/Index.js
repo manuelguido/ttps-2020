@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     if (!store.getters.loggedIn) {
       next({
-        name: 'login',
+        name: 'Login',
       })
     } else {
       next()
@@ -55,7 +55,7 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     if (store.getters.loggedIn) {
       next({
-        name: 'dashboard',
+        name: 'Dashboard',
       })
     } else {
       next()

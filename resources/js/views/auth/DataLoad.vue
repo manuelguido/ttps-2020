@@ -29,7 +29,7 @@ export default {
         })
         .then((res) => {
           // Carga la información
-          this.storeUser(res.data);
+          this.storeUserData(res.data);
           // Redirecciona
           this.redirect();
         })
@@ -46,7 +46,7 @@ export default {
     /**
      * Almacenar información de usuario localmente
      */
-    storeUser(data) {
+    storeUserData(data) {
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("role", JSON.stringify(data.role));
       localStorage.setItem("permissions", JSON.stringify(data.permissions));

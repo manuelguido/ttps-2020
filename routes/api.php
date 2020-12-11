@@ -145,13 +145,38 @@ Route::prefix('/evolution')->group(function() {
 
 /*
 |--------------------------------------------------------------------------
+| API de alertas
+|--------------------------------------------------------------------------
+*/
+Route::prefix('/alert')->group(function() {
+
+  // Obtener todas las notificaciones de un usuario.
+  Route::get('/index', 'AlertController@index')->middleware('auth:api'); // Funciona
+
+  // Obtener todas las notificaciones de un usuario.
+  Route::get('/read/index', 'AlertController@readIndex')->middleware('auth:api'); // Funciona
+
+  // Obtener todas las notificaciones de un usuario.
+  Route::get('/unread/index', 'AlertController@unreadIndex')->middleware('auth:api'); // Funciona
+
+  // Obtener todas las notificaciones de un usuario.
+  Route::get('/unread/count', 'AlertController@unreadCount')->middleware('auth:api'); // Funciona
+
+  // Marcar noficación como leída.
+  Route::post('/read', 'AlertController@read')->middleware('auth:api'); // ?
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
 | API de médicos
 |--------------------------------------------------------------------------
 */
 Route::prefix('/medic')->group(function() {
   
   // Retorna todos los medicos
-  Route::get('/index', 'MedicController@index')->middleware('auth:api', 'permission:medic_index'); // Tiene
+  Route::get('/index', 'MedicController@index')->middleware('auth:api', 'permission:medic_index'); // ?
   
   // Retorna todos los pacientes
   Route::get('/assigned/index', 'MedicController@indexAssigned')->middleware('auth:api', 'permission:medic_index'); // Funciona
@@ -169,6 +194,6 @@ Route::prefix('/medic')->group(function() {
 |--------------------------------------------------------------------------
 */
 // Autorización
-Route::get('/authorize/google', 'SocialAuthController@redirectToProvider')->name('api.social.redirect');
+Route::get('/authorize/google', 'SocialAuthController@redirectToProvider')->name('api.social.redirect'); // Funciona
 // Ruta de callback
-Route::get('/authorize/google/callback', 'SocialAuthController@handleProviderCallback')->name('api.social.callback');
+Route::get('/authorize/google/callback', 'SocialAuthController@handleProviderCallback')->name('api.social.callback'); // Funciona

@@ -85,7 +85,7 @@ Vue.filter('formatDateForm', function (value) {
  * Botones
  */
 // Layout de tarjeta de dashboard
-Vue.component('dasbboard-card', require('./layouts/DashboardCard.vue').default);
+Vue.component('dashboard-card', require('./layouts/DashboardCard.vue').default);
 
 
 /**

@@ -88,21 +88,21 @@
 
 /* Full height */
 .full-height {
-  min-height: 100vh;
+  min-height: 100vh !important;
 }
 
 /* Font weight */
 .w-300 {
-  font-weight: 300;
+  font-weight: 300 !important;
 }
 .w-400 {
-  font-weight: 400;
+  font-weight: 400 !important;
 }
 .w-600 {
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 .w-700 {
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
 /* Font color */
