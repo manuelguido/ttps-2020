@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 |--------------------------------------------------------------------------
 */
 // Login user
-Route::post('/login', 'AuthController@login');
+Route::post('/login', 'AuthController@login'); // Funciona
 // Logout user
-Route::middleware('auth:api')->post('/logout', 'AuthController@logout');
+Route::middleware('auth:api')->post('/logout', 'AuthController@logout'); // Funciona
 // Consultar si tiene el rol correspondiente
-Route::middleware('auth:api')->get('/', 'RoleController@hasRole');
+Route::middleware('auth:api')->get('/', 'RoleController@hasRole'); // Funciona
 
 /*
 |--------------------------------------------------------------------------
@@ -22,22 +22,22 @@ Route::middleware('auth:api')->get('/', 'RoleController@hasRole');
 Route::prefix('/user')->middleware('auth:api')->group(function() {
 
   // Obtener usuario
-  Route::get('/', 'UserController@user');
+  Route::get('/', 'UserController@user'); // ?
 
   // Obtener rol de usuario
-  Route::get('/role', 'UserController@role');
+  Route::get('/role', 'UserController@role'); // ?
 
   // Obtener sistema del usuario
-  Route::get('/system', 'UserController@system');
+  Route::get('/system', 'UserController@system'); // ?
 
   // Obtener rutas del usuario
-  Route::get('/routes', 'UserController@routes');
+  Route::get('/routes', 'UserController@routes'); // ?
 
   // Obtener usuario con su rol, sus rutas(de url) y su sistema correspondiente
   Route::get('/full', 'UserController@fullUser');
 
   // Actualizar perfil de usuario
-  Route::post('/profile/update', 'UserController@updateProfile');
+  Route::post('/profile/update', 'UserController@updateProfile'); // ?
 });
 
 
@@ -47,8 +47,11 @@ Route::prefix('/user')->middleware('auth:api')->group(function() {
 | API de seguros médicos
 |--------------------------------------------------------------------------
 */
-// Retorna todos los seguros médicos
-Route::get('/medical_ensurance/index', 'MedicalEnsuranceController@index');
+Route::prefix('/medical_ensurance')->middleware('auth:api')->group(function() {
+  
+  // Retorna todos los seguros médicos
+  Route::get('index', 'MedicalEnsuranceController@index'); //Funciona
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -57,17 +60,25 @@ Route::get('/medical_ensurance/index', 'MedicalEnsuranceController@index');
 */
 Route::prefix('/system')->middleware('auth:api')->group(function() {
 
-  // Retorna todos los sistemas
+  // Retorna todos los sistemas.
   Route::get('/index', 'SystemController@index'); // Funciona
-  
-  // Retorna todos los sistemas con su información de camas y habitaciones
-  Route::get('/index/full', 'SystemController@indexFull'); // Funciona
 
   // Retorna todos los sistemas habiilitados (bajo regla) para hacer el cambio de sistema.
   Route::post('/allowed/index', 'SystemController@allowedIndex'); // Funciona
 
   // Retorna todo un sistema con su información de camas y habitaciones
-  Route::get('/full', 'SystemController@showFull'); // Funciona
+  Route::get('/show', 'SystemController@show'); // Funciona
+});
+
+
+Route::prefix('/system/guard')->group(function() {
+
+  // Retorna todos los sistemas.
+  Route::post('/inite_beds/update', 'SystemController@updateInfiniteBedsOnGuard')->middleware('auth:api', 'system:Guardia', 'role:Jefe de Sistema'); // Funciona
+
+    // Obtener si la guardia tiene la posibilidad de adminir un nuevo paciente.
+    Route::post('/available', 'SystemController@guardAvailable')->middleware('auth:api'); // Funciona
+
 });
 
 
@@ -76,8 +87,11 @@ Route::prefix('/system')->middleware('auth:api')->group(function() {
 | API de estados de pacientes
 |--------------------------------------------------------------------------
 */
-// Retorna todos los estados de pacientes
-Route::middleware('auth:api')->get('/patient_state/index', 'PatientStateController@index');
+Route::prefix('/patient_state')->middleware('auth:api')->group(function() {
+  
+  // Retorna todos los estados de pacientes
+  Route::get('index', 'PatientStateController@index'); // ?
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -99,7 +113,10 @@ Route::prefix('/patient')->group(function() {
   Route::get('/show/{id}', 'PatientController@show')->middleware('auth:api', 'permission:patient_show'); // Funciona
 
   // Almacena un paciente
-  Route::post('/store', 'PatientController@store')->middleware('auth:api', 'permission:patient_store'); // Funciona
+  Route::post('/store', 'PatientController@store')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // ?
+
+  // Almacena un paciente
+  Route::post('/new_entry', 'PatientController@newEntry')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // ?
 
   // Actualizar el perfil de usuario
   Route::post('/update', 'PatientController@update')->middleware('auth:api', 'permission:patient_update'); // ?
@@ -151,7 +168,7 @@ Route::prefix('/evolution')->group(function() {
 Route::prefix('/alert')->group(function() {
 
   // Obtener todas las notificaciones de un usuario.
-  Route::get('/index', 'AlertController@index')->middleware('auth:api'); // Funciona
+  Route::get('/index', 'AlertController@index')->middleware('auth:api'); // Funciona (Aun no esta en uso)
 
   // Obtener todas las notificaciones de un usuario.
   Route::get('/read/index', 'AlertController@readIndex')->middleware('auth:api'); // Funciona
@@ -163,7 +180,7 @@ Route::prefix('/alert')->group(function() {
   Route::get('/unread/count', 'AlertController@unreadCount')->middleware('auth:api'); // Funciona
 
   // Marcar noficación como leída.
-  Route::post('/read', 'AlertController@read')->middleware('auth:api'); // ?
+  Route::post('/read', 'AlertController@read')->middleware('auth:api'); // Funciona
 
 });
 
