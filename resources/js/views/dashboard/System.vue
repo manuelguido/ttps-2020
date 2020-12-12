@@ -65,18 +65,14 @@
 
       <div v-if="showingMedics" class="col-12">
         <dashboard-title text="Médicos"></dashboard-title>
-        <medics-short-table
-          :medics="medics"
-          :loading="loadingMedics"
-        ></medics-short-table>
+        <hr />
+        <medics-table :system_id="system_id"></medics-table>
       </div>
 
       <div v-else class="col-12">
         <dashboard-title text="Pacientes"></dashboard-title>
-        <patients-short-table
-          :patients="patients"
-          :loading="loadingPatients"
-        ></patients-short-table>
+        <hr />
+        <patients-table :system_id="system_id"></patients-table>
       </div>
     </div>
     <!-- /.Row -->
@@ -88,6 +84,8 @@
 import Dashboard from "../../layouts/Dashboard.vue";
 import InfiniteBedsSwitch from "../../components/dashboard/systems/InfiniteBedsSwitch.vue";
 import BedUsage from "../../components/dashboard/systems/BedUsage.vue";
+import MedicsTable from "../../components/dashboard/systems/MedicsTable.vue";
+import PatientsTable from "../../components/dashboard/systems/PatientsTable.vue";
 
 export default {
   name: "SystemView",
@@ -95,6 +93,8 @@ export default {
     Dashboard,
     InfiniteBedsSwitch,
     BedUsage,
+    MedicsTable,
+    PatientsTable,
   },
   name: "system",
   props: ["system_id"],
@@ -105,20 +105,14 @@ export default {
       rooms: [],
       showingMedics: true,
       loadingSystem: true,
-      loadingMedics: true,
-      loadingPatients: true,
-      medics: [],
-      patients: [],
       backLink: {
         url: "/dashboard/systems",
         text: "Sistemas",
       },
     };
   },
-  mounted() {
+  created() {
     this.fetchSystem();
-    this.fetchMedics();
-    this.fetchPatients();
   },
   methods: {
     /**
@@ -148,90 +142,6 @@ export default {
           this.errorHandler(err.response.status);
           console.log(err);
         });
-    },
-
-    /**
-     * Obtener los médicos del sistema.
-     */
-    fetchMedics() {
-      const path = "/api/medic/index/" + this.system_id;
-      const AuthStr =
-        "Bearer " + localStorage.getItem("access_token").toString();
-
-      axios
-        .get(path, {
-          headers: {
-            Accept: "application/json",
-            Authorization: AuthStr,
-          },
-        })
-        .then((res) => {
-          this.loadMedics(res.data);
-          this.loadingMedics = false;
-        })
-        .catch((err) => {
-          this.errorHandler(err.response.status);
-
-          var $this = this;
-          setTimeout(function () {
-            $this.fetchMedics();
-          }, 1300);
-          console.log(err);
-        });
-    },
-
-    /**
-     * Cargar medicos en variable local.
-     */
-    loadMedics(data) {
-      this.medics = [];
-      var maindata = data;
-      maindata.forEach((element) => {
-        element.show = true;
-      });
-      this.medics = maindata;
-    },
-
-    /**
-     * Obtener los pacientes del sistema.
-     */
-    fetchPatients() {
-      const path = "/api/patient/index/" + this.system_id;
-      const AuthStr =
-        "Bearer " + localStorage.getItem("access_token").toString();
-
-      axios
-        .get(path, {
-          headers: {
-            Accept: "application/json",
-            Authorization: AuthStr,
-          },
-        })
-        .then((res) => {
-          this.loadPatient(res.data);
-          this.loadingPatients = false;
-        })
-        .catch((err) => {
-          this.errorHandler(err.response.status);
-
-          var $this = this;
-          setTimeout(function () {
-            $this.fetchPatients();
-          }, 1300);
-          console.log(err);
-        });
-    },
-
-    /**
-     * Cargar pacientes en variable local.
-     */
-    loadPatient(data) {
-      this.patients = [];
-      var maindata = data;
-      maindata.forEach((element) => {
-        element.show = true;
-      });
-      this.patients = maindata;
     },
   },
 };

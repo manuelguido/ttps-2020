@@ -56,8 +56,9 @@ export default {
 .v-input {
   width: 100%;
   border: 0 !important;
-  border-radius: 6px;
-  background: var(--primary-light);
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  background: #eee;
   padding: 10px 16px !important;
   color: #232323 !important;
 }

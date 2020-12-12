@@ -1,6 +1,6 @@
 <template>
   <div :class="classList">
-    <label>{{ label }}</label>
+    <label v-if="label">{{ label }}</label>
     <input
       class="v-input m-0"
       v-bind:value="value"
@@ -107,7 +107,7 @@ export default {
   width: 100%;
   border: 0 !important;
   border-radius: 6px;
-  background: var(--primary-light);
+  background: #eee;
   padding: 12px 16px !important;
   color: #232323 !important;
 }

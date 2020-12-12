@@ -22,10 +22,7 @@
             <div class="card c-card">
               <div class="card-body p-lg-5">
                 <loading-overlay v-if="loadingPatients" />
-                <data-table
-                  :columns="tableColumns"
-                  :rows="patients"
-                ></data-table>
+                <data-table :columns="tableColumns" :rows="patients"></data-table>
               </div>
             </div>
           </div>

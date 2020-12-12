@@ -22,7 +22,7 @@ export default {
   border-radius: 6px;
   background: #fff;
   padding: 14px 20px !important;
-  color: #454545;
+  color: #232323;
 }
 
 .is-invalid {

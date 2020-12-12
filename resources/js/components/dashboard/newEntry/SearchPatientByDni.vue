@@ -33,7 +33,7 @@
           min="0"
           max="9999999999"
           class="id-input mb-4"
-          placeholder="Ingresa el DNI del paciente"
+          placeholder="Ingresa el DNI sin puntos ni espacios"
           v-model="dniInput"
           @keypress="isNumber($event)"
         />
@@ -104,14 +104,15 @@ export default {
 
 <style scoped>
 .id-input {
-  background: #f1f1f1;
+  background: #eee;
   border: 0 none;
   border-radius: 5px;
   outline: none !important;
   padding: 0.8em 1em;
   width: 100%;
+  color: #232323;
 }
 .id-input::placeholder {
-  color: #888 !important;
+  color: #444 !important;
 }
 </style>
