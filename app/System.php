@@ -194,26 +194,44 @@ class System extends Model
         // Selección
         switch ($this->system)
         {
+            // Guardia
             case System::SYSTEM_GUARD:
                 $filteredData = $systems->filter(function ($system) {
                     return ($system->system == System::SYSTEM_UTI || $system->system == System::SYSTEM_COVID_FLOOR);
                 });
                 break;
+            // Piso covid
             case System::SYSTEM_COVID_FLOOR:
                 $filteredData = $systems->filter(function ($system) {
                     return ($system->system == System::SYSTEM_UTI || $system->system == System::SYSTEM_HOTEL || $system->system == System::SYSTEM_HOME);
                 });
                 break;
+            // UTI (Tiene caso especial de guardia)
             case System::SYSTEM_UTI:
-                $filteredData = $systems->filter(function ($system) {
-                    return ($system->system == System::SYSTEM_COVID_FLOOR || $system->system == System::SYSTEM_GUARD);
-                });
-                break;
+                /**
+                 * Caso especial: Guardia tiene disponibles y en UTI no hay camas 
+                 */
+                $guard = System::where('system', '=', System::SYSTEM_GUARD)->first(); // Obtengo guardia
+                $uti = System::where('system', '=', System::SYSTEM_UTI)->first(); // Obtengo uti
+
+                if ($guard->hasBeds() && !$uti->hasBeds()) {
+                    $filteredData = $systems->filter(function ($system) {
+                        return ($system->system == System::SYSTEM_COVID_FLOOR || $system->system == System::SYSTEM_GUARD);
+                    });
+                    break;
+                } else {
+                    $filteredData = $systems->filter(function ($system) {
+                        return ($system->system == System::SYSTEM_COVID_FLOOR);
+                    });
+                    break;
+                }
+            // Hotel
             case System::SYSTEM_HOTEL:
                 $filteredData = $systems->filter(function ($system) {
                     return ($system->system == System::SYSTEM_COVID_FLOOR);
                 });
                 break;
+            // Domicilio
             case System::SYSTEM_HOME:
                 $filteredData = $systems->filter(function ($system) {
                     return ($system->system == System::SYSTEM_COVID_FLOOR);
@@ -224,5 +242,26 @@ class System extends Model
         }
 
         return $filteredData;
+    }
+
+    /**
+     * Actualizar la disponibilidad de camas infinitas en un sistema.
+     * 
+     * @return void.
+     */
+    public function ableToUpdateInfiniteBeds()
+    {
+        return ($this->occupiedBeds() < $this->totalBeds());
+    }
+    
+    /**
+     * Actualizar la disponibilidad de camas infinitas en un sistema.
+     * 
+     * @return void.
+     */
+    public function updateInfiniteBeds($newValue)
+    {
+        $this->infinite_beds = $newValue;
+        $this->save();
     }
 }

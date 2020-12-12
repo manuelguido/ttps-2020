@@ -2,9 +2,9 @@
   <div
     class="container d-flex flex-column justify-content-center vertical-align-center"
   >
-    <h1 class="display-1 black-alpha-10 w-600">Error 401</h1>
+    <h1 class="display-1 black-alpha-10 w-600">Error 403</h1>
     <h1 class="h1 black-alpha-50 mb-5">
-      Debes autenticarte para continuar.
+      No tienes permiso para realizar esta acción.
     </h1>
     <span class="btn btn-primary mx-0" @click="redirect"
       ><i class="fad fa-chevron-left mr-3"></i>Volver</span
@@ -14,8 +14,8 @@
 
 <script>
 export default {
-  name: "Error401Page",
-  title: "Error 401",
+  name: "Error403Page",
+  title: "Error 403",
   methods: {
     /**
      * Redirecciona al dashboard

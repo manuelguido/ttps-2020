@@ -1,50 +1,36 @@
 <template>
   <!-- Dashboard card -->
   <dashboard-card :title="cardTitle" :backLink="backLink" colored>
-    <loading-overlay v-if="loading" />
+    <loading-overlay v-if="loadingSystem" />
     <!-- Row -->
-    <div class="row">
-      <!-- Camas ilimitadas -->
-      <div v-if="allowedInfiniteBeds(system.system)" class="col-12 mb-3">
-        <div class="row d-flex align-items-center">
-          <!-- Total de camas -->
-          <div class="col-3 primary">Camas ilimitadas</div>
+    <div v-else class="row">
+      <!-- Col -->
+      <div class="col-12 col-lg-6 col-xl-5">
+        <!-- Camas ilimitadas -->
+        <infinite-beds-switch
+          v-if="allowedInfiniteBeds(system.system)"
+          :system="system"
+        />
+        <!-- ./Camas ilimitadas -->
 
-          <!-- Activado / Descativado -->
-          <div class="col-9">
-            <switcher />
-          </div>
-        </div>
+        <!-- Uso de camas -->
+        <bed-usage :system="system" />
+        <!-- /.Uso de camas -->
       </div>
-      <!-- ./Camas ilimitadas -->
+      <!-- /.Col -->
 
-      <!-- Uso de camas -->
-      <div class="col-12">
-        <div class="row">
-          <div class="col-3 mb-3 primary">Uso de camas</div>
-          <div class="col-9 mb-3">
-            {{ bed_percentage }}
-          </div>
-        </div>
+      <!-- Col -->
+      <div class="col-12 mb-5">
+        <hr class="m-0" />
       </div>
-      <!-- /.Uso de camas -->
+      <!-- /.Col -->
 
       <!-- Information -->
-      <div class="col-12 mb-5">
-        <hr class="mb-4" />
-        <info-data
-          data="Cantidad de salas"
-          :value="system.total_rooms"
-        ></info-data>
-        <info-data data="Camas totales" :value="system.total_beds"></info-data>
-        <info-data
-          data="Camas disponibles"
-          :value="system.free_beds"
-        ></info-data>
-        <info-data
-          data="Camas ocupadas"
-          :value="system.occupied_beds"
-        ></info-data>
+      <div class="col-12 col-lg-6 col-xl-5 mb-5">
+        <info-data data="Cantidad de salas" :value="system.total_rooms" />
+        <info-data data="Camas totales" :value="system.total_beds" />
+        <info-data data="Camas disponibles" :value="system.free_beds" />
+        <info-data data="Camas ocupadas" :value="system.occupied_beds" />
       </div>
       <!-- /.Information -->
 
@@ -100,21 +86,25 @@
 
 <script>
 import Dashboard from "../../layouts/Dashboard.vue";
+import InfiniteBedsSwitch from "../../components/dashboard/systems/InfiniteBedsSwitch.vue";
+import BedUsage from "../../components/dashboard/systems/BedUsage.vue";
+
 export default {
   name: "SystemView",
   components: {
     Dashboard,
+    InfiniteBedsSwitch,
+    BedUsage,
   },
   name: "system",
   props: ["system_id"],
   data() {
     return {
       cardTitle: "",
-      bed_percentage: 0,
-      loading: true,
       system: {},
       rooms: [],
       showingMedics: true,
+      loadingSystem: true,
       loadingMedics: true,
       loadingPatients: true,
       medics: [],
@@ -131,18 +121,11 @@ export default {
     this.fetchPatients();
   },
   methods: {
-    calcBedPercentage() {
-      this.bed_percentage =
-        ((this.system.occupied_beds * 100) / this.system.total_beds).toFixed(
-          1
-        ) + "%";
-    },
-
     /**
      * Obtiene el sistema con sus habitaciones y camas
      */
     fetchSystem() {
-      const path = "/api/system/full";
+      const path = "/api/system/show";
       const AuthStr =
         "Bearer " + localStorage.getItem("access_token").toString();
 
@@ -159,8 +142,7 @@ export default {
         .then((res) => {
           this.system = res.data;
           this.cardTitle = this.system.system;
-          this.calcBedPercentage();
-          this.loading = false;
+          this.loadingSystem = false;
         })
         .catch((err) => {
           this.errorHandler(err.response.status);

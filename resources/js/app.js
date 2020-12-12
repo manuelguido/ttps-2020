@@ -150,8 +150,10 @@ Vue.component('info-data', require('./components/dashboard/InfoData.vue').defaul
 Vue.component('spinner', require('./components/loading/Spinner.vue').default);
 // Loading Overlay
 Vue.component('loading-overlay', require('./components/loading/Overlay.vue').default);
-// Loading Overlay
+// Loading Dots
 Vue.component('loading-dots', require('./components/loading/Dots.vue').default);
+// Loading Grey Bar
+Vue.component('loading-grey-bar', require('./components/loading/GreyBar.vue').default);
 
 
 // Tabla de datos

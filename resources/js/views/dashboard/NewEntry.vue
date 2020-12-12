@@ -29,5 +29,10 @@ export default {
       cardTitle: "Registra una nueva internación",
     };
   },
+  created () {
+    if (!this.canAddEntry()) {
+      this.handle403();
+    }
+  }
 };
 </script>

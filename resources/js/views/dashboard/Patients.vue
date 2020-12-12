@@ -149,9 +149,9 @@ export default {
             data[i].patient_id +
             '" class="btn btn-purple btn-sm table-button">Evolucionar</a>',
         });
-        this.loadingPatients = false;
-        this.$Progress.finish();
       }
+      this.loadingPatients = false;
+      this.$Progress.finish();
     },
 
     /**

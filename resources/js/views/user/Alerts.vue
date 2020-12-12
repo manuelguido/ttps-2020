@@ -12,6 +12,7 @@
         </router-link>
       </div>
     </div>
+    <!-- /.Row -->
 
     <!-- Alertas -->
     <div v-if="alerts.length > 0" class="row justify-content-center">
@@ -118,9 +119,7 @@ export default {
   watch: {
     alerts: {
       deep: true,
-      handler() {
-        console.log(this.alerts.length);
-      },
+      handler() {},
     },
   },
 };

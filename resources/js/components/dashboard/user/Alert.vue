@@ -1,5 +1,11 @@
 <template>
-  <mdb-list-group-item :class="['border-light', alert.seen ? 'seen' : '', swipped ? 'swipped' : '']">
+  <mdb-list-group-item
+    :class="[
+      'border-light',
+      alert.seen ? 'seen' : '',
+      swipped ? 'swipped' : '',
+    ]"
+  >
     <!-- Container -->
     <div class="container-fluid">
       <!-- Row -->
@@ -55,10 +61,10 @@ export default {
       default: null,
     },
   },
-  data () {
+  data() {
     return {
       swipped: false,
-    }
+    };
   },
   methods: {
     markAsRead() {
@@ -94,7 +100,10 @@ export default {
 
     deleteAlert() {
       this.swipeOut();
-      this.destroy();
+      var $this = this;
+      setTimeout(function () {
+        $this.destroy();
+      }, 500);
     },
 
     swipeOut() {
@@ -102,10 +111,7 @@ export default {
     },
 
     destroy() {
-      var $this = this;
-      setTimeout(function () {
-        $this.$el.parentNode.removeChild($this.$el);
-      }, 500);
+      this.$el.parentNode.removeChild(this.$el);
     },
   },
 };
@@ -145,13 +151,13 @@ export default {
   animation: 1s swipeOut !important;
 }
 @keyframes swipeOut {
- 0%{
-   transform: translateX(0);
-   opacity: 1;
- }
- 100%{
-   transform: translateX(2000px);
-   opacity: 0;
- }
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(2000px);
+    opacity: 0;
+  }
 }
 </style>

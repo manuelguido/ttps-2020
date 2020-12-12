@@ -1,21 +1,27 @@
 <template>
   <dashboard-card :title="cardTitle" noBack>
     <loading-overlay v-if="loadingData" />
-
-    <!-- Alertas -->
-    <div v-if="alerts.length > 0" class="row justify-content-center">
-      <div class="col-12 pt-5">
-        <alerts @reloadData="reloadData" :alerts="alerts"></alerts>
+    <!-- Row -->
+    <div class="row">
+      <div class="col-12 d-flex align-items-center justify-content-end">
+        <router-link
+          class="history-link d-flex flex-row align-items-center"
+          to="/user/alerts"
+        >
+          Ver alertas recientes
+          <i class="fas fa-chevron-right ml-2"></i>
+        </router-link>
       </div>
     </div>
-    <!-- /.Alertas -->
+    <!-- /.Row -->
 
     <!-- No hay alertas -->
-    <div v-else class="row justify-content-center">
-      <div class="col-12 my-5 text-center">
-        <i class="black-alpha-30 fad fa-envelope-open fa-5x mb-4"></i>
-        <p class="h5 black-alpha-40">Nada por aquí</p>
+    <div class="row justify-content-center">
+      <!-- Col -->
+      <div class="col-12">
+        <data-table :columns="tableColumns" :rows="alerts"></data-table>
       </div>
+      <!-- /.Col -->
     </div>
     <!-- No hay alertas -->
   </dashboard-card>
@@ -36,6 +42,23 @@ export default {
       alerts: [],
       fetchInterval: null,
       reloadInterval: 3500,
+      tableColumns: [
+        {
+          label: "Paciente",
+          field: "patient",
+          sort: "asc",
+        },
+        {
+          label: "DNI",
+          field: "dni",
+          sort: "asc",
+        },
+        {
+          label: "Información",
+          field: "description",
+          sort: "asc",
+        },
+      ],
     };
   },
   created() {
@@ -44,6 +67,8 @@ export default {
   methods: {
     /**
      * Obtener alertas de usuario.
+     *
+     * @return void.
      */
     fetchAlerts() {
       var $this = this;
@@ -66,13 +91,30 @@ export default {
     },
 
     /**
-     * Guarda las alertas localmente
+     * Cargar información de pacientes para la tabla.
+     *
+     * @return void.
      */
     loadAlerts(data) {
-      this.alerts = [];
-      this.alerts = data;
-      this.loadingData = false;
+      for (let i = 0; i < data.length; i++) {
+        this.alerts.push({
+          patient: data[i].lastname + " " + data[i].name,
+          dni: this.formatDni(data[i].dni),
+          description: data[i].description,
+        });
+        this.loadingData = false;
+        this.$Progress.finish();
+      }
     },
   },
 };
 </script>
+
+<style scoped>
+.history-link {
+  color: var(--black-alpha-40);
+}
+.history-link:hover {
+  color: var(--primary);
+}
+</style>

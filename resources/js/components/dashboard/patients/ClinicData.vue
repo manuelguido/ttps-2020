@@ -107,11 +107,9 @@ export default {
   props: {
     clinicData: {
       type: Array,
-      default: [],
     },
     lastEvolutions: {
       type: Array,
-      default: [],
     },
     patient_id: {
       type: String,

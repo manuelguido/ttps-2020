@@ -26,13 +26,12 @@ const permissionsMixin = {
         }
       });
       if (!has_permission) {
-        this.$router.push({ path: '/401' });
+        this.$router.push({ path: '/403' });
       }
     },
 
     // Ver si el usuario puede editar la información del paciente.
     canEditPatient(patient) {
-      console.log('asd');
       if (this.roleData == this.roleGuard || this.roleData == this.roleMedic) {
         return (patient.system_id == this.systemData.system_id)
       } else {
@@ -49,7 +48,12 @@ const permissionsMixin = {
         this.systemData.system === this.systemGuard &&
         this.roleData === this.roleGuard
       );
-    }
+    },
+
+    // Ver si el usuario puede editar la información del paciente.
+    canAddEntry() {
+      return ((this.roleData == this.roleGuard || this.roleData == this.roleMedic) && (this.systemData.system == this.systemGuard));
+    },
   },
 }
 

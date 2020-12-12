@@ -3,7 +3,7 @@
   <dashboard-card>
     <loading-overlay v-if="loading" message="Cargando paciente" />
     <!-- Row -->
-    <div class="row">
+    <div v-else class="row">
       <!-- Nombre -->
       <div
         class="col-12 d-flex align-items-baseline justify-content-between mb-5"
@@ -29,10 +29,7 @@
       <!-- Información -->
       <div class="col-12">
         <info-data data="DNI" :value="dni()"></info-data>
-        <info-data
-          data="Teléfono"
-          :value="patient.phone.toString()"
-        ></info-data>
+        <info-data data="Teléfono" :value="patient.phone.toString()"></info-data>
         <info-data
           data="Fecha de nacimiento"
           :value="patient.birth_date | formatDateFull"
@@ -102,7 +99,11 @@ export default {
     this.fetchClinicData();
   },
   methods: {
-    // Obtener información del paciente.
+    /**
+     * Obtener información de paciente.
+     *
+     * @return void.
+     */
     fetchPatient() {
       const path = "/api/patient/show/" + this.patient_id;
       const AuthStr =
@@ -127,7 +128,11 @@ export default {
         });
     },
 
-    // Obtener sistemas.
+    /**
+     * Obtener sistemas.
+     *
+     * @return void.
+     */
     fetchSystems() {
       const path = "/api/system/index";
       const AuthStr =
@@ -148,7 +153,11 @@ export default {
         });
     },
 
-    // Obtener hospitalizaciones.
+    /**
+     * Obtener hospitalizaciones del paciente.
+     * 
+     * @return void.
+     */
     fetchClinicData() {
       const path = "/api/patient/clinic_data/" + this.patient_id;
       const AuthStr =

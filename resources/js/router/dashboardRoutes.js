@@ -103,7 +103,7 @@ const routes = [
        */
       {
         path: '/dashboard/patient/system/change/:patient_id',
-        name: 'PatientAssigment',
+        name: 'PatientChangeSystem',
         component: PatientChangeSystem,
         props: true,
       },

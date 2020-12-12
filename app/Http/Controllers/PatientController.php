@@ -106,14 +106,14 @@ class PatientController extends Controller
     public function indexAssigned(Request $request)
     {
         $user = User::find($request->user()->user_id);
-        $data = [];
+        $responseData = [];
         if ($user->hasRole(Role::ROLE_MEDIC)) {
-            $data = $user->medic()->get()->patients()->get();
+            $responseData = $user->medic()->get()->patients()->get();
         } else if ($user->hasRole(Role::ROLE_SYSTEM_CHIEF)) {
             $system_id = $user->systems()->first()->system_id;
-            $data = Patient::allFullBySystemByState($system_id, PatientState::STATE_HOSPITALIZED);
+            $responseData = Patient::allFullBySystemByState($system_id, PatientState::STATE_HOSPITALIZED);
         }
-        return response()->json($data);
+        return response()->json($responseData);
     }
 
     /**

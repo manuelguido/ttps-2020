@@ -22,30 +22,29 @@
       <!-- /.Información de paciente -->
 
       <!-- Cambio de sistema -->
-      <div
-        v-if="canEditPatient(patient)"
-        class="col-12 col-md- 9 col-lg-3 col-xl-3 mt-5"
-      >
-        <p class="h5 black-alpha-40">Puede pasar a</p>
+      <div v-if="canEditPatient(patient)" class="col-12 col-lg-8 col-xl-7 mt-5">
+        <p class="h5 black-alpha-40 mb-3">Puede pasar a</p>
         <!-- Form -->
         <form @submit.prevent="changeSystem">
           <div
             v-for="s in allowedSystems"
             :key="s.system_id"
-            class="custom-control custom-radio"
+            :class="[
+              'custom-control custom-radio mb-2',
+              s.free_beds == 0 ? 'disabled' : '',
+            ]"
           >
             <input
               type="radio"
-              class="custom-control-input c-pointer"
+              class="custom-control-input"
               :id="'radio' + s.system_id"
               :value="s.system_id"
               v-model="newSystem"
             />
-            <label
-              class="custom-control-label c-pointer"
-              :for="'radio' + s.system_id"
-              >{{ s.system }}</label
-            >
+            <label :for="'radio' + s.system_id" class="custom-control-label">
+              <span>{{ s.system }}</span>
+              <span class="black-alpha-40">{{ formatSystem(s) }}</span>
+            </label>
           </div>
           <save-button :disabled="disabledSubmit" classList="mt-5" />
         </form>
@@ -81,6 +80,15 @@ export default {
     this.fetchPatient();
   },
   methods: {
+    formatSystem(system) {
+      return (
+        " (Ocupación de camas: " +
+        system.occupied_beds +
+        "/" +
+        system.total_beds +
+        ")"
+      );
+    },
     /**
      * Obtener información del paciente.
      */
@@ -142,7 +150,7 @@ export default {
     },
 
     /**
-     * Obtener sistemas.
+     * Cambiar de sistema.
      */
     changeSystem() {
       const confirmMessage =
@@ -185,3 +193,18 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.custom-control,
+.custom-control *,
+.custom-control:hover {
+  cursor: pointer;
+}
+
+.custom-control.disabled,
+.custom-control.disabled *,
+.custom-control.disabled:hover {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+</style>

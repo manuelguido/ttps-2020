@@ -62,6 +62,9 @@ class PermissionsTableSeeder extends Seeder
          */
         create_permission(Permission::SYSTEM_INDEX);
         create_permission(Permission::SYSTEM_SHOW);
+        create_permission(Permission::SYSTEM_STORE);
+        create_permission(Permission::SYSTEM_UPDATE);
+        create_permission(Permission::SYSTEM_DESTROY);
 
         /**
          * Rule
@@ -77,8 +80,17 @@ class PermissionsTableSeeder extends Seeder
         add_permission(Role::ROLE_ADMIN, Permission::USER_UPDATE);
         add_permission(Role::ROLE_ADMIN, Permission::USER_DESTROY);
 
-        add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::SYSTEM_INDEX);
-        add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::SYSTEM_SHOW);
+        add_permission(Role::ROLE_ADMIN, Permission::MEDIC_INDEX);
+        add_permission(Role::ROLE_ADMIN, Permission::MEDIC_SHOW);
+        add_permission(Role::ROLE_ADMIN, Permission::MEDIC_STORE);
+        add_permission(Role::ROLE_ADMIN, Permission::MEDIC_UPDATE);
+        add_permission(Role::ROLE_ADMIN, Permission::MEDIC_DESTROY);
+
+        add_permission(Role::ROLE_ADMIN, Permission::SYSTEM_INDEX);
+        add_permission(Role::ROLE_ADMIN, Permission::SYSTEM_SHOW);
+        add_permission(Role::ROLE_ADMIN, Permission::SYSTEM_STORE);
+        add_permission(Role::ROLE_ADMIN, Permission::SYSTEM_UPDATE);
+        add_permission(Role::ROLE_ADMIN, Permission::SYSTEM_DESTROY);
 
         /**
          * Añadir a permisos JEFE DE SISTEMA

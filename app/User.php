@@ -8,8 +8,6 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-// Social login
-// use Schedula\Laravel\PassportSocialite\User\UserSocialAccount;
 
 class User extends Authenticatable
 {
@@ -20,12 +18,18 @@ class User extends Authenticatable
      */
     const ADMIN_ROUTES = [
         // ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
-        ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
-        ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
         ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
+        ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics/all'],
+        ['icon' => 'fad fa-users', 'name' => 'Usuarios', 'url' => '/dashboard/users'],
     ];
 
     const SYSTEM_CHIEF_ROUTES = [
+        ['icon' => 'fad fa-user-tag', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
+        ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
+        ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
+    ];
+
+    const SYSTEM_CHIEF_ROUTES_W_ENTRY = [
         ['icon' => 'fad fa-user-tag', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
         ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
         ['icon' => 'fad fa-user-plus', 'name' => 'Nueva internación', 'url' => '/dashboard/new_entry'],
@@ -37,9 +41,16 @@ class User extends Authenticatable
         ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
     ];
 
+    const MEDIC_ROUTES_W_ENTRY = [
+        ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
+        ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
+        ['icon' => 'fad fa-user-plus', 'name' => 'Nueva internación', 'url' => '/dashboard/new_entry'],
+    ];
+
     const RULE_SETTER_ROUTES = [
         ['icon' => 'fad fa-cog', 'name' => 'Configuración', 'url' => '/dashboard/settings'],
     ];
+
 
     /**
      * Attributes
@@ -210,22 +221,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Chequear si el usuario tiene rol.
-     * 
-     */
-    public function hasRole($role)
-    {
-        $result = Role::where([
-                ['roles.role', '=', $role],
-                ['role_user.user_id', '=', $this->user_id],
-            ])
-            ->join('role_user', 'role_user.role_id', '=', 'roles.role_id')
-            ->count();
-        return ($result > 0);
-    }
-
-
-    /**
      * Chequear si el usuario tien permiso.
      * 
      */
@@ -243,18 +238,35 @@ class User extends Authenticatable
         return ($result > 0);
     }
 
+    /**
+     * Chequear si el usuario tiene rol.
+     * 
+     * @return Boolean.
+     */
+    public function hasRole($role)
+    {
+        $result = Role::where([
+                ['roles.role', '=', $role],
+                ['role_user.user_id', '=', $this->user_id],
+            ])
+            ->join('role_user', 'role_user.role_id', '=', 'roles.role_id')
+            ->count();
+        return ($result > 0);
+    }
 
     /**
      * Chequea si el usuario esta asginado a un sistema:
      * 
-     * La funcion se usa porque los médicos y jefes de sistema tienen asignado
-     * Los administradores y administradores de reglas no lo necesitan, ya que administran TODOS los sistemas
-     * 
+     * @return Boolean.
      */
-    public function hasSystem()
+    public function hasSystem($system)
     {
-        $result = System::where('system_user.user_id', '=', $this->user_id)
-            ->join('system_user', 'system_user.system_id', '=', 'systems.system_id')->count();
+        $result = System::where([
+            ['system_user.user_id', '=', $this->user_id],
+            ['systems.system', '=', $system],
+            ])
+            ->join('system_user', 'system_user.system_id', '=', 'systems.system_id')
+            ->count();
         return ($result > 0);
     }
 

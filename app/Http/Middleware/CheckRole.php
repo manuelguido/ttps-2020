@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CheckPermission
+class CheckRole
 {
     /**
      * Handle an incoming request.
@@ -13,9 +13,9 @@ class CheckPermission
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $permission)
+    public function handle($request, Closure $next, $role)
     {
-        if(! $request->user()->hasPermission($permission)) {
+        if(! $request->user()->hasRole($role)) {
             abort(403);
         }
 

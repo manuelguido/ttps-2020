@@ -38,6 +38,9 @@ class Permission extends Model
      */
     const SYSTEM_INDEX = 'system_index';
     const SYSTEM_SHOW = 'system_show';
+    const SYSTEM_STORE = 'system_store';
+    const SYSTEM_UPDATE = 'system_update';
+    const SYSTEM_DESTROY = 'system_destroy';
 
     /**
      * Rules

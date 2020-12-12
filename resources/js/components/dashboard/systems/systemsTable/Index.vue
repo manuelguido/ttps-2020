@@ -16,13 +16,17 @@
         </thead>
         <tbody>
           <tr v-for="s in systems" :key="s.system_id">
-            <th scope="row">{{s.system}}</th>
-            <td class="w-600">{{s.total_beds}}</td>
-            <td class="w-700 text-success">{{s.free_beds}}</td>
-            <td class="w-700 text-warning">{{s.occupied_beds}}</td>
+            <th scope="row">{{ s.system }}</th>
+            <td class="w-600">{{ s.total_beds }}</td>
+            <td class="w-700 text-success">{{ s.free_beds }}</td>
+            <td class="w-700 text-warning">{{ s.occupied_beds }}</td>
             <td class="w-600 black-alpha-60">{{ calcBedPercentage(s) }}</td>
             <td class="text-right px-5 px-lg-3">
-              <router-link :to="'/dashboard/system/'+s.system_id" class="btn btn-outline-primary btn-sm">Ver</router-link>
+              <router-link
+                :to="'/dashboard/system/' + s.system_id"
+                class="btn btn-outline-primary btn-sm"
+                >Ver</router-link
+              >
             </td>
           </tr>
         </tbody>
@@ -33,50 +37,24 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
-  data () {
-    return {
-      loading: true,
-      systems: [],
-    }
-  },
-  mounted () {
-    this.fetchSystems();
-  },
-  created () {
-    this.$Progress.start();
+  name: "SystemsTable",
+  props: {
+    systems: {
+      type: Array,
+      default: [],
+    },
+    loading: {
+      type: Boolean,
+      default: true,
+    },
   },
   methods: {
     calcBedPercentage(system) {
-      return (((system.occupied_beds * 100) / system.total_beds).toFixed(1)) + '%';
+      return (
+        ((system.occupied_beds * 100) / system.total_beds).toFixed(1) + "%"
+      );
     },
-
-    /**
-     * Obtiene el sistema con su información
-     */
-    fetchSystems () {
-      const path = '/api/system/index/full';
-      const AuthStr = 'Bearer ' + localStorage.getItem('access_token').toString();
-
-      axios.get(path, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': AuthStr
-        }
-      }).then((res) => {
-        this.systems = res.data;
-        this.loading = false;
-        this.$Progress.finish();
-      }).catch((err) => {
-        console.log(err)
-      })
-    }
-  }
-}
+  },
+};
 </script>
-
-<style scoped>
-
-</style>

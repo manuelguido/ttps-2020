@@ -132,7 +132,9 @@ export default {
   },
   methods: {
     /**
-     * Obtiene las obras sociales
+     * Obtener el paciente.
+     * 
+     * @return void.
      */
     fetchPatient() {
       const path = "/api/patient/show/" + this.patient_id;
@@ -157,7 +159,9 @@ export default {
     },
 
     /**
-     * Obtiene las obras sociales
+     * Obtener los médicos.
+     * 
+     * @return void.
      */
     fetchMedics() {
       const path = "/api/patient/medics/" + this.patient_id;
@@ -183,6 +187,12 @@ export default {
         });
     },
 
+
+    /**
+     * Añadir médico al paciente.
+     * 
+     * @return void.
+     */
     addMedic() {
       if (this.new_medic_id > 0) {
         const path = "/api/patient/medic/add";
@@ -215,6 +225,11 @@ export default {
       }
     },
 
+    /**
+     * Quitar médico del paciente.
+     * 
+     * @return void.
+     */
     removeMedic(medicId) {
       const path = "/api/patient/medic/remove";
       const AuthStr =

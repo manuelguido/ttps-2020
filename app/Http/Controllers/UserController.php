@@ -3,78 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\System;
 use App\Role;
 use App\User;
 
 class UserController extends Controller
 {
     /**
-     * Rutas del usuario administrador
-     * 
-     * @return Array.
-     */
-    private function adminRoutes()
-    {
-        return [
-            ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
-            ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
-            ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
-            ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
-        ];
-    }
-
-    /**
-     * Rutas del usuario jefe de sistema
-     * 
-     * @return Array.
-     */
-    private function systemChiefRoutes()
-    {
-        return [
-            ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
-            ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
-            ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
-            ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
-        ];
-    }
-
-    /**
-     * Rutas del usuario médico
-     * 
-     * @return Array.
-     */
-    private function medicRoutes()
-    {
-        return [
-            ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
-            ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
-        ];
-    }
-
-    /**
-     * Rutas del usuario configurador de reglas
-     * 
-     * @return Array.
-     */
-    private function ruleSetterRoutes()
-    {
-        return [
-            ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
-            ['icon' => 'fad fa-cog', 'name' => 'Configuración', 'url' => '/dashboard/settings'],
-        ];
-    }
-
-    /**
      * Determinar las rutas del usuario y las retorna.
      * 
      * @return Array.
      */    
-    private function getRoutes($role)
+    private function getRoutes($user)
     {
+        $role = $user->roles()->first()->role;
+
         switch ($role) {
             case Role::ROLE_ADMIN: return User::ADMIN_ROUTES;
-            case Role::ROLE_SYSTEM_CHIEF: return User::SYSTEM_CHIEF_ROUTES;
-            case Role::ROLE_MEDIC: return User::MEDIC_ROUTES;
+            case Role::ROLE_SYSTEM_CHIEF:
+                if($user->hasSystem(System::SYSTEM_GUARD)) {
+                    $routes = User::SYSTEM_CHIEF_ROUTES_W_ENTRY;
+                } else {
+                    $routes = User::SYSTEM_CHIEF_ROUTES;
+                }
+                return $routes;
+            case Role::ROLE_MEDIC:
+                if($user->hasSystem(System::SYSTEM_GUARD)) {
+                    $routes = User::MEDIC_ROUTES_W_ENTRY;
+                } else {
+                    $routes = User::MEDIC_ROUTES;
+                }
+                return $routes;
             case Role::ROLE_RULE_SETTER: return User::RULE_SETTER_ROUTES;
             default: return [''];
         }
@@ -87,8 +46,8 @@ class UserController extends Controller
      */
     public function routes(Request $request)
     {
-        $role = $request->user()->roles()->first()->role;
-        $data = $this->getRoutes($role);
+        $user = User::find($request->user()->user_id);
+        $data = $this->getRoutes($request);
         return response()->json($data);
     }
 
@@ -124,7 +83,7 @@ class UserController extends Controller
 
 
     /**
-     * Obtener usuario loggeado con su rol, rutas(URL's) permitidas, su sistema correspondiente y sus permisos
+     * Obtener usuario loggeado con su rol, rutas(URL's) permitidas, su sistema correspondiente y sus permisos.
      * 
      * @return JSON.
      */
@@ -133,16 +92,22 @@ class UserController extends Controller
         // El rol se obtiene antes para poder buscar las rutas correspondientes
         $role = $request->user()->roles()->first()->role;
 
-        $data = [
+        $responseData = [
             'user' => $request->user(),
             'role' => $role,
             'permissions' => $request->user()->permissions(),
-            'routes' => $this->getRoutes($role),
+            'routes' => $this->getRoutes($request->user()),
         ];
 
-        $data['system'] = ($request->user()->hasSystem()) ? $request->user()->systems()->first() : 'Sistema completo';
+        if ($request->user()->hasRole(Role::ROLE_MEDIC) || $request->user()->hasRole(Role::ROLE_SYSTEM_CHIEF)) {
+            $userSystem = $request->user()->systems()->first();
+        } else {
+            $userSystem = null;
+        }
 
-        return response()->json($data);
+        $responseData['system'] = $userSystem;
+
+        return response()->json($responseData);
     }
 
     /**
