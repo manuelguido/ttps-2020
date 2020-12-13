@@ -156,6 +156,7 @@ class EvolutionController extends Controller
 
             $evolution = Evolution::createEvolution($request, $user_id, $hospitalization_id);
 
+            
             $message = ['status' => 'success', 'message' => 'Evolución guardada con exito.'];
         }
         catch (\Exception $e)

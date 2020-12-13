@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             PatientsTableSeeder::class,
             FeedingTypesTableSeeder::class,
             OxigenRequirementTypesTableSeeder::class,
+            RuleSettingsTableSeeder::class,
         ]);
     }
 }
