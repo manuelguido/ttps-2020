@@ -42,7 +42,7 @@ class Patient extends Model
         $patient = new Patient;
         $patient->saveData($data);
         $newEntry = $patient->addEntry($data);
-        $patient->setInitialSystem(System::find(1)->system_id, $newEntry);
+        $patient->setInitialSystem();
         return $patient;
     }
 
@@ -412,17 +412,27 @@ class Patient extends Model
      * 
      * @return void.
      */
-    public function setInitialSystem($new_system_id, $patientEntry = NULL)
+    public function setInitialSystem()
     {
-        $entry = (!$patientEntry) ? $this->currentEntry() : $patientEntry;     
-        
-        $entry->addHospitalization(System::where('system', System::SYSTEM_GUARD)->first()->system_id); // Añadir hospitalización a la internación actual
-        $this->freeCurrentBed(); // Liberar la cama actual del sistema
-        $system = System::find($new_system_id); // Obtener nuevo sistema
-        $system->ocuppyNewBed($this->patient_id); // Enviar al sistema que ocupe una nueva cama para este paciente
-        $this->system_id = $new_system_id; // Acutalizo el id de sistema del paciente 
+        $entry = $this->currentEntry(); // Obtener ultima entrada del paciente
+        $guard = System::where('system', System::SYSTEM_GUARD)->first(); // Id de sistema guardia
+        $entry->addHospitalization($guard->system_id); // Añadir hospitalización a la internación actual
+        $guard->ocuppyNewBed($this->patient_id); // Enviar al sistema que ocupe una nueva cama para este paciente
+        $this->system_id = $guard->system_id; // Acutalizo el id de sistema del paciente 
         $this->save();
     }
+
+    // public function setInitialSystem($new_system_id, $patientEntry = NULL)
+    // {
+    //     $entry = (!$patientEntry) ? $this->currentEntry() : $patientEntry;     
+        
+    //     $entry->addHospitalization(System::where('system', System::SYSTEM_GUARD)->first()->system_id); // Añadir hospitalización a la internación actual
+    //     $this->freeCurrentBed(); // Liberar la cama actual del sistema
+    //     $system = System::find($new_system_id); // Obtener nuevo sistema
+    //     $system->ocuppyNewBed($this->patient_id); // Enviar al sistema que ocupe una nueva cama para este paciente
+    //     $this->system_id = $new_system_id; // Acutalizo el id de sistema del paciente 
+    //     $this->save();
+    // }
 
 
     /**

@@ -115,7 +115,7 @@ Route::prefix('/patient')->group(function() {
   // Almacena un paciente
   Route::post('/store', 'PatientController@store')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // ?
 
-  // Almacena un paciente
+  // Almacena una entrada de un paciente
   Route::post('/new_entry', 'PatientController@newEntry')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // ?
 
   // Actualizar el perfil de usuario

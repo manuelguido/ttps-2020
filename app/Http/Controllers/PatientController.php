@@ -136,7 +136,6 @@ class PatientController extends Controller
         return response()->json(Patient::full($id));
     }
 
-
     /**
      * Almacenar un paciente.
      * 
@@ -153,28 +152,26 @@ class PatientController extends Controller
             $message = ['status' => 'warning', 'message' => 'El paciente con ese DNI ya existe en el sistema'];
         } else {
             // Information try
-            // try {
-            // Validación de paciente
-            $this->validatePatient($data);
-            $this->validatePatientEntry($data);
+            try {
+                // Validación de paciente
+                $this->validatePatient($data);
+                $this->validatePatientEntry($data);
 
-            // Nuevo paciente
-            $patient = new Patient;
-            $store_data = $data;
-            $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
-            $store_data->system_id = System::find(1)->system_id;
-            $patient = Patient::createPatient($store_data);
-            $patient->setNewSystemById($store_data->system_id);
+                // Nuevo paciente
+                $patient = new Patient;
+                $store_data = $data;
+                $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
+                $store_data->system_id = System::find(1)->system_id;
+                $patient = Patient::createPatient($store_data);
 
-            // Returning the view
-            $message = ['status' => 'success', 'message' => 'Paciente guardado.'];
-            // } catch (\Exception $e) {
-            // $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
-            // }
+                // Mensaje
+                $message = ['status' => 'success', 'message' => 'Paciente e internación guardadas.'];
+            } catch (\Exception $e) {
+                $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
+            }
         }
         return response()->json($message, 200);
     }
-
 
     /**
      * Almacenar un paciente.
