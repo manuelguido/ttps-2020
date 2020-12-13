@@ -4,24 +4,24 @@
     <loading-overlay v-if="loading" message="Cargando paciente" />
     <!-- Row -->
     <div v-else class="row">
-      <div class="col-12">
-        <backlink></backlink>
-      </div>
-
       <!-- Nombre -->
       <div class="col-12 d-flex justify-content-between mb-3">
         <p class="h4-responsive">
           <span class="black-alpha-50">Paciente: </span>
-          <span class="primary">{{ patient.name }} {{ patient.lastname }}</span>
+          <router-link
+            :to="'/dashboard/patient/' + patient.patient_id"
+            class="primary"
+            >{{ patient.name }} {{ patient.lastname }}</router-link
+          >
         </p>
       </div>
 
-      <div class="col-12 my-5">
+      <div class="col-12 mb-5">
         <hr />
       </div>
 
       <div class="col-12">
-        <evolution-modal-content></evolution-modal-content>
+        <evolution-modal-content :patient_id="patient_id"></evolution-modal-content>
       </div>
     </div>
     <!-- /.Row -->

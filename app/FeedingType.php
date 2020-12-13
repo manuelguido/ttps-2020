@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class FeedingType extends Model
 {
-
     const ORAL = 'Oral';
     const ENTERAL = 'Enteral';
     const PARENTERAL = 'Parenteral';
@@ -26,4 +25,14 @@ class FeedingType extends Model
     protected $fillable = [
         'feeding_type',
     ];
+
+    public $timestamps = false;
+
+    public static function createFeedingType($name)
+    {
+        $ft = new FeedingType;
+        $ft->feeding_type = $name;
+        $ft->save();
+        return $ft;
+    }
 }

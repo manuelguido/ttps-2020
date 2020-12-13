@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class VentilatoryMechanic extends Model
 {
-    const VM_GOOD = 'Buena';
-    const VM_REGULAR = 'Regular';
-    const VM_BAD = 'Mala';
+    const GOOD = 'Buena';
+    const REGULAR = 'Regular';
+    const BAD = 'Mala';
 
     /**
      * Attributes
@@ -28,4 +28,11 @@ class VentilatoryMechanic extends Model
 
     public $timestamps = false;
 
+    public static function createVentilatoryMechanic($name)
+    {
+        $vm = new VentilatoryMechanic;
+        $vm->ventilatory_mechanic = $name;
+        $vm->save();
+        return $vm;
+    }
 }

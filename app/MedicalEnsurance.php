@@ -31,4 +31,12 @@ class MedicalEnsurance extends Model
     {
         return $this->hasMany('App\Patient','medical_ensurance_id', 'medical_ensurance_id');
     }
+
+    public static function createMedicalEnsurance($name)
+    {
+        $me = new MedicalEnsurance;
+        $me->medical_ensurance = $name;
+        $me->save();
+        return $me;
+    }
 }

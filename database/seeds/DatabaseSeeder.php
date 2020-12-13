@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             RoomAndBedsTableSeeder::class,
             PatientStatesTableSeeder::class,
             PatientsTableSeeder::class,
+            FeedingTypesTableSeeder::class,
+            OxigenRequirementTypesTableSeeder::class,
         ]);
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOxigenRequirementsTable extends Migration
+class CreateOxigenRequirementTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateOxigenRequirementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('oxigen_requirements', function (Blueprint $table) {
-            $table->bigIncrements('oxigen_requirement_id');
-            $table->string('oxigen_requirements');
-            $table->integer('value');
+        Schema::create('oxigen_requirement_types', function (Blueprint $table) {
+            $table->bigIncrements('oxigen_requirement_type_id');
+            $table->string('oxigen_requirement_type');
         });
     }
 
@@ -27,6 +26,6 @@ class CreateOxigenRequirementsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('oxigen_requirements');
+        Schema::dropIfExists('oxigen_requirement_types');
     }
 }

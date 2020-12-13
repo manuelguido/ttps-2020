@@ -1,8 +1,11 @@
 <template>
   <form class="stepper" @submit.prevent="newEvolution()">
-
     <!-- Stepper Header -->
-    <stepper-header @stepChange="setStep" :steps="steps" :current="current"></stepper-header>
+    <stepper-header
+      @stepChange="setStep"
+      :steps="steps"
+      :current="current"
+    ></stepper-header>
     <!-- /.Stepper Header -->
 
     <!-- Stepper content -->
@@ -138,7 +141,7 @@
         <!-- Row -->
         <div v-if="respiratory.requires_oxigen" class="row">
           <div class="col-12">
-            <hr>
+            <hr />
           </div>
           <!-- Col -->
           <div class="col-12">
@@ -149,7 +152,7 @@
                 <div class="form-group">
                   <label>Tipo</label>
                   <select
-                    v-model="respiratory.required_oxigen_type_id"
+                    v-model="respiratory.oxigen_requirement_type_id"
                     class="browser-default custom-select"
                   >
                     <option :value="null" selected>Seleccionar</option>
@@ -158,15 +161,15 @@
                   </select>
                 </div>
               </div>
-              <div class="col-lg-3 offset-lg-1">
+              <div class="col-lg-3">
                 <div class="form-group">
                   <label>Valor (%)</label>
                   <input
                     type="number"
                     min="0"
                     max="100"
-                    v-model="respiratory.required_oxigen_value"
-                    :disabled="respiratory.required_oxigen_type_id == 0"
+                    v-model="respiratory.oxigen_requirement_value"
+                    :disabled="!respiratory.oxigen_requirement_type_id"
                     placeholder="0-100 (Sin decimales)"
                     class="form-control"
                   />
@@ -179,10 +182,31 @@
             <div class="row mb-2 d-flex align-items-end">
               <div class="col-lg-5">
                 <div class="form-group">
-                  <switcher v-model="respiratory.pafi" label="PAFI (PaO2/FiO2)"></switcher>
+                  <label>Saturación de oxígeno</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    v-model="respiratory.oxigen_saturation"
+                    placeholder="0 - 100 (%)"
+                    class="form-control"
+                  />
                 </div>
               </div>
-              <div class="col-lg-3 offset-lg-1">
+            </div>
+            <!-- /.Row -->
+
+            <!-- Row -->
+            <div class="row mb-2 d-flex align-items-end">
+              <div class="col-lg-5">
+                <div class="form-group">
+                  <switcher
+                    v-model="respiratory.pafi"
+                    label="PAFI (PaO2/FiO2)"
+                  ></switcher>
+                </div>
+              </div>
+              <div class="col-lg-3">
                 <div class="form-group">
                   <label>Valor pafi</label>
                   <input
@@ -200,7 +224,10 @@
             <div class="row mb-2 d-flex align-items-end">
               <div class="col-lg-5">
                 <div class="form-group">
-                  <switcher v-model="respiratory.prone" label="Prono vigil"></switcher>
+                  <switcher
+                    v-model="respiratory.prone"
+                    label="Prono vigil"
+                  ></switcher>
                 </div>
               </div>
             </div>
@@ -218,15 +245,15 @@
                 <div class="form-group">
                   <label>Disnea</label>
                   <select
-                    v-model="respiratory.dyspnoea_id"
+                    v-model="respiratory.dyspnoea"
                     class="browser-default custom-select"
                   >
                     <option :value="null" selected>Seleccionar</option>
-                    <option value="1">0</option>
-                    <option value="2">1</option>
-                    <option value="3">2</option>
-                    <option value="4">3</option>
-                    <option value="5">4</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
                   </select>
                 </div>
               </div>
@@ -254,7 +281,10 @@
         <div class="row mb-2 d-flex align-items-end">
           <div class="col-lg-5">
             <div class="form-group">
-              <switcher v-model="otherSymptoms.drowsiness" label="Somnolencia"></switcher>
+              <switcher
+                v-model="otherSymptoms.drowsiness"
+                label="Somnolencia"
+              ></switcher>
             </div>
           </div>
         </div>
@@ -262,7 +292,10 @@
         <div class="row mb-2 d-flex align-items-end">
           <div class="col-lg-5">
             <div class="form-group">
-              <switcher v-model="otherSymptoms.anosmia" label="Anosmia"></switcher>
+              <switcher
+                v-model="otherSymptoms.anosmia"
+                label="Anosmia"
+              ></switcher>
             </div>
           </div>
         </div>
@@ -270,7 +303,10 @@
         <div class="row mb-2 d-flex align-items-end">
           <div class="col-lg-5">
             <div class="form-group">
-              <switcher v-model="otherSymptoms.dysgeucia" label="Disgeusia"></switcher>
+              <switcher
+                v-model="otherSymptoms.dysgeucia"
+                label="Disgeusia"
+              ></switcher>
             </div>
           </div>
         </div>
@@ -281,6 +317,7 @@
       <div v-if="current == 4" class="step-content">
         <stepper-title :text="steps[3].name"></stepper-title>
 
+        <!-- RXTX -->
         <div class="row mb-2 d-flex align-items-end">
           <div class="col-lg-5">
             <div class="form-group">
@@ -289,6 +326,39 @@
           </div>
         </div>
 
+        <div v-if="studies.rxtx" class="row mb-2 d-flex align-items-end">
+          <div class="col-lg-5">
+            <div class="form-group">
+              <label>Tipo</label>
+              <select
+                v-model="studies.rxtx_type"
+                class="browser-default custom-select"
+              >
+                <option value="1">Normal</option>
+                <option value="2">Patológico</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-if="studies.rxtx && studies.rxtx_type == 2"
+          class="row mb-2 d-flex align-items-end"
+        >
+          <div class="col-lg-5">
+            <div class="form-group">
+              <label>Descripción Rx Tx</label>
+              <textarea
+                rows="2"
+                class="form-control"
+                v-model="studies.rxtx_text"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- /.RXTX -->
+
+        <!-- TAC -->
         <div class="row mb-2 d-flex align-items-end">
           <div class="col-lg-5">
             <div class="form-group">
@@ -297,6 +367,39 @@
           </div>
         </div>
 
+        <div v-if="studies.tac" class="row mb-2 d-flex align-items-end">
+          <div class="col-lg-5">
+            <div class="form-group">
+              <label>Tipo</label>
+              <select
+                v-model="studies.tac_type"
+                class="browser-default custom-select"
+              >
+                <option value="1">Normal</option>
+                <option value="2">Patológico</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-if="studies.tac && studies.tac_type == 2"
+          class="row mb-2 d-flex align-items-end"
+        >
+          <div class="col-lg-5">
+            <div class="form-group">
+              <label>Descripción Tac</label>
+              <textarea
+                rows="2"
+                class="form-control"
+                v-model="studies.tac_text"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- /.TAC -->
+
+        <!-- ECG -->
         <div class="row mb-2 d-flex align-items-end">
           <div class="col-lg-5">
             <div class="form-group">
@@ -305,6 +408,39 @@
           </div>
         </div>
 
+        <div v-if="studies.ecg" class="row mb-2 d-flex align-items-end">
+          <div class="col-lg-5">
+            <div class="form-group">
+              <label>Tipo</label>
+              <select
+                v-model="studies.ecg_type"
+                class="browser-default custom-select"
+              >
+                <option value="1">Normal</option>
+                <option value="2">Patológico</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-if="studies.ecg && studies.ecg_type == 2"
+          class="row mb-2 d-flex align-items-end"
+        >
+          <div class="col-lg-5">
+            <div class="form-group">
+              <label>Descripción Ecg</label>
+              <textarea
+                rows="2"
+                class="form-control"
+                v-model="studies.ecg_text"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- ./ECG -->
+
+        <!-- PCR -->
         <div class="row mb-2 d-flex align-items-end">
           <div class="col-lg-5">
             <div class="form-group">
@@ -313,10 +449,45 @@
           </div>
         </div>
 
+        <div v-if="studies.pcr" class="row mb-2 d-flex align-items-end">
+          <div class="col-lg-5">
+            <div class="form-group">
+              <label>Tipo</label>
+              <select
+                v-model="studies.pcr_type"
+                class="browser-default custom-select"
+              >
+                <option value="1">Normal</option>
+                <option value="2">Patológico</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-if="studies.pcr && studies.pcr_type == 2"
+          class="row mb-2 d-flex align-items-end"
+        >
+          <div class="col-lg-5">
+            <div class="form-group">
+              <label>Descripción Pcr</label>
+              <textarea
+                rows="2"
+                class="form-control"
+                v-model="studies.pcr_text"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- /.PCR -->
+
         <div class="row mb-2 d-flex align-items-end">
           <div class="col-lg-5">
             <div class="form-group">
-              <switcher v-model="studies.laboratory" label="Laboratorio"></switcher>
+              <switcher
+                v-model="studies.laboratory"
+                label="Laboratorio"
+              ></switcher>
             </div>
           </div>
         </div>
@@ -370,7 +541,11 @@
           <div class="col-lg-4">
             <div class="form-group">
               <label>Farmaco</label>
-              <textarea rows="1" class="form-control" v-model="actualTreatments.drug"></textarea>
+              <textarea
+                rows="1"
+                class="form-control"
+                v-model="actualTreatments.drug"
+              ></textarea>
             </div>
           </div>
 
@@ -388,7 +563,11 @@
           <div class="col-lg-4">
             <div class="form-group">
               <label>Numero de días</label>
-              <input type="number" v-model="actualTreatments.dosis_day_number" class="form-control" />
+              <input
+                type="number"
+                v-model="actualTreatments.dosis_day_number"
+                class="form-control"
+              />
             </div>
           </div>
 
@@ -469,7 +648,10 @@
         <div class="row mb-2 d-flex align-items-center">
           <div class="col-lg-6">
             <div class="form-group">
-              <switcher v-model="actualTreatments.dialysis" label="Diálisis"></switcher>
+              <switcher
+                v-model="actualTreatments.dialysis"
+                label="Diálisis"
+              ></switcher>
             </div>
           </div>
 
@@ -528,13 +710,18 @@
         </div>
       </div>
       <!-- /.Step 6 -->
-
     </div>
     <!-- /.Stepper content -->
 
     <!-- Stepper footer -->
     <div class="stepper-footer">
-      <button type="submit" :class="['btn btn-block', allowSubmit() ? 'btn-success' : 'btn-light disabled']">
+      <button
+        type="submit"
+        :class="[
+          'btn btn-block',
+          allowSubmit() ? 'btn-success' : 'btn-light disabled',
+        ]"
+      >
         Guardar evolución
       </button>
     </div>
@@ -549,13 +736,13 @@ import StepperTitle from "./Title";
 export default {
   name: "Stepper",
   components: {
-    'stepper-header': StepperHeader,
-    'stepper-title': StepperTitle,
+    "stepper-header": StepperHeader,
+    "stepper-title": StepperTitle,
   },
   props: {
     patient_id: {
       type: String,
-    }
+    },
   },
   data() {
     return {
@@ -607,13 +794,14 @@ export default {
       respiratory: {
         ventilatory_mechanic_id: null,
         requires_oxigen: false,
-        required_oxigen_type_id: null,
-        required_oxigen_value: null,
+        oxigen_requirement_type_id: null,
+        oxigen_requirement_value: null,
+        oxigen_saturation: null,
         pafi: false,
         pafi_value: null,
         prone: false,
         cough: false,
-        dyspnoea_id: null,
+        dyspnoea: null,
         respiratory_irregularities: false,
       },
       // Step 3 data
@@ -625,33 +813,41 @@ export default {
       // Step 4 data
       studies: {
         rxtx: false,
+        rxtx_type: 1,
+        rxtx_text: null,
         tac: false,
+        tac_type: 1,
+        tac_text: null,
         ecg: false,
+        ecg_type: 1,
+        ecg_text: null,
         pcr: false,
+        pcr_type: 1,
+        pcr_text: null,
         laboratory: false,
       },
       // Step 5 data
       actualTreatments: {
         feeding_type_id: null,
-        feeding_note: '',
-        drug: '',
-        drug_dosis: '',
+        feeding_note: "",
+        drug: "",
+        drug_dosis: "",
         dosis_day_number: null,
         thromboprophylaxis: false,
-        thromboprophylaxis_data: '',
+        thromboprophylaxis_data: "",
         dexamethasone: false,
-        dexamethasone_data: '',
+        dexamethasone_data: "",
         gastric_protection: false,
-        gastric_protection_data: '',
+        gastric_protection_data: "",
         dialysis: false,
-        dialysis_data: '',
+        dialysis_data: "",
         research_study: false,
-        research_study_data: '',
+        research_study_data: "",
       },
       // Step 6 data
       observations: {
-        observations: '',
-      }
+        observations: "",
+      },
     };
   },
   methods: {
@@ -675,21 +871,22 @@ export default {
       return this.current < this.steps.length;
     },
 
-    allowSubmit () {
-      return true;
-      // return (
-      //   this.evolution.temperature != '' &&
-      //   this.evolution.heart_rate != '' &&
-      //   this.evolution.breathing_rate != '' &&
-      //   this.evolution.systolic_ta != '' &&
-      //   this.evolution.diastolic_ta != ''
-      // );
+    allowSubmit() {
+      // return true;
+      return (
+        this.evolution.temperature != "" &&
+        this.evolution.heart_rate != "" &&
+        this.evolution.breathing_rate != "" &&
+        this.evolution.systolic_ta != "" &&
+        this.evolution.diastolic_ta != ""
+      );
     },
 
     newEvolution() {
       this.loading = true;
       const path = "/api/evolution/store";
-      const AuthStr = "Bearer "+localStorage.getItem("access_token").toString();
+      const AuthStr =
+        "Bearer " + localStorage.getItem("access_token").toString();
       const jsonData = {
         patient_id: parseInt(this.patient_id),
         evolution: this.evolution,
@@ -700,24 +897,27 @@ export default {
         observations: this.observations,
       };
 
-
-      axios.post(path, jsonData, {
+      axios
+        .post(path, jsonData, {
           headers: {
-            'Accept': 'application/json',
-            'Authorization': AuthStr,
-          }
-        }).then((res) => {
+            Accept: "application/json",
+            Authorization: AuthStr,
+          },
+        })
+        .then((res) => {
           this.new_alert(res.data);
           // if (res.data.status == 'success') {
-            // this.$emit("reload-data");
+          // this.$emit("reload-data");
           // }
           console.log(res);
-        }).catch((err) => {
+        })
+        .catch((err) => {
           console.log(err);
-        }).finally(() => {
+        })
+        .finally(() => {
           this.loading = false;
         });
-    }
+    },
   },
 };
 </script>

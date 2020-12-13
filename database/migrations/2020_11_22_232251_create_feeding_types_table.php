@@ -14,8 +14,8 @@ class CreateFeedingTypesTable extends Migration
     public function up()
     {
         Schema::create('feeding_types', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->bigIncrements('feeding_type_id');
+            $table->string('feeding_type');
         });
     }
 

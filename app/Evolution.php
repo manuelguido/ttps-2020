@@ -23,12 +23,16 @@ class Evolution extends Model
         'hospitalization_id', 'user_id',
         'temperature', 'heart_rate', 'breathing_rate', 'systolic_ta', 'diastolic_ta',
       
-        'ventilatory_mechanic_id', 'requires_oxigen', 'required_oxigen_type_id', 'required_oxigen_value',
-        'pafi', 'pafi_value', 'prone', 'cough', 'dyspnoea_id', 'respiratory_irregularities',
+        'ventilatory_mechanic_id', 'requires_oxigen', 'required_oxigen_type_id', 'required_oxigen_value', 'oxigen_saturation',
+        'pafi', 'pafi_value', 'prone', 'cough', 'dyspnoea', 'respiratory_irregularities',
 
         'drowsiness', 'anosmia', 'dysgeucia',
 
-        'rxtx', 'tac', 'ecg', 'pcr', 'laboratory',
+        'rxtx', 'rxtx_type', 'rxtx_text',
+        'tac', 'tac_type', 'tac_text',
+        'ecg', 'ecg_type', 'ecg_text',
+        'pcr', 'pcr_type', 'pcr_text',
+        'laboratory',
       
         'feeding_type_id', 'feeding_note', 'drug', 'drug_dosis', 'dosis_day_number',
         'thromboprophylaxis', 'thromboprophylaxis_data',
@@ -96,50 +100,95 @@ class Evolution extends Model
      */
     private function saveEvolutionData($data)
     {
-        $this->temperature = $data->temperature;
-        $this->heart_rate = $data->heart_rate;
-        $this->breathing_rate = $data->breathing_rate;
-        $this->systolic_ta = $data->systolic_ta;
-        $this->diastolic_ta = $data->diastolic_ta;
+        // Step 1
+        $this->temperature = $data->evolution['temperature'];
+        $this->heart_rate = $data->evolution['heart_rate'];
+        $this->breathing_rate = $data->evolution['breathing_rate'];
+        $this->systolic_ta = $data->evolution['systolic_ta'];
+        $this->diastolic_ta = $data->evolution['diastolic_ta'];
       
-        $this->ventilatory_mechanic_id = $data->ventilatory_mechanic_id;
-        $this->requires_oxigen = $data->requires_oxigen;
-        $this->required_oxigen_type_id = $data->required_oxigen_type_id;
-        $this->required_oxigen_value = $data->required_oxigen_value;
-        $this->pafi = $data->pafi;
-        $this->pafi_value = $data->pafi_value;
-        $this->prone = $data->prone;
-        $this->cough = $data->cough;
-        $this->dyspnoea_id = $data->dyspnoea_id;
-        $this->respiratory_irregularities = $data->respiratory_irregularities;
+        // Step 2
+        $this->ventilatory_mechanic_id = $data->respiratory['ventilatory_mechanic_id'];
+        $this->requires_oxigen = $data->respiratory['requires_oxigen'];
+        $this->oxigen_requirement_type_id = $data->respiratory['oxigen_requirement_type_id'];
+        $this->oxigen_requirement_value = $data->respiratory['oxigen_requirement_value'];
+        $this->oxigen_saturation = $data->respiratory['oxigen_saturation'];
+        $this->pafi = $data->respiratory['pafi'];
+        $this->pafi_value = $data->respiratory['pafi_value'];
+        $this->prone = $data->respiratory['prone'];
+        $this->cough = $data->respiratory['cough'];
+        $this->dyspnoea = $data->respiratory['dyspnoea'];
+        $this->respiratory_irregularities = $data->respiratory['respiratory_irregularities'];
 
-        $this->drowsiness = $data->drowsiness;
-        $this->anosmia = $data->anosmia;
-        $this->dysgeucia = $data->dysgeucia;
+        // Step 3
+        $this->drowsiness = $data->otherSymptoms['drowsiness'];
+        $this->anosmia = $data->otherSymptoms['anosmia'];
+        $this->dysgeucia = $data->otherSymptoms['dysgeucia'];
 
-        $this->rxtx = $data->rxtx;
-        $this->tac = $data->tac;
-        $this->ecg = $data->ecg;
-        $this->pcr = $data->pcr;
-        $this->laboratory = $data->laboratory;
+        // Step 4
+        $this->rxtx = $data->studies['rxtx'];
+        if($data->studies['rxtx']) { 
+            $this->rxtx_type = $data->studies['rxtx_type'];
+            if($data->studies['rxtx_type'] == 2) {
+                $this->rxtx_text = $data->studies['rxtx_text'];
+            }
+        }
+        $this->tac = $data->studies['tac'];
+        if($data->studies['tac']) { 
+            $this->tac_type = $data->studies['tac_type'];
+            if($data->studies['tac_type'] == 2) {
+                $this->tac_text = $data->studies['tac_text'];
+            }
+        }
+        $this->ecg = $data->studies['ecg'];
+        if($data->studies['ecg']) { 
+            $this->ecg_type = $data->studies['ecg_type'];
+            if($data->studies['ecg_type'] == 2) {
+                $this->ecg_text = $data->studies['ecg_text'];
+            }
+        }
+        $this->pcr = $data->studies['pcr'];
+        if($data->studies['pcr']) { 
+            $this->pcr_type = $data->studies['pcr_type'];
+            if($data->studies['pcr_type'] == 2) {
+                $this->pcr_text = $data->studies['pcr_text'];
+            }
+        }
+        $this->laboratory = $data->studies['laboratory'];
       
-        $this->feeding_type_id = $data->feeding_type_id;
-        $this->feeding_note = $data->feeding_note;
-        $this->drug = $data->drug;
-        $this->drug_dosis = $data->drug_dosis;
-        $this->dosis_day_number = $data->dosis_day_number;
-        $this->thromboprophylaxis = $data->thromboprophylaxis;
-        $this->thromboprophylaxis_data = $data->thromboprophylaxis_data;
-        $this->dexamethasone = $data->dexamethasone;
-        $this->dexamethasone_data = $data->dexamethasone_data;
-        $this->gastric_protection = $data->gastric_protection;
-        $this->gastric_protection_data = $data->gastric_protection_data;
-        $this->dialysis = $data->dialysis;
-        $this->dialysis_data = $data->dialysis_data;
-        $this->research_study = $data->research_study;
-        $this->research_study_data = $data->research_study_data;
+        // Step 5
+        $this->feeding_type_id = $data->actualTreatments['feeding_type_id'];
+        $this->feeding_note = $data->actualTreatments['feeding_note'];
+        $this->drug = $data->actualTreatments['drug'];
+        $this->drug_dosis = $data->actualTreatments['drug_dosis'];
+        $this->dosis_day_number = $data->actualTreatments['dosis_day_number'];
 
-        $this->observations = $data->observations;
+        $this->thromboprophylaxis = $data->actualTreatments['thromboprophylaxis'];
+        if ($data->actualTreatments['thromboprophylaxis']) {
+            $this->thromboprophylaxis_data = $data->actualTreatments['thromboprophylaxis_data'];
+        }
+        $this->dexamethasone = $data->actualTreatments['dexamethasone'];
+        if ($data->actualTreatments['dexamethasone']) {
+            $this->dexamethasone_data = $data->actualTreatments['dexamethasone_data'];
+        }
+
+        $this->gastric_protection = $data->actualTreatments['gastric_protection'];
+        if ($data->actualTreatments['gastric_protection']) {
+            $this->gastric_protection_data = $data->actualTreatments['gastric_protection_data'];
+        }
+
+        $this->dialysis = $data->actualTreatments['dialysis'];
+        if ($data->actualTreatments['dialysis']) {
+            $this->dialysis_data = $data->actualTreatments['dialysis_data'];
+        }
+
+        $this->research_study = $data->actualTreatments['research_study'];
+        if ($data->actualTreatments['research_study']) {
+            $this->research_study_data = $data->actualTreatments['research_study_data'];
+        }
+
+        // Step 6
+        $this->observations = $data->observations['observations'];
 
         $this->save();
     }

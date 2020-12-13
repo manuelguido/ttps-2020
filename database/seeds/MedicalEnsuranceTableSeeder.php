@@ -12,17 +12,10 @@ class MedicalEnsuranceTableSeeder extends Seeder
      */
     public function run()
     {
-        function create_new($name)
-        {
-            $me = new MedicalEnsurance;
-            $me->medical_ensurance = $name;
-            $me->save();
-        }
-
-        create_new('Swiss Medical');
-        create_new('IOMA');
-        create_new('Aca Salud');
-        create_new('OSDE');
-        create_new('OSECAC');
+        MedicalEnsurance::createMedicalEnsurance('Swiss Medical');
+        MedicalEnsurance::createMedicalEnsurance('IOMA');
+        MedicalEnsurance::createMedicalEnsurance('Aca Salud');
+        MedicalEnsurance::createMedicalEnsurance('OSDE');
+        MedicalEnsurance::createMedicalEnsurance('OSECAC');
     }
 }

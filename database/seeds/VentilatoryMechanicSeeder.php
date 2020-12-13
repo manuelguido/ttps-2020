@@ -12,16 +12,8 @@ class VentilatoryMechanicSeeder extends Seeder
      */
     public function run()
     {
-        $vm = new VentilatoryMechanic;
-        $vm->ventilatory_mechanic = VentilatoryMechanic::VM_GOOD;
-        $vm->save();
-
-        $vm = new VentilatoryMechanic;
-        $vm->ventilatory_mechanic = VentilatoryMechanic::VM_REGULAR;
-        $vm->save();
-
-        $vm = new VentilatoryMechanic;
-        $vm->ventilatory_mechanic = VentilatoryMechanic::VM_BAD;
-        $vm->save();
+        VentilatoryMechanic::createVentilatoryMechanic(VentilatoryMechanic::GOOD);
+        VentilatoryMechanic::createVentilatoryMechanic(VentilatoryMechanic::REGULAR);
+        VentilatoryMechanic::createVentilatoryMechanic(VentilatoryMechanic::BAD);
     }
 }
