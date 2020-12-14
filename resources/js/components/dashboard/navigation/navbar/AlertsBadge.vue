@@ -21,7 +21,7 @@ export default {
     return {
       amount: 0,
       fetchInterval: null,
-      reloadInterval: 3000,
+      reloadInterval: 2000,
     };
   },
   created() {

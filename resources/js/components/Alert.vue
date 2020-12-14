@@ -33,7 +33,7 @@ export default {
     alert: Object,
     duration: {
       type: Number,
-      default: 6000
+      default: 5000
     },
     bordered: {
       type: Boolean,
@@ -125,13 +125,13 @@ export default {
 }
 @media(min-width: 992px) {
   .ls-alert {
-    top: 20px;
+    top: 5vh;
     right: 20px;
   }
 }
 @media(max-width: 992px) {
   .ls-alert {
-    top: 20px;
+    top: 40px;
     right: 20px;
     left: 20px;
   }
