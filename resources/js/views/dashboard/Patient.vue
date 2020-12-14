@@ -63,6 +63,7 @@
 
       <!-- Hospitalizaciones (Listado) -->
       <div class="col-12 mb-3">
+        <loading-overlay v-if="loadingClinicData"/>
         <clinic-data
           @reload-data="fetchClinicData()"
           :patient_id="patient_id"
@@ -93,6 +94,7 @@ export default {
     return {
       patient: {},
       loadingPatient: true,
+      loadingClinicData: false,
       clinicData: [],
     };
   },
@@ -137,6 +139,7 @@ export default {
      * @return void.
      */
     fetchClinicData() {
+      this.loadingClinicData = true;
       const path = "/api/patient/clinic_data/" + this.patient_id;
       const AuthStr =
         "Bearer " + localStorage.getItem("access_token").toString();
@@ -149,10 +152,18 @@ export default {
           },
         })
         .then((res) => {
-          this.clinicData = res.data.clinicData;
+          let items = res.data.clinicData;
+          
+          items.sort(function (a, b) {
+            return b.created_at.localeCompare(a.created_at);
+          });
+
+          this.clinicData = items;
+          this.loadingClinicData = false;
         })
         .catch((err) => {
           console.log(err);
+          this.loadingClinicData = false;
         });
     },
 

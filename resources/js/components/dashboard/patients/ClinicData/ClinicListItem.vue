@@ -1,7 +1,6 @@
 <template>
   <!-- List -->
   <div class="item p-4 d-flex justify-content-between align-items-top">
-    
     <span>
       <p class="black-alpha-70">
         <!-- Title -->
@@ -14,20 +13,19 @@
           {{ item.created_at | moment("h:mm a") }})
         </span>
       </p>
-      <p v-if="item.hospitalization_id">Paso de sistema 1 a 2</p>
+      <p v-if="!item.evolution" class="m-0">{{ formatSystemData(item) }}</p>
     </span>
 
     <!-- Right -->
     <span>
-      <evolution-display v-if="item.evolution_id" :evolution="item"/>
+      <evolution-display v-if="item.evolution_id" :evolution="item" />
     </span>
-
   </div>
   <!-- /.List -->
 </template>
 
 <script>
-import EvolutionDisplay from './EvolutionDisplay.vue';
+import EvolutionDisplay from "./EvolutionDisplay.vue";
 
 export default {
   name: "ClinicDataListItem",
@@ -43,6 +41,13 @@ export default {
     formatItemTitle(item) {
       return item.evolution_id ? "Evolución" : "Cambio de sistema";
     },
+    formatSystemData(item) {
+      if (item.previous_system) {
+        return "Paso de sistema "+item.system+" a "+item.previous_system;
+      } else {
+        return "Ingresó a "+item.system;
+      }
+    }
   },
 };
 </script>

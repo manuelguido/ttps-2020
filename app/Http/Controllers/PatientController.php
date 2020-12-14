@@ -9,6 +9,7 @@ use App\Patient;
 use App\System;
 use App\Role;
 use App\User;
+use Carbon\Carbon;
 
 class PatientController extends Controller
 {
@@ -222,7 +223,7 @@ class PatientController extends Controller
      */
     public function changeSystem(Request $data)
     {
-        // try {
+        try {
             $this->validatePatientId($data);
             $this->validateSystemId($data);
 
@@ -238,9 +239,9 @@ class PatientController extends Controller
             
                 $message = ['status' => 'success', 'message' => 'Cambiaste a ' . $patient->name . ' ' . $patient->lastname . ' de ' . $oldSystem->system . ' a ' . $newSystem->system, 'patient' => Patient::full($patient->patient_id)];
             }
-        // } catch (\Exception $e) {
-            // $message = ['status' => 'error', $e[0]];
-        // }    
+        } catch (\Exception $e) {
+            $message = ['status' => 'error', 'Ocurrió un error. No ingreses información incorrecta.'];
+        }    
         return response()->json($message, 200);
     }
 
@@ -332,28 +333,21 @@ class PatientController extends Controller
     {
         $patient = Patient::find($patient_id); // Obtener paciente
 
-        $clinicData = []; // Inicializar para la información completa del paciente
-
         $evolutions = $patient->currentEvolutions()->get();
 
         $systemChanges = $patient->systemChanges();
 
-        
-        // foreach ($entries as $entry) { // Para cada entrada obtener las hospitalizaciones
+        foreach ($evolutions as $evolution) {
+            $evolution->evolution = true;
+        }
+        foreach ($systemChanges as $systemChange) {
+            $systemChange->evolution = false;
+        }
 
-        //     $hospitalizations = $entry->hospitalizations()->join('systems', 'systems.system_id', '=', 'hospitalizations.system_id')->orderBy('date_of_admission', 'DESC')->get();
-
-        //     foreach ($hospitalizations as $hospitalization) { // Para cada entrada obtener las hospitalizaciones
-        //         $hospitalization['evolutions'] = $hospitalization->evolutions()->orderBy('date', 'DESC')->get();
-        //     }
-
-        //     $completeEntry = $entry;
-        //     $completeEntry['hospitalizations'] = $hospitalizations;
-        //     array_push($clinicData, $completeEntry);
-        // }
+        $clinicData = $evolutions->merge($systemChanges);
 
         return response()->json([
-            'clinicData' => $patient->currentEvolutions()->get(),
+            'clinicData' => $clinicData,
             // 'lastEvolutions' => $patient->lastEvolutions(),
         ]);
     }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Entry extends Model
 {
@@ -52,6 +53,8 @@ class Entry extends Model
     public function addHospitalization($system_id, $previous_system_id = NULL)
     {
         $hospitalization = new Hospitalization;
+        $hospitalization->created_at = Carbon::now('America/Argentina/Buenos_Aires');
+        $hospitalization->updated_at = Carbon::now('America/Argentina/Buenos_Aires');
         $hospitalization->entry_id = $this->entry_id;
         $hospitalization->system_id = $system_id;
         $hospitalization->previous_system_id = $previous_system_id;

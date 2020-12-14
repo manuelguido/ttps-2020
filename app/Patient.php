@@ -208,15 +208,26 @@ class Patient extends Model
     }
 
     /**
-     * Obtener los cambios del systema del paciente. 
-     * 
+     * Obtener los cambios del sistema del paciente. 
+     * (Ineficiente: Buscar manera de optimizar en una sola consulta un doble join a una misma tabla)
      * @return Collection.
      */
     public function systemChanges()
     {
-        // $searchEntryId = ($entry_id == null) ? $this->currentEntry()->entry_id : $entry_id;
+        $systemChanges = $this->currentEntry()->hospitalizations()
+            ->join('systems', 'systems.system_id', '=', 'hospitalizations.system_id')
+            ->select('hospitalizations.*', 'systems.system')
+            ->get();
 
-        return $this->currentEntry()->hospitalizations()->get();
+        foreach ($systemChanges as $sc) {
+            if($sc->previous_system_id) {
+                $sc->previous_system = System::find($sc->previous_system_id)->system;
+            } else {
+                $sc->previous_system = null;
+            }
+        }
+
+        return $systemChanges;
     }
 
     /**
