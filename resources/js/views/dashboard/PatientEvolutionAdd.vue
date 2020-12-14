@@ -21,7 +21,9 @@
       </div>
 
       <div class="col-12">
-        <evolution-modal-content :patient_id="patient_id"></evolution-modal-content>
+        <evolution-modal-content
+          :patient_id="patient_id"
+        ></evolution-modal-content>
       </div>
     </div>
     <!-- /.Row -->
@@ -41,17 +43,12 @@ export default {
   data() {
     return {
       patient: {},
-      systems: [],
       loading: true,
-      clinicData: [],
-      lastEvolutions: [],
     };
   },
   created() {
     this.$Progress.start();
     this.fetchPatient();
-    this.fetchSystems();
-    this.fetchClinicData();
   },
   methods: {
     // Obtener información del paciente.
@@ -76,68 +73,6 @@ export default {
           this.errorHandler(err.response.status);
           console.log(err);
         });
-    },
-
-    // Obtener sistemas.
-    fetchSystems() {
-      const path = "/api/system/index";
-      const AuthStr =
-        "Bearer " + localStorage.getItem("access_token").toString();
-
-      axios
-        .get(path, {
-          headers: {
-            Accept: "application/json",
-            Authorization: AuthStr,
-          },
-        })
-        .then((res) => {
-          this.systems = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-
-    // Obtener hospitalizaciones.
-    fetchClinicData() {
-      const path = "/api/patient/clinic_data/" + this.patient_id;
-      const AuthStr =
-        "Bearer " + localStorage.getItem("access_token").toString();
-
-      axios
-        .get(path, {
-          headers: {
-            Accept: "application/json",
-            Authorization: AuthStr,
-          },
-        })
-        .then((res) => {
-          this.clinicData = res.data.clinicData;
-          this.lastEvolutions = res.data.lastEvolutions;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-
-    // Hace el formato de DNI.
-    dni() {
-      return (this.patient.dni / 1)
-        .toFixed(0)
-        .replace(".")
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    },
-
-    // Fomatear el lugar donde se encuentra el paciente (Sistema, cama, sala).
-    place() {
-      var aux_room = this.patient.room != null ? ", " + this.patient.room : "";
-      var aux_bed =
-        this.patient.bed_number != null
-          ? ", Cama " + this.patient.bed_number
-          : "";
-      return this.patient.system + aux_room + aux_bed;
     },
   },
 };

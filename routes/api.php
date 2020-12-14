@@ -148,15 +148,14 @@ Route::prefix('/patient')->group(function() {
 */
 Route::prefix('/evolution')->group(function() {
 
-  // Almacena un paciente
-  Route::post('/store', 'EvolutionController@store')->middleware('auth:api', 'permission:patient_store'); // ?
+  // Almacenar una evolución
+  Route::post('/store', 'EvolutionController@store')->middleware('auth:api', 'permission:patient_store'); //  Función
 
   // Actualizar el perfil de usuario
   Route::post('/update', 'EvolutionController@update')->middleware('auth:api', 'permission:patient_update'); // ?
 
   // Actualizar el perfil de usuario
-  Route::post('/destroy', 'EvolutionController@destroy')->middleware('auth:api', 'permission:patient_update'); // ?
-
+  Route::get('/form_data', 'EvolutionController@formData'); //->middleware('auth:api'); // ?
 });
 
 

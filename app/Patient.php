@@ -47,6 +47,147 @@ class Patient extends Model
     }
 
     /**
+     * Obtener todos los pacientes.
+     * 
+     * @return Object Collection.
+     */
+    public static function allFull()
+    {
+        return Patient::join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
+            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
+            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
+            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
+            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+    }
+
+    /**
+     * Obtener todos los pacientes por estados.
+     * 
+     * @return Object Collection.
+     */
+    public static function allFullByState($state)
+    {
+        return Patient::where('patient_states.patient_state', '=', $state)
+            ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
+            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
+            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
+            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
+            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+    }
+
+    /**
+     * Obtener los pacientes de un sistema específico.
+     * 
+     * @return Object.
+     */
+    public static function allFullBySystem($system_id)
+    {
+        return Patient::where('patients.system_id', '=', $system_id)
+            ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
+            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
+            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
+            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
+            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+    }
+
+
+    /**
+     * Obtener los pacientes de un sistema específico por estado.
+     * 
+     * @return Object.
+     */
+    public static function allFullBySystemByState($system_id, $state)
+    {
+        return Patient::where([
+            ['patients.system_id', '=', $system_id],
+            ['patient_states.patient_state', '=', $state],
+            ])
+            ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
+            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
+            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
+            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
+            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+    }
+
+    /**
+     * Obtener el paciente con toda su información externa a la entidad.
+     * 
+     * @return Object.
+     */
+    public static function full($patient_id)
+    {
+        return Patient::where('patients.patient_id', '=', $patient_id)
+            ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
+            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
+            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
+            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
+            ->select('patients.*', 'systems.system', 'patient_states.*', 'medical_ensurances.*', 'rooms.room', 'beds.number AS bed_number')
+            ->first();
+    }
+
+    /**
+     * Obtener las últimas evoluciones de un paciente
+     * 
+     * @return Collection.
+     */
+    public function lastEvolutions($limit = 5)
+    {
+        return Evolution::where('entries.patient_id', $this->patient_id)
+            ->join('hospitalizations', 'hospitalizations.hospitalization_id', '=', 'evolutions.hospitalization_id')
+            ->join('entries', 'entries.entry_id', '=', 'hospitalizations.entry_id')
+            ->orderBy('evolutions.created_at', 'DESC')
+            ->select('evolutions.*')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Obtener la útlima evolución del 
+     * 
+     * @return Collection.
+     */
+    public function lastEvolution()
+    {        
+        return Evolution::where('entries.patient_id', $this->patient_id)
+            ->join('hospitalizations', 'hospitalizations.hospitalization_id', '=', 'evolutions.hospitalization_id')
+            ->join('entries', 'entries.entry_id', '=', 'hospitalizations.entry_id')
+            ->orderBy('evolutions.created_at', 'DESC')
+            ->select('evolutions.*')
+            ->first();
+    }
+
+    /**
+     * Obtener la anteútlima evolución del 
+     * 
+     * @return Collection.
+     */
+    public function previousEvolution()
+    {
+        return Evolution::where([
+            ['entries.patient_id', '=', $this->patient_id],
+            ['evolutions.evolution_id', '<>', $this->lastEvolution()->evolution_id],
+            ])
+            ->join('hospitalizations', 'hospitalizations.hospitalization_id', '=', 'evolutions.hospitalization_id')
+            ->join('entries', 'entries.entry_id', '=', 'hospitalizations.entry_id')
+            ->orderBy('evolutions.created_at', 'DESC')
+            ->select('evolutions.*')
+            ->first();
+    }
+
+    /**
      * Obtener la cama del paciente.
      * 
      * @return App\Bed.
@@ -173,109 +314,6 @@ class Patient extends Model
     }
 
     /**
-     * Obtener todos los pacientes.
-     * 
-     * @return Object Collection.
-     */
-    public static function allFull()
-    {
-        return Patient::join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
-            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
-            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
-            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
-            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
-            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
-            ->orderBy('updated_at', 'DESC')
-            ->get();
-    }
-
-    /**
-     * Obtener todos los pacientes por estados.
-     * 
-     * @return Object Collection.
-     */
-    public static function allFullByState($state)
-    {
-        return Patient::where('patient_states.patient_state', '=', $state)
-            ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
-            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
-            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
-            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
-            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
-            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
-            ->orderBy('updated_at', 'DESC')
-            ->get();
-    }
-
-    /**
-     * Obtener los pacientes de un sistema específico.
-     * 
-     * @return Object.
-     */
-    public static function allFullBySystem($system_id)
-    {
-        return Patient::where('patients.system_id', '=', $system_id)
-            ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
-            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
-            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
-            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
-            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
-            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
-            ->orderBy('updated_at', 'DESC')
-            ->get();
-    }
-
-
-    /**
-     * Obtener los pacientes de un sistema específico por estado.
-     * 
-     * @return Object.
-     */
-    public static function allFullBySystemByState($system_id, $state)
-    {
-        return Patient::where([
-            ['patients.system_id', '=', $system_id],
-            ['patient_states.patient_state', '=', $state],
-            ])
-            ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
-            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
-            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
-            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
-            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
-            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
-            ->orderBy('updated_at', 'DESC')
-            ->get();
-    }
-
-    /**
-     * Obtener el paciente con toda su información externa a la entidad.
-     * 
-     * @return Object.
-     */
-    public static function full($patient_id)
-    {
-        return Patient::where('patients.patient_id', '=', $patient_id)
-            ->join('medical_ensurances', 'medical_ensurances.medical_ensurance_id', '=', 'patients.medical_ensurance_id')
-            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
-            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
-            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
-            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
-            ->select('patients.*', 'systems.system', 'patient_states.*', 'medical_ensurances.*', 'rooms.room', 'beds.number AS bed_number')
-            ->first();
-    }
-
-    public function lastEvolutions()
-    {
-        return Evolution::where('entries.patient_id', $this->patient_id)
-            ->join('hospitalizations', 'hospitalizations.hospitalization_id', '=', 'evolutions.hospitalization_id')
-            ->join('entries', 'entries.entry_id', '=', 'hospitalizations.entry_id')
-            ->orderBy('evolutions.date', 'DESC')
-            ->select('evolutions.*')
-            ->limit(8)
-            ->get();
-    }
-
-    /**
      * Actualizar información de un paciente
      * 
      * @return void.
@@ -361,9 +399,6 @@ class Patient extends Model
      */
     public function changeSystem($old_system, $new_system, $userId)
     {
-        // Chequear reglas
-        // ...
-
         // Texto para la alerta
         $textData = "El paciente ".$this->name." ".$this->lastname." fue cambiado del sistema ".$old_system->system." a ".$new_system->system." .";
 
@@ -372,11 +407,11 @@ class Patient extends Model
             Alert::createAlert($this->patient_id, $medic, $textData);
         }
 
-        // // Crear alerta al jefe del sistema
+        // Crear alerta al jefe del sistema
         $chief = $this->system()->first()->chief()->first();
         Alert::createAlert($this->patient_id, $chief, $textData);
 
-        // // Desasignar todos los pacientes
+        // Desasignar todos los pacientes
         $this->unassignMedics();
 
         // Cambiar el sistema en si

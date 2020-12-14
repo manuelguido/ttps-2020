@@ -182,6 +182,7 @@ class User extends Authenticatable
                 ['seen', $value],
             ])
             ->join('patients', 'patients.patient_id', '=', 'alerts.patient_id')
+            ->orderBy('created_at', 'DESC')
             ->select('alerts.*', 'patients.name', 'patients.lastname', 'patients.dni');
     }
 

@@ -116,9 +116,13 @@
                 class="browser-default custom-select"
               >
                 <option :value="null" selected>Seleccionar</option>
-                <option value="1">Buena</option>
-                <option value="2">Regular</option>
-                <option value="3">Mal</option>
+                <option
+                  v-for="vm in ventilatory_mechanics"
+                  :key="vm.ventilatory_mechanic_id"
+                  :value="vm.ventilatory_mechanic_id"
+                >
+                  {{ vm.ventilatory_mechanic }}
+                </option>
               </select>
             </div>
           </div>
@@ -747,7 +751,7 @@ export default {
   data() {
     return {
       current: 1,
-      loading: false,
+      loading: true,
       message: "",
       // Steps data
       steps: [
@@ -782,6 +786,10 @@ export default {
           icon: "fad fa-notes-medical",
         },
       ],
+      // Información para desplegables
+      oxigen_requirement_types: [],
+      ventilatory_mechanics: [],
+      feeding_types: [],
       // Step 1 data
       evolution: {
         temperature: 1,
@@ -850,6 +858,9 @@ export default {
       },
     };
   },
+  created() {
+    this.fetchFormData();
+  },
   methods: {
     setStep(value) {
       this.current = value;
@@ -882,6 +893,30 @@ export default {
       );
     },
 
+    fetchFormData() {
+      const path = "/api/evolution/form_data";
+      const AuthStr =
+        "Bearer " + localStorage.getItem("access_token").toString();
+
+      axios
+        .get(path, {
+          headers: {
+            Accept: "application/json",
+            Authorization: AuthStr,
+          },
+        })
+        .then((res) => {
+          this.oxigen_requirement_types = res.data.oxigen_requirement_types;
+          this.ventilatory_mechanics = res.data.ventilatory_mechanics;
+          this.feeding_types = res.data.feeding_types;
+          this.loading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.loading = false;
+        });
+    },
+
     newEvolution() {
       this.loading = true;
       const path = "/api/evolution/store";
@@ -906,15 +941,13 @@ export default {
         })
         .then((res) => {
           this.new_alert(res.data);
-          // if (res.data.status == 'success') {
-          // this.$emit("reload-data");
-          // }
-          console.log(res);
+          if (res.data.status == "success") {
+            this.$emit("reload-data");
+          }
+          this.loading = false;
         })
         .catch((err) => {
           console.log(err);
-        })
-        .finally(() => {
           this.loading = false;
         });
     },

@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\OxigenRequirementType;
+use App\VentilatoryMechanic;
+use App\RuleSettings;
+use App\FeedingType;
 use App\Evolution;
 use App\Patient;
 
@@ -141,7 +145,7 @@ class EvolutionController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        // try {
             // Validación de la evolucion
             $this->validatePatientId($request);
             $this->validateEvolution($request);
@@ -151,19 +155,39 @@ class EvolutionController extends Controller
             $this->validateActualTreatments($request);
             $this->validateObservations($request);
 
+            // Id de hospitalización
             $hospitalization_id = Patient::find($request->patient_id)->currentHospitalization()->hospitalization_id;
-            $user_id = $request->user()->user_id; // Id del usuario que crea la evolución
+            // Id del usuario que crea la evolución
+            $user_id = $request->user()->user_id;
 
+            // Crear evolución
             $evolution = Evolution::createEvolution($request, $user_id, $hospitalization_id);
 
-            
+            // Chequeo de reglas
+            $ruleSettings = RuleSettings::all()->first();
+            $ruleSettings->analizeAllRules($request->patient_id, $evolution);
+
             $message = ['status' => 'success', 'message' => 'Evolución guardada con exito.'];
-        }
-        catch (\Exception $e)
-        {
-            $message = ['status' => 'warning', 'message' => $e];
-        }
+        // }
+        // catch (\Exception $e)
+        // {
+        //     $message = ['status' => 'warning', 'message' => $e];
+        // }
 
         return response()->json($message, 200);
+    }
+
+    /**
+     * Información para el formulario.
+     * 
+     * @return JSON.
+     */
+    public function formData()
+    {
+        return response()->json([
+            'oxigen_requirement_types' => OxigenRequirementType::all(),
+            'ventilatory_mechanics' => VentilatoryMechanic::all(),
+            'feeding_types' => FeedingType::all(),
+        ]);
     }
 }
