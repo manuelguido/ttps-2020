@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="div w-600 h5-responsive black-alpha-60 pl-4 mb-4">
+    <div v-if="system" class="div w-600 h5-responsive black-alpha-60 pl-4 mb-4">
       {{system}}
     </div>
     <router-link to="/user/profile" class="user-data mb-4 py-3 px-4 waves-effect">
@@ -16,7 +16,7 @@
             {{user.name}}
             {{user.lastname}}
           </div>
-          <div>{{role}}</div>
+          <!-- <div>{{role}}</div> -->
         </div>
 
       </div>
@@ -29,9 +29,16 @@ export default {
   name: 'userData',
   data () {
     return {
-      user: JSON.parse(localStorage.getItem('user')),
-      role: JSON.parse(localStorage.getItem('role')),
-      system: JSON.parse(localStorage.getItem('system')).system,
+      user: null,
+      role: null,
+      system: null,
+    }
+  },
+  created() {
+    this.user = JSON.parse(localStorage.getItem('user'));
+    this.role = JSON.parse(localStorage.getItem('role'));
+    if (localStorage.system) {
+      this.system = JSON.parse(localStorage.getItem('system')).system;
     }
   }
 }

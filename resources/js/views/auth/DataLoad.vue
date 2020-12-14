@@ -11,6 +11,11 @@ export default {
   created() {
     this.loadUser();
   },
+  data () {
+    return {
+      resp: null,
+    }
+  },
   methods: {
     /**
      * Carga el usuario en almacenamiento local del cliente
@@ -30,6 +35,7 @@ export default {
         .then((res) => {
           // Carga la información
           this.storeUserData(res.data);
+          this.resp = res.data;
           // Redirecciona
           this.redirect();
         })
@@ -50,8 +56,10 @@ export default {
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("role", JSON.stringify(data.role));
       localStorage.setItem("permissions", JSON.stringify(data.permissions));
-      localStorage.setItem("system", JSON.stringify(data.system));
       localStorage.setItem("routes", JSON.stringify(data.routes));
+      if(data.system) {
+        localStorage.setItem("system", JSON.stringify(data.system));
+      }
     },
 
     /**

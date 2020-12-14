@@ -87,25 +87,22 @@ class UserController extends Controller
      * 
      * @return JSON.
      */
-    public function fullUser(Request $request)
+    public function userData(Request $request)
     {
-        // El rol se obtiene antes para poder buscar las rutas correspondientes
-        $role = $request->user()->roles()->first()->role;
+        $user = $request->user();
+        $role = $user->roles()->first()->role;
 
         $responseData = [
-            'user' => $request->user(),
+            'user' => $user,
             'role' => $role,
-            'permissions' => $request->user()->permissions(),
-            'routes' => $this->getRoutes($request->user()),
+            'permissions' => $user->permissions(),
+            'routes' => $this->getRoutes($user),
+            'system' => null,
         ];
 
-        if ($request->user()->hasRole(Role::ROLE_MEDIC) || $request->user()->hasRole(Role::ROLE_SYSTEM_CHIEF)) {
-            $userSystem = $request->user()->systems()->first();
-        } else {
-            $userSystem = null;
+        if ($user->hasRole(Role::ROLE_MEDIC) || $user->hasRole(Role::ROLE_SYSTEM_CHIEF)) {
+            $responseData['system'] = $user->systems()->first();
         }
-
-        $responseData['system'] = $userSystem;
 
         return response()->json($responseData);
     }

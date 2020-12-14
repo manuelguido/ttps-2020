@@ -34,7 +34,7 @@
           <!-- ./Nombre y apellido -->
 
           <!-- Sistema -->
-          <div class="col-12 mb-2">
+          <div v-if="system" class="col-12 mb-2">
             <span class="h5-responsive primary">{{ system }}</span>
           </div>
           <!-- /.Sistema -->
@@ -48,7 +48,7 @@
           <div class="col-12">
             <hr />
             <info-data data="Email" :value="user.email"></info-data>
-            <info-data data="DNI" :value="dni()"></info-data>
+            <info-data data="DNI" :value="formatDni(user.dni)"></info-data>
             <info-data data="Teléfono" :value="user.phone"></info-data>
           </div>
         </div>
@@ -60,6 +60,7 @@
 
     <!-- Row -->
     <div v-else class="row justify-content-center">
+      <loading-overlay v-if="loadingForm" />
       <!-- Title -->
       <div
         class="col-12 mb-5 d-flex justify-content-between align-items-center"
@@ -76,16 +77,32 @@
         <!-- Row -->
         <form class="row" method="POST" @submit.prevent="updateProfile()">
           <div class="col-12 col-lg-6 mb-4">
-            <v-input v-model="newUserData.name" label="Nombre"></v-input>
+            <v-input
+              v-model="newUserData.name"
+              label="Nombre"
+              onlyLetters
+            ></v-input>
           </div>
           <div class="col-12 col-lg-6 mb-4">
-            <v-input v-model="newUserData.lastname" label="Apellido"></v-input>
+            <v-input
+              v-model="newUserData.lastname"
+              label="Apellido"
+              onlyLetters
+            ></v-input>
           </div>
           <div class="col-12 mb-4">
-            <v-input v-model="newUserData.email" label="Email"></v-input>
+            <v-input
+              v-model="newUserData.email"
+              label="Email"
+              type="email"
+            ></v-input>
           </div>
           <div class="col-12 mb-4">
-            <v-input v-model="newUserData.dni" label="DNI"></v-input>
+            <v-input
+              v-model="newUserData.dni"
+              label="DNI"
+              onlyNumbers
+            ></v-input>
           </div>
           <div class="col-12 mb-4">
             <v-input v-model="newUserData.phone" label="Teléfono"></v-input>
@@ -109,10 +126,11 @@ import axios from "axios";
 export default {
   data() {
     return {
-      user: JSON.parse(localStorage.getItem("user")),
-      role: JSON.parse(localStorage.getItem("role")),
-      system: JSON.parse(localStorage.getItem("system")).system,
+      user: null,
+      role: null,
+      system: null,
       editing: false,
+      loadingForm: false,
       newUserData: {
         name: "",
         lastname: "",
@@ -123,20 +141,14 @@ export default {
     };
   },
   created() {
+    this.user = JSON.parse(localStorage.getItem("user"));
+    this.role = JSON.parse(localStorage.getItem("role"));
+    if (localStorage.system) {
+      this.system = JSON.parse(localStorage.getItem("system")).system;
+    }
     this.resetForm();
   },
   methods: {
-    /**
-     * Hace el formato de DNI
-     */
-    dni() {
-      return (this.user.dni / 1)
-        .toFixed(0)
-        .replace(".")
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    },
-
     /**
      * Resetear la info del formulario
      */
@@ -156,6 +168,7 @@ export default {
      * Guardar perfil de usuario
      */
     updateProfile() {
+      this.loadingForm = true;
       const path = "/api/user/profile/update";
       const AuthStr =
         "Bearer " + localStorage.getItem("access_token").toString();
@@ -175,15 +188,13 @@ export default {
           },
         })
         .then((res) => {
-          this.new_alert(res.data);
           if (res.data.status == "success") {
             this.updateLocalData(res.data.user);
-            this.resetForm();
           }
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);
+          this.loadingForm = false;
         });
     },
 

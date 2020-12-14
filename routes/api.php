@@ -34,10 +34,10 @@ Route::prefix('/user')->middleware('auth:api')->group(function() {
   Route::get('/routes', 'UserController@routes'); // ?
 
   // Obtener usuario con su rol, sus rutas(de url) y su sistema correspondiente
-  Route::get('/full', 'UserController@fullUser');
+  Route::get('/full', 'UserController@userData');
 
   // Actualizar perfil de usuario
-  Route::post('/profile/update', 'UserController@updateProfile'); // ?
+  Route::post('/profile/update', 'UserController@updateProfile'); // Funciona
 });
 
 
