@@ -44,6 +44,11 @@ export default {
       reloadInterval: 3500,
       tableColumns: [
         {
+          label: "Fecha",
+          field: "date",
+          sort: "desc",
+        },
+        {
           label: "Paciente",
           field: "patient",
           sort: "asc",
@@ -98,6 +103,7 @@ export default {
     loadAlerts(data) {
       for (let i = 0; i < data.length; i++) {
         this.alerts.push({
+          date: this.formatDate(data[i].created_at),
           patient: data[i].lastname + " " + data[i].name,
           dni: this.formatDni(data[i].dni),
           description: data[i].description,

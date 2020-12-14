@@ -19,6 +19,19 @@ const formatsMixin = {
 
     formatString(value) {
       return value.toString();
+    },
+
+    formatDate(dateData) {
+      // Crear fecha
+      let date_ob = new Date(dateData);
+      // Ajustar 0 antes del digito de fecha
+      let day = ("0" + date_ob.getDate()).slice(-2);
+      // Mes
+      let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+      // Año
+      let year = date_ob.getFullYear();
+      // Formato completo
+      return day + "/" + month + "/" + year;
     }
   },
 }
