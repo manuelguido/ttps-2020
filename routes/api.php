@@ -122,10 +122,10 @@ Route::prefix('/patient')->group(function() {
   Route::post('/update', 'PatientController@update')->middleware('auth:api', 'permission:patient_update'); // ?
 
   // Actualizar el perfil de usuario
-  Route::post('/search/', 'PatientController@searchByDni')->middleware('auth:api', 'permission:patient_show'); // ?
+  Route::post('/search', 'PatientController@searchByDni')->middleware('auth:api', 'permission:patient_show'); // ?
 
   // Retorna toda la información hospitalizaciones de un paciente
-  // Route::get('/clinic_data/{patient_id}', 'PatientController@clinicData'); //->middleware('auth:api', 'permission:patient_show'); // ?
+  Route::get('/clinic_data/{patient_id}', 'PatientController@clinicData'); //->middleware('auth:api'); // Funciona
 
   // Cambia un paciente de sistema
   Route::post('/system/change', 'PatientController@changeSystem')->middleware('auth:api', 'permission:patient_update'); // ?
@@ -155,7 +155,7 @@ Route::prefix('/evolution')->group(function() {
   Route::post('/update', 'EvolutionController@update')->middleware('auth:api', 'permission:patient_update'); // ?
 
   // Actualizar el perfil de usuario
-  Route::get('/form_data', 'EvolutionController@formData'); //->middleware('auth:api'); // ?
+  Route::get('/form_data', 'EvolutionController@formData')->middleware('auth:api'); // Funciona
 });
 
 

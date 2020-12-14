@@ -155,7 +155,7 @@ class Patient extends Model
     }
 
     /**
-     * Obtener la útlima evolución del 
+     * Obtener la útlima evolución del paciente. 
      * 
      * @return Collection.
      */
@@ -170,7 +170,7 @@ class Patient extends Model
     }
 
     /**
-     * Obtener la anteútlima evolución del 
+     * Obtener la anteútlima evolución del paciente. 
      * 
      * @return Collection.
      */
@@ -185,6 +185,38 @@ class Patient extends Model
             ->orderBy('evolutions.created_at', 'DESC')
             ->select('evolutions.*')
             ->first();
+    }
+
+    /**
+     * Obtener las evoluciones de la internación actual del paciente. 
+     * 
+     * @return Collection.
+     */
+    public function currentEvolutions()
+    {
+        return Evolution::where([
+            ['entries.patient_id', '=', $this->patient_id],
+            ['entries.entry_id', '=', $this->currentEntry()->entry_id],
+            ])
+            ->join('hospitalizations', 'hospitalizations.hospitalization_id', '=', 'evolutions.hospitalization_id')
+            ->join('entries', 'entries.entry_id', '=', 'hospitalizations.entry_id')
+            ->leftJoin('ventilatory_mechanics', 'evolutions.ventilatory_mechanic_id', '=', 'ventilatory_mechanics.ventilatory_mechanic_id')
+            ->leftJoin('oxigen_requirement_types', 'evolutions.oxigen_requirement_type_id', '=', 'oxigen_requirement_types.oxigen_requirement_type_id')
+            ->leftJoin('feeding_types', 'evolutions.feeding_type_id', '=', 'feeding_types.feeding_type_id')
+            ->orderBy('evolutions.created_at', 'DESC')
+            ->select('evolutions.*', 'ventilatory_mechanics.*', 'oxigen_requirement_types.*', 'feeding_types.*');
+    }
+
+    /**
+     * Obtener los cambios del systema del paciente. 
+     * 
+     * @return Collection.
+     */
+    public function systemChanges()
+    {
+        // $searchEntryId = ($entry_id == null) ? $this->currentEntry()->entry_id : $entry_id;
+
+        return $this->currentEntry()->hospitalizations()->get();
     }
 
     /**

@@ -35,7 +35,7 @@
             <h6 class="dropdown-header text-left pl-2 black-alpha-60">
               Cuenta
             </h6>
-            <mdb-dropdown-item to="/profile">Perfil</mdb-dropdown-item>
+            <mdb-dropdown-item to="/user/profile">Perfil</mdb-dropdown-item>
             <mdb-dropdown-item to="/dashboard">Dashboard</mdb-dropdown-item>
             <div class="dropdown-divider m-0 p-0"></div>
             <mdb-dropdown-item to="/logout">Cerrar sesión</mdb-dropdown-item>

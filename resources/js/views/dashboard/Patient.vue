@@ -1,7 +1,7 @@
 <template>
   <!-- Dashboard card -->
   <dashboard-card>
-    <loading-overlay v-if="loading" message="Cargando paciente" />
+    <loading-overlay v-if="loadingPatient" message="Cargando paciente" />
     <!-- Row -->
     <div v-else class="row">
       <!-- Nombre -->
@@ -27,19 +27,27 @@
       </div>
 
       <!-- Información -->
-      <div class="col-12">
-        <info-data data="DNI" :value="dni()"></info-data>
-        <info-data data="Teléfono" :value="patient.phone.toString()"></info-data>
+      <div class="col-12 col-lg-9 col-xl-6">
+        <info-data data="DNI" :value="formatDni(patient.dni)"></info-data>
+        <info-data
+          data="Teléfono"
+          :value="patient.phone.toString()"
+        ></info-data>
         <info-data
           data="Fecha de nacimiento"
           :value="patient.birth_date | formatDateFull"
         ></info-data>
+
         <info-data
           v-if="patient.personal_background"
           data="Antecedentes personales"
           :value="patient.personal_background"
         ></info-data>
-        <hr class="mb-4" />
+      </div>
+      <div class="col-12 mb-4">
+        <hr />
+      </div>
+      <div class="col-12 col-lg-9 col-xl-6">
         <info-data
           data="Obra social"
           :value="patient.medical_ensurance"
@@ -59,7 +67,6 @@
           @reload-data="fetchClinicData()"
           :patient_id="patient_id"
           :clinicData="clinicData"
-          :lastEvolutions="lastEvolutions"
         >
         </clinic-data>
       </div>
@@ -72,7 +79,7 @@
 
 <script>
 import { mdbListGroup, mdbListGroupItem } from "mdbvue";
-import ClinicData from "../../components/dashboard/patients/ClinicData.vue";
+import ClinicData from "../../components/dashboard/patients/ClinicData/Index.vue";
 
 export default {
   name: "PatientView",
@@ -84,18 +91,14 @@ export default {
   },
   data() {
     return {
-      cardTitle: "",
       patient: {},
-      systems: [],
-      loading: true,
+      loadingPatient: true,
       clinicData: [],
-      lastEvolutions: [],
     };
   },
   created() {
     this.$Progress.start();
     this.fetchPatient();
-    this.fetchSystems();
     this.fetchClinicData();
   },
   methods: {
@@ -119,7 +122,7 @@ export default {
         .then((res) => {
           this.patient = res.data;
           this.cardTitle = this.patient.name + " " + this.patient.lastname;
-          this.loading = false;
+          this.loadingPatient = false;
           this.$Progress.finish();
         })
         .catch((err) => {
@@ -129,33 +132,8 @@ export default {
     },
 
     /**
-     * Obtener sistemas.
-     *
-     * @return void.
-     */
-    fetchSystems() {
-      const path = "/api/system/index";
-      const AuthStr =
-        "Bearer " + localStorage.getItem("access_token").toString();
-
-      axios
-        .get(path, {
-          headers: {
-            Accept: "application/json",
-            Authorization: AuthStr,
-          },
-        })
-        .then((res) => {
-          this.systems = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-
-    /**
      * Obtener hospitalizaciones del paciente.
-     * 
+     *
      * @return void.
      */
     fetchClinicData() {
@@ -172,20 +150,10 @@ export default {
         })
         .then((res) => {
           this.clinicData = res.data.clinicData;
-          this.lastEvolutions = res.data.lastEvolutions;
         })
         .catch((err) => {
           console.log(err);
         });
-    },
-
-    // Hace el formato de DNI.
-    dni() {
-      return (this.patient.dni / 1)
-        .toFixed(0)
-        .replace(".")
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
 
     // Fomatear el lugar donde se encuentra el paciente (Sistema, cama, sala).

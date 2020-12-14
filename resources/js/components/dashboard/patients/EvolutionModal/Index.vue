@@ -3,7 +3,7 @@
   <div>
     <!-- Button -->
     <mdb-btn
-      color="secondary"
+      color="purple"
       @click.native="modal = true"
       class="mr-0 ml-5 py-2 px-1"
     >

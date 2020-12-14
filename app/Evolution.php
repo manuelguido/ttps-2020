@@ -23,7 +23,7 @@ class Evolution extends Model
         'hospitalization_id', 'user_id',
         'temperature', 'heart_rate', 'breathing_rate', 'systolic_ta', 'diastolic_ta',
       
-        'ventilatory_mechanic_id', 'requires_oxigen', 'required_oxigen_type_id', 'required_oxigen_value', 'oxigen_saturation',
+        'ventilatory_mechanic_id', 'requires_oxigen', 'oxigen_requirement_type_id', 'required_oxigen_value', 'oxigen_saturation',
         'pafi', 'pafi_value', 'prone', 'cough', 'dyspnoea', 'respiratory_irregularities',
 
         'drowsiness', 'anosmia', 'dysgeucia',

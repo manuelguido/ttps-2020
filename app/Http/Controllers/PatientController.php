@@ -334,24 +334,27 @@ class PatientController extends Controller
 
         $clinicData = []; // Inicializar para la información completa del paciente
 
-        $entries = $patient->entries()->orderBy('date', 'DESC')->get(); // Obtener entradas al hospital
+        $evolutions = $patient->currentEvolutions()->get();
 
-        foreach ($entries as $entry) { // Para cada entrada obtener las hospitalizaciones
+        $systemChanges = $patient->systemChanges();
 
-            $hospitalizations = $entry->hospitalizations()->join('systems', 'systems.system_id', '=', 'hospitalizations.system_id')->orderBy('date_of_admission', 'DESC')->get();
+        
+        // foreach ($entries as $entry) { // Para cada entrada obtener las hospitalizaciones
 
-            foreach ($hospitalizations as $hospitalization) { // Para cada entrada obtener las hospitalizaciones
-                $hospitalization['evolutions'] = $hospitalization->evolutions()->orderBy('date', 'DESC')->get();
-            }
+        //     $hospitalizations = $entry->hospitalizations()->join('systems', 'systems.system_id', '=', 'hospitalizations.system_id')->orderBy('date_of_admission', 'DESC')->get();
 
-            $completeEntry = $entry;
-            $completeEntry['hospitalizations'] = $hospitalizations;
-            array_push($clinicData, $completeEntry);
-        }
+        //     foreach ($hospitalizations as $hospitalization) { // Para cada entrada obtener las hospitalizaciones
+        //         $hospitalization['evolutions'] = $hospitalization->evolutions()->orderBy('date', 'DESC')->get();
+        //     }
+
+        //     $completeEntry = $entry;
+        //     $completeEntry['hospitalizations'] = $hospitalizations;
+        //     array_push($clinicData, $completeEntry);
+        // }
 
         return response()->json([
-            'clinicData' => $clinicData,
-            'lastEvolutions' => $patient->lastEvolutions(),
+            'clinicData' => $patient->currentEvolutions()->get(),
+            // 'lastEvolutions' => $patient->lastEvolutions(),
         ]);
     }
 }
