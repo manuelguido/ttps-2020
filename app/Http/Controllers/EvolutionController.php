@@ -145,7 +145,7 @@ class EvolutionController extends Controller
      */
     public function store(Request $request)
     {
-        // try {
+        try {
             // Validación de la evolucion
             $this->validatePatientId($request);
             $this->validateEvolution($request);
@@ -168,11 +168,11 @@ class EvolutionController extends Controller
             $ruleSettings->analizeAllRules($request->patient_id, $evolution);
 
             $message = ['status' => 'success', 'message' => 'Evolución guardada con exito.'];
-        // }
-        // catch (\Exception $e)
-        // {
-        //     $message = ['status' => 'warning', 'message' => $e];
-        // }
+        }
+        catch (\Exception $e)
+        {
+            $message = ['status' => 'warning', 'message' => $e];
+        }
 
         return response()->json($message, 200);
     }

@@ -174,8 +174,13 @@ class RuleSettings extends Model
      */
     private function analizeRule5($evolution)
     {
-        $ruleCondition = ($evolution->oxigen_saturation < $this->oxigen_saturation);
+        $ruleCondition = false;
+        $currentSaturation = $evolution->oxigen_saturation;
 
+        if ($currentSaturation != null) {
+            $ruleCondition = ($evolution->oxigen_saturation < $this->oxigen_saturation);
+        }
+        
         return $ruleCondition;
     }
 
