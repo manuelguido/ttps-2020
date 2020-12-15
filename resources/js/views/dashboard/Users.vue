@@ -71,6 +71,16 @@ export default {
           field: "phone",
           sort: "asc",
         },
+        {
+          label: "Rol",
+          field: "role",
+          sort: "asc",
+        },
+        {
+          label: "Sistema",
+          field: "system",
+          sort: "asc",
+        },
       ],
     };
   },
@@ -89,12 +99,19 @@ export default {
      */
     loadUsers(data) {
       for (let i = 0; i < data.length; i++) {
+        let systemData = 'N/a';
+        if (data[i].system) {
+          systemData = data[i].system;
+        }
+
         this.users.push({
           lastname: data[i].lastname,
           name: data[i].name,
           dni: this.formatDni(data[i].dni),
           email: data[i].email,
           phone: data[i].phone,
+          role: data[i].role,
+          system: systemData,
           show:
             '<a href="/dashboard/user/' +
             data[i].user_id +

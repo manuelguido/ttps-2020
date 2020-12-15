@@ -113,10 +113,10 @@ class User extends Authenticatable
      */
     public static function allComplete()
     {
-        return User::join('system_user', 'system_user.user_id', '=', 'users.user_id')
-            ->join('systems', 'systems.system_id', '=', 'system_user.system_id')
-            ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
+        return User::join('role_user', 'role_user.user_id', '=', 'users.user_id')
             ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
+            ->leftJoin('system_user', 'system_user.user_id', '=', 'users.user_id')
+            ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
             ->select('users.*', 'systems.system', 'roles.role');
     }
 
