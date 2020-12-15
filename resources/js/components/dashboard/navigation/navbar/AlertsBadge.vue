@@ -3,7 +3,7 @@
   <router-link
     to="/user/alerts"
     :class="[
-      'nav-item d-flex align-items-center mx-3 px-4 alert-badge uns',
+      'nav-item d-flex align-items-center mr-3 px-4 alert-badge uns',
       amount > 0 ? 'notify' : '',
     ]"
   >
@@ -22,9 +22,13 @@ export default {
       amount: 0,
       fetchInterval: null,
       reloadInterval: 2000,
+      online: null,
     };
   },
   created() {
+    if (localStorage.unreadCount) {
+      this.amount = JSON.parse(localStorage.getItem("unreadCount"));
+    }
     this.alertCheckInterval();
     this.fetchAlerts();
   },
@@ -45,8 +49,7 @@ export default {
      * Obtener alertas de usuario.
      */
     fetchAlerts() {
-      var $this = this;
-      const path = "/api/alert/unread/count";
+      const path = "/api/alert/unread/index";
       const AuthStr =
         "Bearer " + localStorage.getItem("access_token").toString();
 
@@ -58,8 +61,15 @@ export default {
           },
         })
         .then((res) => {
-          this.amount = res.data.count;
-          localStorage.setItem("unreadCount", JSON.stringify(res.data.count));
+          this.online = JSON.parse(localStorage.getItem("online"));
+
+          if (this.online.value) {
+            localStorage.setItem("unreadCount", JSON.stringify(res.data.count));
+            localStorage.setItem("unreadAlerts", JSON.stringify(res.data.alerts));
+            this.amount = res.data.count;
+          } else {
+            this.amount = JSON.parse(localStorage.getItem("unreadAlerts")).length;
+          }
         })
         .catch((err) => {
           console.log(err);

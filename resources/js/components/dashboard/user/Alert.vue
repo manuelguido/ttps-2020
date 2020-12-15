@@ -85,7 +85,6 @@ export default {
         })
         .then((res) => {
           if (res.data.status == "success") {
-            this.$emit("reloadData", this.alert_id);
             this.deleteAlert();
           }
         })
@@ -103,6 +102,10 @@ export default {
       var $this = this;
       setTimeout(function () {
         $this.destroy();
+      }, 300);
+
+      setTimeout(function () {
+        $this.$emit("reloadData", this.alert.alert_id);
       }, 500);
     },
 

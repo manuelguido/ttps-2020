@@ -160,6 +160,36 @@ a:active,
   color: var(--black-alpha-90) !important;
 }
 
+/* Colores de fondo */
+.bg-black-alpha-10 {
+  background-color: var(--black-alpha-10) !important;
+}
+.bg-black-alpha-20 {
+  background-color: var(--black-alpha-20) !important;
+}
+.bg-black-alpha-30 {
+  background-color: var(--black-alpha-30) !important;
+}
+.bg-black-alpha-40 {
+  background-color: var(--black-alpha-40) !important;
+}
+.bg-black-alpha-50 {
+  background-color: var(--black-alpha-50) !important;
+}
+.bg-black-alpha-60 {
+  background-color: var(--black-alpha-60) !important;
+}
+.bg-black-alpha-70 {
+  background-color: var(--black-alpha-70) !important;
+}
+.bg-black-alpha-80 {
+  background-color: var(--black-alpha-80) !important;
+}
+.bg-black-alpha-90 {
+  background-color: var(--black-alpha-90) !important;
+}
+
+
 /* Buttons */
 .button-primary {
   background-color: var(--primary) !important;

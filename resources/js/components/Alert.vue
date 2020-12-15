@@ -125,13 +125,13 @@ export default {
 }
 @media(min-width: 992px) {
   .ls-alert {
-    top: 5vh;
+    top: 20px;
     right: 20px;
   }
 }
 @media(max-width: 992px) {
   .ls-alert {
-    top: 40px;
+    top: 20px;
     right: 20px;
     left: 20px;
   }

@@ -47,13 +47,17 @@ export default {
       loadingData: true,
       alerts: [],
       fetchInterval: null,
-      reloadInterval: 3500,
+      reloadInterval: 1000,
+      online: JSON.parse(localStorage.getItem("online")),
     };
   },
   created() {
-    this.hasPermission('alerts');
+    if (localStorage.unreadAlerts) {
+      this.alerts = JSON.parse(localStorage.getItem("unreadAlerts"));
+    }
+    this.hasPermission("alerts");
+    this.loadingData = false;
     this.alertCheckInterval();
-    this.fetchAlerts();
   },
   beforeDestroy() {
     this.fetchInterval = null;
@@ -64,57 +68,19 @@ export default {
      */
     alertCheckInterval() {
       this.fetchInterval = setInterval(() => {
-        this.checkNewAlerts();
+        this.loadAlerts();
       }, this.reloadInterval);
-    },
-
-    /**
-     * Si hay notificaciones nuevas, las busca.
-     */
-    checkNewAlerts() {
-      var count = JSON.parse(localStorage.getItem("unreadCount"));
-      if (count > 0) this.fetchAlerts();
-    },
-
-    /**
-     * Obtener alertas de usuario.
-     */
-    fetchAlerts() {
-      var $this = this;
-      const path = "/api/alert/unread/index";
-      const AuthStr =
-        "Bearer " + localStorage.getItem("access_token").toString();
-      axios
-        .get(path, {
-          headers: {
-            Accept: "application/json",
-            Authorization: AuthStr,
-          },
-        })
-        .then((res) => {
-          this.loadAlerts(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
 
     /**
      * Guarda las alertas localmente
      */
-    loadAlerts(data) {
-      this.alerts = [];
-      this.alerts = data;
-      this.loadingData = false;
+    loadAlerts() {
+      this.alerts = JSON.parse(localStorage.getItem("unreadAlerts"));
     },
 
-    reloadData(alertId) {
-      this.alerts.forEach((element) => {
-        if (element.alert_id == alertId) {
-          this.alerts.pop(element);
-        }
-      });
-      this.fetchAlerts();
+    reloadData() {
+      this.loadAlerts();
     },
   },
   watch: {

@@ -11,10 +11,10 @@ export default {
   created() {
     this.loadUser();
   },
-  data () {
+  data() {
     return {
       resp: null,
-    }
+    };
   },
   methods: {
     /**
@@ -57,9 +57,19 @@ export default {
       localStorage.setItem("role", JSON.stringify(data.role));
       localStorage.setItem("permissions", JSON.stringify(data.permissions));
       localStorage.setItem("routes", JSON.stringify(data.routes));
-      if(data.system) {
+      if (data.system) {
         localStorage.setItem("system", JSON.stringify(data.system));
       }
+      localStorage.setItem(
+        "online",
+        JSON.stringify({
+          text: "Online",
+          color: "text-success",
+          bg_color: "bg-white",
+          value: true,
+          icon: "fad fa-toggle-on",
+        })
+      );
     },
 
     /**

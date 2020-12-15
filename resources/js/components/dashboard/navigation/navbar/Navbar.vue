@@ -19,8 +19,9 @@
           <items :routes="routes"></items>
         </span>
         <!-- Icono de notificaciones -->
+        <online-toggler v-if="hasPermissionDisplay('alerts')"/>
         <alerts-badge v-if="hasPermissionDisplay('alerts')" />
-
+      
         <!-- Dropdown de cuenta -->
         <mdb-dropdown tag="li" class="nav-item mobile-hide uns" dropleft>
           <mdb-dropdown-toggle
@@ -63,6 +64,8 @@ import {
 } from "mdbvue";
 import Items from "./Items";
 import AlertsBadge from "./AlertsBadge";
+import OnlineToggler from "./OnlineToggler";
+
 export default {
   name: "DashboardNavbar",
   components: {
@@ -79,6 +82,7 @@ export default {
     mdbBtn,
     Items,
     AlertsBadge,
+    OnlineToggler,
   },
   props: {
     routes: Array,

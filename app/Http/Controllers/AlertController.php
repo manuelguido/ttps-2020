@@ -46,7 +46,11 @@ class AlertController extends Controller
      */
     public function unreadIndex(Request $data)
     {
-        return response()->json($data->user()->alertsBySeen(false)->get());
+        $responseData = [
+            'alerts' => $data->user()->alertsBySeen(false)->get(),
+            'count' => $data->user()->alertsBySeen(false)->count(),
+        ];
+        return response()->json($responseData);
     }
 
     /**
