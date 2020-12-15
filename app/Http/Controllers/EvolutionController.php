@@ -164,7 +164,7 @@ class EvolutionController extends Controller
             $evolution = Evolution::createEvolution($request, $user_id, $hospitalization_id);
 
             // Chequeo de reglas
-            $ruleSettings = RuleSettings::all()->first();
+            $ruleSettings = RuleSettings::find(1);
             $ruleSettings->analizeAllRules($request->patient_id, $evolution);
 
             $message = ['status' => 'success', 'message' => 'Evolución guardada con exito.'];

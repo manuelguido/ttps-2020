@@ -42,57 +42,59 @@ class RuleSettings extends Model
      */
     public function analizeAllRules($patient_id, $evolution)
     {
-        $patient = Patient::find($patient_id); // Paciente
-        $medics = $patient->medicsFull(); // Medicos asignados
-        $chief = $patient->system()->first()->chief()->first(); // Jefe de sistema del paciente
+        if ($this->activated) {
+            $patient = Patient::find($patient_id); // Paciente
+            $medics = $patient->medicsFull(); // Medicos asignados
+            $chief = $patient->system()->first()->chief()->first(); // Jefe de sistema del paciente
 
-        // Evaluación de Regla 1
-        $rule1Condition = $this->analizeRule1($evolution);
-        if ($rule1Condition) {
-            // Crear alerta
-            $textData = RuleSettings::MESSAGE_E1." (El paciente tiene somnolencia)";
-            $this->createAlert($textData, $patient_id, $medics, $chief);
-        }
-
-        // Evaluación de Regla 2
-        $rule2Condition = $this->analizeRule2($evolution);
-        if ($rule2Condition) {
-            // Crear alerta
-            $textData = RuleSettings::MESSAGE_E1." (Mecánica ventilatoria 'Regular' o 'Mala')";
-            $this->createAlert($textData, $patient_id, $medics, $chief);
-        }
-
-        // Evaluación de Regla 3
-        $rule3Condition = $this->analizeRule3($evolution);
-        if ($rule3Condition) {
-            // Crear alerta
-            $textData = RuleSettings::MESSAGE_E1." (Frecuencia respiratoria mayor a ".$this->breathing_rate.")";
-            $this->createAlert($textData, $patient_id, $medics, $chief);
-        }
-
-        // Evaluación de Regla 4
-        $rule4Condition = $this->analizeRule4($patient, $evolution);
-        if ($rule4Condition) {
-            // Crear alerta
-            $textData = RuleSettings::MESSAGE_E2." (Pasaron al menos ".$this->days_to_evaluate." días desde el inicio de los síntomas)";
-            $this->createAlert($textData, $patient_id, $medics, $chief);
-        }
-
-        // Evaluación de Regla 5
-        $rule5Condition = $this->analizeRule5($evolution);
-        if ($rule5Condition) {
-            // Crear alerta
-            $textData = RuleSettings::MESSAGE_E3." (La saturación de oxígeno es menor a ".$this->oxigen_saturation.")";
-            $this->createAlert($textData, $patient_id, $medics, $chief);
-        }
-
-        // Evaluación de Regla 6
-        if (!$rule5Condition) {
-            $rule6Condition = $this->analizeRule6($patient, $evolution);
-            // Crear alerta
-            if ($rule6Condition) {
-                $textData = RuleSettings::MESSAGE_E3." (La saturación de oxígeno bajó al menos un ".$this->oxigen_saturation_down_percentage."%)";
+            // Evaluación de Regla 1
+            $rule1Condition = $this->analizeRule1($evolution);
+            if ($rule1Condition) {
+                // Crear alerta
+                $textData = RuleSettings::MESSAGE_E1." (El paciente tiene somnolencia)";
                 $this->createAlert($textData, $patient_id, $medics, $chief);
+            }
+
+            // Evaluación de Regla 2
+            $rule2Condition = $this->analizeRule2($evolution);
+            if ($rule2Condition) {
+                // Crear alerta
+                $textData = RuleSettings::MESSAGE_E1." (Mecánica ventilatoria 'Regular' o 'Mala')";
+                $this->createAlert($textData, $patient_id, $medics, $chief);
+            }
+
+            // Evaluación de Regla 3
+            $rule3Condition = $this->analizeRule3($evolution);
+            if ($rule3Condition) {
+                // Crear alerta
+                $textData = RuleSettings::MESSAGE_E1." (Frecuencia respiratoria mayor a ".$this->breathing_rate.")";
+                $this->createAlert($textData, $patient_id, $medics, $chief);
+            }
+
+            // Evaluación de Regla 4
+            $rule4Condition = $this->analizeRule4($patient, $evolution);
+            if ($rule4Condition) {
+                // Crear alerta
+                $textData = RuleSettings::MESSAGE_E2." (Pasaron al menos ".$this->days_to_evaluate." días desde el inicio de los síntomas)";
+                $this->createAlert($textData, $patient_id, $medics, $chief);
+            }
+
+            // Evaluación de Regla 5
+            $rule5Condition = $this->analizeRule5($evolution);
+            if ($rule5Condition) {
+                // Crear alerta
+                $textData = RuleSettings::MESSAGE_E3." (La saturación de oxígeno es menor a ".$this->oxigen_saturation.")";
+                $this->createAlert($textData, $patient_id, $medics, $chief);
+            }
+
+            // Evaluación de Regla 6
+            if (!$rule5Condition) {
+                $rule6Condition = $this->analizeRule6($patient, $evolution);
+                // Crear alerta
+                if ($rule6Condition) {
+                    $textData = RuleSettings::MESSAGE_E3." (La saturación de oxígeno bajó al menos un ".$this->oxigen_saturation_down_percentage."%)";
+                    $this->createAlert($textData, $patient_id, $medics, $chief);
+                }
             }
         }
     }
@@ -218,5 +220,20 @@ class RuleSettings extends Model
         }
 
         Alert::createAlert($patient_id, $chief, $textData);
+    }
+
+    /**
+     * Actualizar parametros de reglas.
+     * 
+     * @return void.
+     */
+    public function updateData($data)
+    {
+        $this->activated = $data->activated;
+        $this->breathing_rate = $data->breathing_rate;
+        $this->days_to_evaluate = $data->days_to_evaluate;
+        $this->oxigen_saturation = $data->oxigen_saturation;
+        $this->oxigen_saturation_down_percentage = $data->oxigen_saturation_down_percentage;
+        $this->save();
     }
 }

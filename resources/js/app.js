@@ -112,6 +112,8 @@ Vue.component('save-button', require('./components/buttons/Save.vue').default);
 // Input
 Vue.component('v-input', require('./components/forms/Input.vue').default);
 // Input
+Vue.component('v-number-input', require('./components/forms/NumberInput.vue').default);
+// Input
 Vue.component('v-input-select', require('./components/forms/Select.vue').default);
 // Input
 Vue.component('v-textarea', require('./components/forms/Textarea.vue').default);

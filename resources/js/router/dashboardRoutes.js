@@ -21,7 +21,7 @@ import Systems from '../views/dashboard/Systems';
 // Systems
 import System from '../views/dashboard/System';
 // Settings
-import Settings from '../views/dashboard/Settings';
+import RulesSettings from '../views/dashboard/RulesSettings';
 // Data Load
 import DataLoad from '../views/auth/DataLoad';
 
@@ -153,9 +153,9 @@ const routes = [
        * Configuración.
        */
       {
-        path: '/dashboard/settings',
-        name: 'Settings',
-        component: Settings,
+        path: '/dashboard/rules_settings',
+        name: 'RulesSettings',
+        component: RulesSettings,
       },
     ]
   },

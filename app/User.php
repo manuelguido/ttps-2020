@@ -48,7 +48,7 @@ class User extends Authenticatable
     ];
 
     const RULE_SETTER_ROUTES = [
-        ['icon' => 'fad fa-cog', 'name' => 'Configuración', 'url' => '/dashboard/settings'],
+        ['icon' => 'fad fa-cog', 'name' => 'Configuración', 'url' => '/dashboard/rules_settings'],
     ];
 
 

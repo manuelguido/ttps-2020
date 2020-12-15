@@ -204,6 +204,22 @@ Route::prefix('/medic')->group(function() {
   Route::post('/store', 'MedicController@store')->middleware('auth:api', 'permission:medic_store'); // Tiene problemas
 });
 
+
+/*
+|--------------------------------------------------------------------------
+| API de seguros médicos
+|--------------------------------------------------------------------------
+*/
+Route::prefix('/settings/rules')->middleware('auth:api', 'permission:rule_crud', 'role:Configurador de Reglas')->group(function() {
+  
+  // Actualizar parametros de alertas.
+  Route::get('/show', 'RulesSettingsController@show'); //Funciona
+
+  // Actualizar parametros de alertas.
+  Route::post('/update', 'RulesSettingsController@update'); //Funciona
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | API de autenticación con Google
