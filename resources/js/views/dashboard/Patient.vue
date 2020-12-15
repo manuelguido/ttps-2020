@@ -99,6 +99,7 @@ export default {
     };
   },
   created() {
+    this.hasPermission("patient_show");
     this.$Progress.start();
     this.fetchPatient();
     this.fetchClinicData();

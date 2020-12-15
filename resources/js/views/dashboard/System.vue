@@ -112,6 +112,7 @@ export default {
     };
   },
   created() {
+    this.hasPermission("system_show");
     this.fetchSystem();
   },
   methods: {

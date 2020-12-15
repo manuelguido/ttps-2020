@@ -17,7 +17,16 @@
 <script>
 export default {
   name: "VNumberInput",
-  props: ['value', 'placeholder', 'label', 'classList', 'onlyNumbers', 'onlyNumbersAndSymbols', 'disabled', 'required'],
+  props: [
+    "value",
+    "placeholder",
+    "label",
+    "classList",
+    "onlyNumbers",
+    "onlyNumbersAndSymbols",
+    "disabled",
+    "required",
+  ],
   methods: {
     dataValidation(e) {
       if (this.onlyLetters) {

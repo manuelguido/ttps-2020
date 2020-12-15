@@ -76,6 +76,7 @@ export default {
     };
   },
   created() {
+    this.hasPermission("patient_update");
     this.$Progress.start();
     this.fetchPatient();
   },

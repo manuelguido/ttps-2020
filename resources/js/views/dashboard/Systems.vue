@@ -37,6 +37,7 @@ export default {
     };
   },
   created() {
+    this.hasPermission("system_index");
     this.fetchSystems();
   },
   methods: {
