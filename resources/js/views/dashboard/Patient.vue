@@ -8,9 +8,12 @@
       <div
         class="col-12 d-flex align-items-baseline justify-content-between mb-5"
       >
-        <p class="h4-responsive">
-          <span class="black-alpha-50">Paciente: </span>
-          <span class="primary">{{ patient.name }} {{ patient.lastname }}</span>
+        <p>
+          <span class="h4 black-alpha-50">Paciente: </span>
+          <span class="h4 primary">{{ patient.name }} {{ patient.lastname }}</span>
+          <br>
+          <br>
+          <span class="h5 black-alpha-50">Se encuentra en: {{ patient.system }}</span>
         </p>
         <span v-if="canEditPatient(patient)">
           <router-link
@@ -62,8 +65,8 @@
       </div>
 
       <!-- Hospitalizaciones (Listado) -->
-      <div class="col-12 mb-3">
-        <loading-overlay v-if="loadingClinicData"/>
+      <div v-if="canEditPatient(patient)" class="col-12 mb-3">
+        <loading-overlay v-if="loadingClinicData" />
         <clinic-data
           @reload-data="fetchClinicData()"
           :patient_id="patient_id"
@@ -154,7 +157,7 @@ export default {
         })
         .then((res) => {
           let items = res.data.clinicData;
-          
+
           items.sort(function (a, b) {
             return b.created_at.localeCompare(a.created_at);
           });
