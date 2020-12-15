@@ -65,7 +65,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'lastname', 'email', 'phone', 'dni', 'password', 'image',
+        'name', 'lastname', 'email', 'phone', 'dni', 'image',
     ];
 
     public $timestamps = true;
@@ -88,6 +88,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Crear un nuevo usuario.
+     * 
+     * @return App\User.
+     */
     public static function create($data)
     {
         $user = new User;
@@ -99,6 +104,20 @@ class User extends Authenticatable
         $user->password = bcrypt($data['password']);
         $user->save();
         return $user;
+    }
+
+    /**
+     * Obtener todos los usuarios con su rol y systema.
+     * 
+     * @return Collection.
+     */
+    public static function allComplete()
+    {
+        return User::join('system_user', 'system_user.user_id', '=', 'users.user_id')
+            ->join('systems', 'systems.system_id', '=', 'system_user.system_id')
+            ->join('role_user', 'role_user.user_id', '=', 'users.user_id')
+            ->join('roles', 'roles.role_id', '=', 'role_user.role_id')
+            ->select('users.*', 'systems.system', 'roles.role');
     }
 
     /**

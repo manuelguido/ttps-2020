@@ -16,6 +16,8 @@ import PatientChangeSystem from '../views/dashboard/PatientChangeSystem';
 import PatientEvolutionAdd from '../views/dashboard/PatientEvolutionAdd';
 // Medicos
 import Medics from '../views/dashboard/Medics';
+// Medicos
+import Users from '../views/dashboard/Users';
 // Systems
 import Systems from '../views/dashboard/Systems';
 // Systems
@@ -131,6 +133,14 @@ const routes = [
         path: '/dashboard/medics',
         name: 'Medics',
         component: Medics
+      },
+      /**
+       * Usuarios.
+       */
+      {
+        path: '/dashboard/users',
+        name: 'Users',
+        component: Users
       },
       /**
        * Sistemas.

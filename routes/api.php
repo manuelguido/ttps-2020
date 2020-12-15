@@ -10,37 +10,46 @@ use Illuminate\Http\Request;
 // Login user
 Route::post('/login', 'AuthController@login'); // Funciona
 // Logout user
-Route::middleware('auth:api')->post('/logout', 'AuthController@logout'); // Funciona
-// Consultar si tiene el rol correspondiente
-Route::middleware('auth:api')->get('/', 'RoleController@hasRole'); // Funciona
+Route::post('/logout', 'AuthController@logout')->middleware('auth:api'); // Funciona
+
+/*
+|--------------------------------------------------------------------------
+| API de autenticación con Google
+|--------------------------------------------------------------------------
+*/
+// Autorización
+Route::get('/authorize/google', 'SocialAuthController@redirectToProvider')->name('api.social.redirect'); // Funciona
+// Ruta de callback
+Route::get('/authorize/google/callback', 'SocialAuthController@handleProviderCallback')->name('api.social.callback'); // Funciona
 
 /*
 |--------------------------------------------------------------------------
 | API de usuario
 |--------------------------------------------------------------------------
 */
-Route::prefix('/user')->middleware('auth:api')->group(function() {
+Route::prefix('/user')->group(function() {
 
   // Obtener usuario
-  Route::get('/', 'UserController@user'); // ?
+  Route::get('/', 'UserController@user')->middleware('auth:api'); // Funciona
+
+  // Obtener usuario
+  Route::get('/index', 'UserController@index')->middleware('auth:api', 'permission:user_index'); // Funciona
 
   // Obtener rol de usuario
-  Route::get('/role', 'UserController@role'); // ?
+  Route::get('/role', 'UserController@role')->middleware('auth:api'); // Funciona
 
   // Obtener sistema del usuario
-  Route::get('/system', 'UserController@system'); // ?
+  Route::get('/system', 'UserController@system')->middleware('auth:api'); // Funciona
 
   // Obtener rutas del usuario
-  Route::get('/routes', 'UserController@routes'); // ?
+  Route::get('/routes', 'UserController@routes')->middleware('auth:api'); // Funciona
 
   // Obtener usuario con su rol, sus rutas(de url) y su sistema correspondiente
-  Route::get('/full', 'UserController@userData');
+  Route::get('/full', 'UserController@userData')->middleware('auth:api'); // Funciona
 
   // Actualizar perfil de usuario
-  Route::post('/profile/update', 'UserController@updateProfile'); // Funciona
+  Route::post('/profile/update', 'UserController@updateProfile')->middleware('auth:api'); // Funciona
 });
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -70,7 +79,6 @@ Route::prefix('/system')->middleware('auth:api')->group(function() {
   Route::get('/show', 'SystemController@show'); // Funciona
 });
 
-
 Route::prefix('/system/guard')->group(function() {
 
   // Retorna todos los sistemas.
@@ -80,7 +88,6 @@ Route::prefix('/system/guard')->group(function() {
     Route::post('/available', 'SystemController@guardAvailable')->middleware('auth:api'); // Funciona
 
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -140,7 +147,6 @@ Route::prefix('/patient')->group(function() {
   Route::post('/medic/remove', 'PatientController@removeMedic')->middleware('auth:api', 'permission:patient_update'); // ?
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | API de evoluciones
@@ -157,7 +163,6 @@ Route::prefix('/evolution')->group(function() {
   // Actualizar el perfil de usuario
   Route::get('/form_data', 'EvolutionController@formData')->middleware('auth:api'); // Funciona
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -183,7 +188,6 @@ Route::prefix('/alert')->group(function() {
 
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | API de médicos
@@ -204,7 +208,6 @@ Route::prefix('/medic')->group(function() {
   Route::post('/store', 'MedicController@store')->middleware('auth:api', 'permission:medic_store'); // Tiene problemas
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | API de seguros médicos
@@ -219,13 +222,3 @@ Route::prefix('/settings/rules')->middleware('auth:api', 'permission:rule_crud',
   Route::post('/update', 'RulesSettingsController@update'); //Funciona
 });
 
-
-/*
-|--------------------------------------------------------------------------
-| API de autenticación con Google
-|--------------------------------------------------------------------------
-*/
-// Autorización
-Route::get('/authorize/google', 'SocialAuthController@redirectToProvider')->name('api.social.redirect'); // Funciona
-// Ruta de callback
-Route::get('/authorize/google/callback', 'SocialAuthController@handleProviderCallback')->name('api.social.callback'); // Funciona

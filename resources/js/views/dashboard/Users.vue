@@ -21,8 +21,8 @@
           <div class="col-12 mb-4">
             <div class="card c-card">
               <div class="card-body p-lg-5">
-                <loading-overlay v-if="loadingMedics" />
-                <data-table :columns="tableColumns" :rows="medics"></data-table>
+                <loading-overlay v-if="loadingUsers" />
+                <data-table :columns="tableColumns" :rows="users"></data-table>
               </div>
             </div>
           </div>
@@ -38,13 +38,13 @@
 
 <script>
 export default {
-  name: "MedicsView",
-  title: "Médicos",
+  name: "UsersView",
+  title: "Usuarios",
   data() {
     return {
-      title: "",
-      loadingMedics: true,
-      medics: [],
+      title: "Usuarios del sistema",
+      loadingUsers: true,
+      users: [],
       tableColumns: [
         {
           label: "Apellido",
@@ -71,78 +71,47 @@ export default {
           field: "phone",
           sort: "asc",
         },
-        {
-          label: "",
-          field: "show",
-        },
-        {
-          label: "",
-          field: "change",
-        },
       ],
     };
   },
   created() {
-    this.hasPermission("medic_index");
-    this.setTitle();
+    this.hasPermission("user_index");
   },
   mounted() {
     this.$Progress.start();
-    this.fetchMedics();
+    this.fetchUsers();
   },
   methods: {
     /**
-     * Determinar el titulo de la página.
+     * Cargar información de usuarios para la tabla.
      *
      * @return void.
      */
-    setTitle() {
-      var condition = false;
-      const roleData = JSON.parse(localStorage.getItem("role"));
-      const systemData = JSON.parse(localStorage.getItem("system"));
-      const roleGuard = "Jefe de Sistema";
-      const roleMedic = "Médico";
-
-      this.title =
-        roleData == roleGuard || roleData == roleMedic
-          ? "Médicos de " + systemData.system
-          : "Médicos";
-    },
-
-    /**
-     * Cargar información de médicos para la tabla.
-     *
-     * @return void.
-     */
-    loadMedics(data) {
+    loadUsers(data) {
       for (let i = 0; i < data.length; i++) {
-        this.medics.push({
+        this.users.push({
           lastname: data[i].lastname,
           name: data[i].name,
           dni: this.formatDni(data[i].dni),
           email: data[i].email,
           phone: data[i].phone,
           show:
-            '<a href="/dashboard/medic/' +
-            data[i].medic_id +
+            '<a href="/dashboard/user/' +
+            data[i].user_id +
             '" class="btn btn-primary btn-sm table-button">Ver</a>',
-          change:
-            '<a href="/dashboard/medic/system/change/' +
-            data[i].medic_id +
-            '" class="btn btn-deep-purple btn-sm table-button">Cambiar sistema</a>',
         });
-        this.loadingMedics = false;
+        this.loadingUsers = false;
         this.$Progress.finish();
       }
     },
 
     /**
-     * Obtener todos los médicos del sistema.
+     * Obtener todos los usuarios del sistema.
      *
      * @return void.
      */
-    fetchMedics() {
-      const path = "/api/medic/assigned/index";
+    fetchUsers() {
+      const path = "/api/user/index";
       const AuthStr =
         "Bearer " + localStorage.getItem("access_token").toString();
 
@@ -154,8 +123,7 @@ export default {
           },
         })
         .then((res) => {
-          // this.medics = res.data;
-          this.loadMedics(res.data);
+          this.loadUsers(res.data);
         })
         .catch((err) => {
           this.errorHandler(err.response.status);

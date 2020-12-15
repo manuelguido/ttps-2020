@@ -40,6 +40,26 @@ class UserController extends Controller
     }
 
     /**
+     * Retorna el usuario.
+     * 
+     * @return JSON.
+     */
+    public function user(Request $request)
+    {
+        return response()->json($request->user());
+    }
+
+    /**
+     * Retorna el usuario.
+     * 
+     * @return JSON.
+     */
+    public function index()
+    {
+        return response()->json(User::allComplete()->get());
+    }
+
+    /**
      * Obtener las rutas del usuario.
      * 
      * @return JSON.
@@ -52,35 +72,24 @@ class UserController extends Controller
     }
 
     /**
-     * Retorna el usuario
-     * 
-     * @return JSON.
-     */
-    public function user(Request $request)
-    {
-        return $request->user();
-    }
-
-    /**
-     * Retorna el rol del usuario
+     * Retorna el rol del usuario.
      * 
      * @return JSON.
      */
     public function role(Request $request)
     {
-        return $request->user()->roles()->first()->role;
+        return response()->json($request->user()->roles()->first()->role);
     }
 
     /**
-     * Retorna el sistema del usuario
+     * Retorna el sistema del usuario.
      * 
      * @return JSON.
      */
     public function system(Request $request)
     {
-        return $request->user()->systems()->first()->system;
+        return response()->json($request->user()->systems()->first()->system);
     }
-
 
     /**
      * Obtener usuario loggeado con su rol, rutas(URL's) permitidas, su sistema correspondiente y sus permisos.
@@ -108,7 +117,7 @@ class UserController extends Controller
     }
 
     /**
-     * Actualizar perfil de usuario
+     * Actualizar perfil de usuario.
      * 
      * @return JSON.
      */
