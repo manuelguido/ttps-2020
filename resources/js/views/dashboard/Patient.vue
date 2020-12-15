@@ -156,7 +156,10 @@ export default {
           },
         })
         .then((res) => {
-          let items = res.data.clinicData;
+          let system_changes = res.data.system_changes;
+          let evolutions = res.data.evolutions;
+
+          let items = evolutions.concat(system_changes);
 
           items.sort(function (a, b) {
             return b.created_at.localeCompare(a.created_at);

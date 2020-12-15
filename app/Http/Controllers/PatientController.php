@@ -344,10 +344,11 @@ class PatientController extends Controller
             $systemChange->evolution = false;
         }
 
-        $clinicData = $evolutions->merge($systemChanges);
+        $clinicData = $systemChanges->merge($evolutions);
 
         return response()->json([
-            'clinicData' => $clinicData,
+            'system_changes' => $systemChanges,
+            'evolutions' => $evolutions,
             // 'lastEvolutions' => $patient->lastEvolutions(),
         ]);
     }

@@ -39,11 +39,17 @@ export default {
   },
   methods: {
     formatItemTitle(item) {
-      return item.evolution_id ? "Evolución" : "Cambio de sistema";
+      if (item.evolution) {
+        return "Evolución";
+      } else if (item.previous_system) {
+        return "Cambio de sistema";
+      } else {
+        return "Ingreso al hospital"
+      }
     },
     formatSystemData(item) {
       if (item.previous_system) {
-        return "Paso de sistema "+item.system+" a "+item.previous_system;
+        return "Paso de "+item.previous_system+" a "+item.system;
       } else {
         return "Ingresó a "+item.system;
       }

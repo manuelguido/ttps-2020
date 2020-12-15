@@ -459,7 +459,7 @@ class Patient extends Model
 
         // Cambiar el sistema en si
         $entry = $this->currentEntry();
-        $entry->addHospitalization($new_system->system_id); // Añadir hospitalización a la internación actual
+        $entry->addHospitalization($new_system->system_id, $old_system->system_id); // Añadir hospitalización a la internación actual
         $this->freeCurrentBed(); // Liberar la cama actual del sistema
         $new_system->ocuppyNewBed($this->patient_id); // Enviar al sistema que ocupe una nueva cama para este paciente
         $this->system_id = $new_system->system_id; // Acutalizo el id de sistema del paciente 
@@ -499,19 +499,6 @@ class Patient extends Model
         $this->system_id = $guard->system_id; // Acutalizo el id de sistema del paciente 
         $this->save();
     }
-
-    // public function setInitialSystem($new_system_id, $patientEntry = NULL)
-    // {
-    //     $entry = (!$patientEntry) ? $this->currentEntry() : $patientEntry;     
-        
-    //     $entry->addHospitalization(System::where('system', System::SYSTEM_GUARD)->first()->system_id); // Añadir hospitalización a la internación actual
-    //     $this->freeCurrentBed(); // Liberar la cama actual del sistema
-    //     $system = System::find($new_system_id); // Obtener nuevo sistema
-    //     $system->ocuppyNewBed($this->patient_id); // Enviar al sistema que ocupe una nueva cama para este paciente
-    //     $this->system_id = $new_system_id; // Acutalizo el id de sistema del paciente 
-    //     $this->save();
-    // }
-
 
     /**
      * Chequea si el paciente tiene asignado a un medico por el id de usuario del médico.
