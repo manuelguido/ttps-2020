@@ -48,7 +48,7 @@
             <i class="fad fa-user-nurse fa-2x"></i>
             <div class="mt-2">Médicos</div>
           </span>
-          <span
+          <span v-if="hasPermissionDisplay('patient_index')"
             :class="[
               'option-button d-flex align-items-center flex-column',
               showingMedics ? '' : 'button-active',
@@ -69,7 +69,7 @@
         <medics-table :system_id="system_id"></medics-table>
       </div>
 
-      <div v-else class="col-12">
+      <div v-else-if="hasPermissionDisplay('patient_index')" class="col-12">
         <dashboard-title text="Pacientes"></dashboard-title>
         <hr />
         <patients-table :system_id="system_id"></patients-table>

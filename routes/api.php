@@ -67,16 +67,16 @@ Route::prefix('/medical_ensurance')->middleware('auth:api')->group(function() {
 | API de sistemas
 |--------------------------------------------------------------------------
 */
-Route::prefix('/system')->middleware('auth:api')->group(function() {
+Route::prefix('/system')->group(function() {
 
   // Retorna todos los sistemas.
-  Route::get('/index', 'SystemController@index'); // Funciona
+  Route::get('/index', 'SystemController@index')->middleware('auth:api', 'permission:system_index'); // Funciona
 
   // Retorna todos los sistemas habiilitados (bajo regla) para hacer el cambio de sistema.
-  Route::post('/allowed/index', 'SystemController@allowedIndex'); // Funciona
+  Route::post('/allowed/index', 'SystemController@allowedIndex')->middleware('auth:api'); // Funciona
 
   // Retorna todo un sistema con su información de camas y habitaciones
-  Route::get('/show', 'SystemController@show'); // Funciona
+  Route::get('/show', 'SystemController@show')->middleware('auth:api', 'permission:system_show'); // Funciona
 });
 
 Route::prefix('/system/guard')->group(function() {

@@ -30,6 +30,17 @@ const permissionsMixin = {
       }
     },
 
+    // Ver si el usuario tiene el permiso determinado por parametro
+    hasPermissionDisplay(permission) {
+      var has_permission = false;
+      this.permissionData.forEach(element => {
+        if (element.permission == permission) {
+          has_permission = true;
+        }
+      });
+      return has_permission;
+    },
+
     // Ver si el usuario puede editar la información del paciente.
     canEditPatient(patient) {
       if (this.roleData == this.roleGuard || this.roleData == this.roleMedic) {
@@ -43,11 +54,15 @@ const permissionsMixin = {
      * Tiene permitida la configuración de camas
      */
     allowedInfiniteBeds(system) {
-      return (
-        this.systemData.system === system &&
-        this.systemData.system === this.systemGuard &&
-        this.roleData === this.roleGuard
-      );
+      if (!this.systemData) {
+        return false;
+      } else {
+        return (
+          this.systemData.system === system &&
+          this.systemData.system === this.systemGuard &&
+          this.roleData === this.roleGuard
+        );
+      }
     },
 
     // Ver si el usuario puede editar la información del paciente.

@@ -14,7 +14,7 @@
       function loadToken() {
         var token = document.getElementById('token').innerHTML;
         localStorage.setItem('access_token', token);
-        window.location.href = "/dashboard";
+        window.location.href = "/dataload";
       }
     </script>
   </body>
