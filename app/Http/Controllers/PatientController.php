@@ -328,6 +328,8 @@ class PatientController extends Controller
 
     /**
      * Retorna los medicos asignados al paciente y los posibles médicos a asignar
+     * 
+     * @return JSON.
      */
     public function clinicData($patient_id)
     {
@@ -351,5 +353,55 @@ class PatientController extends Controller
             'evolutions' => $evolutions,
             // 'lastEvolutions' => $patient->lastEvolutions(),
         ]);
+    }
+
+    /**
+     * Declarar egreso de un paciente.
+     * 
+     * @return JSON.
+     */
+    public function declareExit(Request $request)
+    {
+        try {
+            $this->validatePatientId($request);
+            $patient = Patient::find($request->patient_id);
+            $user = User::find($request->user()->user_id);
+
+            if (!$user->canExitPatient($patient)) {
+                abort(403);
+            } else {
+                $patient->declareExit();
+                $message = ['status' => 'success', 'message' => 'El paciente ha sido dado de alta del sistema.'];
+            }
+        } catch (\Exception $e) {
+            $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
+        }
+
+        return response()->json($message);
+    }
+
+    /**
+     * Declarar egreso de un paciente.
+     * 
+     * @return JSON.
+     */
+    public function declareDeath(Request $request)
+    {
+        try {
+            $this->validatePatientId($request);
+            $patient = Patient::find($request->patient_id);
+            $user = User::find($request->user()->user_id);
+
+            if (!$user->canExitPatient($patient)) {
+                abort(403);
+            } else {
+                $patient->declareDeath();
+                $message = ['status' => 'success', 'message' => 'El paciente ha sido declarado en óbito.'];
+            }
+        } catch (\Exception $e) {
+            $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
+        }
+
+        return response()->json($message);
     }
 }

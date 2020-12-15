@@ -567,7 +567,62 @@ class Patient extends Model
      */
     public function isOnInternation()
     {
-        $state = $this->patientState()->patient_state;
-        return ($state == PatientState::STATE_HOSPITALIZED);
+        return ($this->patientState()->patient_state == PatientState::STATE_HOSPITALIZED);
+    }
+
+    /**
+     * Cambiar estado de un paciente.
+     * 
+     * @return void.
+     */
+    private function setStatus($state)
+    {
+        $patientState = PatientState::where('patient_state', '=', $state)->first();
+        $this->patient_state_id = $patientState->patient_state_id;
+        $this->save();
+    }
+    
+    /**
+     * Declarar paciente en egreso.
+     * 
+     * @return void.
+     */
+    public function declareExit()
+    {
+        $this->setStatus(PatientState::STATE_DISCHARGED);
+        $textData = "El paciente ".$this->name." ".$this->lastname." ha sido dado de alta.";
+        $this->alertAssignedUsers($textData);
+        $this->unassignMedics();
+    }
+
+    /**
+     * Declarar paciente en óbito.
+     * 
+     * @return void.
+     */
+    public function declareDeath()
+    {
+        $this->setStatus(PatientState::STATE_DEATH);
+        $textData = "El paciente ".$this->name." ".$this->lastname." ha sido declarado en óbito.";
+        $this->alertAssignedUsers($textData);
+        $this->unassignMedics();
+    }
+
+    /**
+     * Crear alerta para todos los medicos y el jefe de sistema del usuario.
+     * 
+     * @return void.
+     */
+    public function alertAssignedUsers($textData)
+    {
+        // Crear alerta a los medicos
+        foreach ($this->medicsFull() as $medic) {
+            Alert::createAlert($this->patient_id, $medic, $textData);
+        }
+        
+        // Crear alerta al jefe del sistema
+        $chief = $this->system()->first()->chief()->first();
+        Alert::createAlert($this->patient_id, $chief, $textData);
+        
     }
 }

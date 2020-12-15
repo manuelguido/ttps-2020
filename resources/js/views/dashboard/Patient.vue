@@ -10,23 +10,15 @@
       >
         <p>
           <span class="h4 black-alpha-50">Paciente: </span>
-          <span class="h4 primary">{{ patient.name }} {{ patient.lastname }}</span>
-          <br>
-          <br>
-          <span class="h5 black-alpha-50">Se encuentra en: {{ patient.system }}</span>
+          <span class="h4 primary"
+            >{{ patient.name }} {{ patient.lastname }}</span
+          >
+          <br />
+          <br />
+          <span class="h5 black-alpha-50"
+            >Se encuentra en: {{ patient.system }}</span
+          >
         </p>
-        <span v-if="canEditPatient(patient)">
-          <router-link
-            class="btn btn-outline-primary btn-sm"
-            :to="'/dashboard/patient/assignment/' + patient.patient_id"
-            >Asignar médicos</router-link
-          >
-          <router-link
-            :to="'/dashboard/patient/system/change/' + patient_id"
-            class="btn btn-deep-purple btn-sm"
-            >Cambiar sistema</router-link
-          >
-        </span>
       </div>
 
       <!-- Información -->
@@ -60,21 +52,31 @@
       </div>
       <!-- /.Información -->
 
-      <div class="col-12 mb-4">
-        <hr />
-      </div>
+      <div v-if="patientIsHospitalized(patient)" class="col-12">
+        <div class="row">
+          <div class="col-12 mb-4">
+            <hr />
+          </div>
 
-      <!-- Hospitalizaciones (Listado) -->
-      <div v-if="canEditPatient(patient)" class="col-12 mb-3">
-        <loading-overlay v-if="loadingClinicData" />
-        <clinic-data
-          @reload-data="fetchClinicData()"
-          :patient_id="patient_id"
-          :clinicData="clinicData"
-        >
-        </clinic-data>
+          <patient-actions @reloadData="reloadData" :patient="patient" />
+
+          <div class="col-12 mb-4">
+            <hr />
+          </div>
+
+          <!-- Hospitalizaciones (Listado) -->
+          <div v-if="canEditPatient(patient)" class="col-12 mb-3">
+            <loading-overlay v-if="loadingClinicData" />
+            <clinic-data
+              @reload-data="fetchClinicData()"
+              :patient_id="patient_id"
+              :clinicData="clinicData"
+            >
+            </clinic-data>
+          </div>
+          <!-- /.Hospitalizaciones -->
+        </div>
       </div>
-      <!-- /.Hospitalizaciones -->
     </div>
     <!-- /.Row -->
   </dashboard-card>
@@ -84,6 +86,7 @@
 <script>
 import { mdbListGroup, mdbListGroupItem } from "mdbvue";
 import ClinicData from "../../components/dashboard/patients/ClinicData/Index.vue";
+import PatientActions from "../../components/dashboard/patients/Actions.vue";
 
 export default {
   name: "PatientView",
@@ -92,6 +95,7 @@ export default {
     mdbListGroup,
     mdbListGroupItem,
     ClinicData,
+    PatientActions,
   },
   data() {
     return {
@@ -172,6 +176,14 @@ export default {
           console.log(err);
           this.loadingClinicData = false;
         });
+    },
+
+    /**
+     *
+     */
+    reloadData() {
+      this.fetchPatient();
+      this.fetchClinicData();
     },
 
     // Fomatear el lugar donde se encuentra el paciente (Sistema, cama, sala).

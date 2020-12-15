@@ -37,11 +37,11 @@
   border-radius: 5px !important;
   font-size: 1em !important;
   font-weight: 400 !important;
-  padding-left: 1.1rem !important;
-  padding-right: 1.1rem !important;
+  padding-left: 1.2rem !important;
+  padding-right: 1.2rem !important;
   text-transform: none !important;
-  box-shadow: 0 2px .225em rgba(0,0,0,.05);
-  transition: 0s all !important;
+  /* box-shadow: 0 2px .225em rgba(0,0,0,.05); */
+  transition: 0.1s all !important;
 }
 .btn:hover {
   box-shadow: 0 5px .5em rgba(0,0,0,.2);
@@ -217,11 +217,6 @@ a:active,
 
 th, td {
   vertical-align: middle !important;
-}
-
-.btn {
-  border-radius: 5px !important;
-  overflow: hidden !important;
 }
 
 /*--------------------------------------------------------------

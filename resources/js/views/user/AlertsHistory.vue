@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       cardTitle: "Historial de alertas",
-      loadingData: true,
+      loadingData: false,
       alerts: [],
       fetchInterval: null,
       reloadInterval: 3500,
@@ -67,7 +67,7 @@ export default {
     };
   },
   created() {
-    this.hasPermission('alerts');
+    this.hasPermission("alerts");
     this.fetchAlerts();
   },
   methods: {
@@ -77,7 +77,6 @@ export default {
      * @return void.
      */
     fetchAlerts() {
-      var $this = this;
       const path = "/api/alert/read/index";
       const AuthStr =
         "Bearer " + localStorage.getItem("access_token").toString();
@@ -109,9 +108,9 @@ export default {
           dni: this.formatDni(data[i].dni),
           description: data[i].description,
         });
-        this.loadingData = false;
-        this.$Progress.finish();
       }
+      this.loadingData = false;
+      this.$Progress.finish();
     },
   },
 };

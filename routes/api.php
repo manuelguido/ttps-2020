@@ -145,6 +145,12 @@ Route::prefix('/patient')->group(function() {
 
   // Retorna los medicos asignados al paciente y los posibles médicos a asignar
   Route::post('/medic/remove', 'PatientController@removeMedic')->middleware('auth:api', 'permission:patient_assign'); // Funciona
+
+  // Retorna los medicos asignados al paciente y los posibles médicos a asignar
+  Route::post('/declare/exit', 'PatientController@declareExit')->middleware('auth:api', 'permission:patient_update'); // Funciona
+
+  // Retorna los medicos asignados al paciente y los posibles médicos a asignar
+  Route::post('/declare/death', 'PatientController@declareDeath')->middleware('auth:api', 'permission:patient_update'); // Funciona
 });
 
 /*

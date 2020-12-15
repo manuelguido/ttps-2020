@@ -303,4 +303,18 @@ class User extends Authenticatable
             'system_id' => $system_id,
         ]);
     }
+
+    /**
+     * Corroborar que un usuario pueda dar de alta un paciente.
+     * 
+     * @return Boolean.
+     */
+    public function canExitPatient($patient)
+    {
+        if ($this->hasRole(Role::ROLE_MEDIC) || $this->hasRole(Role::ROLE_SYSTEM_CHIEF)) {
+            return ($this->systems()->first()->system_id == $patient->system_id);
+        } else {
+            return false;
+        }
+    }
 }

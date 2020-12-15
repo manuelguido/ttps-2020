@@ -73,14 +73,13 @@ const permissionsMixin = {
     // Ver si el usuario tiene el rol determinado por parametro
     hasRole(role) {
       return (this.roleData == role);
-      // var has_role = false;
-      // this.roleData.forEach(element => {
-      //   if (element.permission == permission) {
-      //     has_permission = true;
-      //   }
-      // });
-      // return has_role;
     },
+
+    // Ver si el paciente esta hospitalizado
+    patientIsHospitalized(patient)
+    {
+      return (patient.patient_state === "En internación");
+    }
   },
 }
 
