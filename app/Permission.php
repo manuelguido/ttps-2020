@@ -48,6 +48,12 @@ class Permission extends Model
     const RULE_CRUD = 'rule_crud';
 
     /**
+     * Rules
+     */
+    const ALERTS = 'alerts';
+
+
+    /**
      * Attributes
      */
     protected $table = 'permissions';

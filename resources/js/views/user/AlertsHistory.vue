@@ -67,6 +67,7 @@ export default {
     };
   },
   created() {
+    this.hasPermission('alerts');
     this.fetchAlerts();
   },
   methods: {

@@ -19,7 +19,7 @@
           <items :routes="routes"></items>
         </span>
         <!-- Icono de notificaciones -->
-        <alerts-badge />
+        <alerts-badge v-if="hasPermissionDisplay('alerts')" />
 
         <!-- Dropdown de cuenta -->
         <mdb-dropdown tag="li" class="nav-item mobile-hide uns" dropleft>

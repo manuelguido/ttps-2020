@@ -51,6 +51,7 @@ export default {
     };
   },
   created() {
+    this.hasPermission('alerts');
     this.alertCheckInterval();
     this.fetchAlerts();
   },

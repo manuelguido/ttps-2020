@@ -72,6 +72,11 @@ class PermissionsTableSeeder extends Seeder
         create_permission(Permission::RULE_CRUD);
 
         /**
+         * Alerts
+         */
+        create_permission(Permission::ALERTS);
+
+        /**
          * Añadir a permisos ADMINISTRADOR
          */
         add_permission(Role::ROLE_ADMIN, Permission::USER_INDEX);
@@ -110,6 +115,8 @@ class PermissionsTableSeeder extends Seeder
         add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::SYSTEM_INDEX);
         add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::SYSTEM_SHOW);
 
+        add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::ALERTS);
+
         /**
          * Añadir a permisos MEDICOS
          */
@@ -118,6 +125,7 @@ class PermissionsTableSeeder extends Seeder
         add_permission(Role::ROLE_MEDIC, Permission::PATIENT_STORE);
         add_permission(Role::ROLE_MEDIC, Permission::PATIENT_UPDATE);
         add_permission(Role::ROLE_MEDIC, Permission::PATIENT_DESTROY);
+        add_permission(Role::ROLE_MEDIC, Permission::ALERTS);
 
         /**
          * Añadir a permisos CONFIGURADOR DE REGLAS
