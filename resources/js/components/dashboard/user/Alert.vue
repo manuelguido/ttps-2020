@@ -101,20 +101,13 @@ export default {
       this.swipeOut();
       var $this = this;
       setTimeout(function () {
-        $this.destroy();
+        $this.$emit("reloadData", $this.alert.alert_id);
+        $this.$el.parentNode.removeChild($this.$el);
       }, 300);
-
-      setTimeout(function () {
-        $this.$emit("reloadData", this.alert.alert_id);
-      }, 500);
     },
 
     swipeOut() {
       this.swipped = true;
-    },
-
-    destroy() {
-      this.$el.parentNode.removeChild(this.$el);
     },
   },
 };

@@ -79,7 +79,14 @@ export default {
       this.alerts = JSON.parse(localStorage.getItem("unreadAlerts"));
     },
 
-    reloadData() {
+    reloadData(alertId) {
+      let aux = JSON.parse(localStorage.getItem("unreadAlerts"));
+      aux.forEach(element => {
+        if (element.alert_id == alertId) {
+          aux.pop(element);
+        } 
+      });
+      localStorage.setItem("unreadAlerts", JSON.stringify(aux));
       this.loadAlerts();
     },
   },
