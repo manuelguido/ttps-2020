@@ -22,7 +22,10 @@
             <div class="card c-card">
               <div class="card-body p-lg-5">
                 <loading-overlay v-if="loadingPatients" />
-                <data-table :columns="tableColumns" :rows="patients"></data-table>
+                <data-table
+                  :columns="columnData()"
+                  :rows="patients"
+                ></data-table>
               </div>
             </div>
           </div>
@@ -44,7 +47,42 @@ export default {
       title: "",
       loadingPatients: true,
       patients: [],
-      tableColumns: [
+      tableColumns1: [
+        {
+          label: "Apellido",
+          field: "lastname",
+          sort: "asc",
+        },
+        {
+          label: "Nombre",
+          field: "name",
+          sort: "asc",
+        },
+        {
+          label: "DNI",
+          field: "dni",
+          sort: "asc",
+        },
+        {
+          label: "Sala",
+          field: "room",
+          sort: "asc",
+        },
+        {
+          label: "Cama",
+          field: "bed",
+          sort: "asc",
+        },
+        {
+          label: "",
+          field: "show",
+        },
+        {
+          label: "",
+          field: "evolve",
+        },
+      ],
+      tableColumns2: [
         {
           label: "Apellido",
           field: "lastname",
@@ -90,14 +128,19 @@ export default {
     };
   },
   created() {
+    this.$Progress.start();
     this.hasPermission("patient_index");
     this.setTitle();
-  },
-  mounted() {
-    this.$Progress.start();
     this.fetchPatients();
   },
   methods: {
+    columnData() {
+      if (this.hasRole("Médico")) {
+        return this.tableColumns1;
+      } else {
+        return this.tableColumns2;
+      }
+    },
     /**
      * Determinar el titulo de la página.
      *
@@ -123,29 +166,28 @@ export default {
      */
     loadPatients(data) {
       for (let i = 0; i < data.length; i++) {
-        this.patients.push({
+        let patientData = {
           lastname: data[i].lastname,
           name: data[i].name,
           dni: this.formatDni(data[i].dni),
           room: data[i].room,
           bed: "Cama " + data[i].bed_number,
-          show:
-            '<a href="/dashboard/patient/' +
-            data[i].patient_id +
-            '" class="btn btn-primary btn-sm table-button">Ver</a>',
-          assign:
+          show: '<a href="/dashboard/patient/' + data[i].patient_id + '" class="btn btn-primary btn-sm table-button">Ver</a>',
+          evolve: '<a href="/dashboard/patient/evolution/add/' + data[i].patient_id +'" class="btn btn-purple btn-sm table-button">Evolucionar</a>',
+        };
+
+        if (this.hasRole("Jefe de Sistema")) {
+          patientData.assign =
             '<a href="/dashboard/patient/assignment/' +
             data[i].patient_id +
-            '" class="btn btn-indigo btn-sm table-button">Asignar médico</a>',
-          change:
+            '" class="btn btn-indigo btn-sm table-button">Asignar médico</a>';
+          patientData.change =
             '<a href="/dashboard/patient/system/change/' +
             data[i].patient_id +
-            '" class="btn btn-deep-purple btn-sm table-button">Cambiar sistema</a>',
-          evolve:
-            '<a href="/dashboard/patient/evolution/add/' +
-            data[i].patient_id +
-            '" class="btn btn-purple btn-sm table-button">Evolucionar</a>',
-        });
+            '" class="btn btn-deep-purple btn-sm table-button">Cambiar sistema</a>';
+        }
+
+        this.patients.push(patientData);
       }
       this.loadingPatients = false;
       this.$Progress.finish();

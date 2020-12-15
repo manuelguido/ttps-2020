@@ -120,31 +120,31 @@ Route::prefix('/patient')->group(function() {
   Route::get('/show/{id}', 'PatientController@show')->middleware('auth:api', 'permission:patient_show'); // Funciona
 
   // Almacena un paciente
-  Route::post('/store', 'PatientController@store')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // ?
+  Route::post('/store', 'PatientController@store')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // Funciona
 
   // Almacena una entrada de un paciente
-  Route::post('/new_entry', 'PatientController@newEntry')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // ?
+  Route::post('/new_entry', 'PatientController@newEntry')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // tiene problemas
 
   // Actualizar el perfil de usuario
-  Route::post('/update', 'PatientController@update')->middleware('auth:api', 'permission:patient_update'); // ?
+  Route::post('/update', 'PatientController@update')->middleware('auth:api', 'permission:patient_update'); // tiene problemas
 
-  // Actualizar el perfil de usuario
-  Route::post('/search', 'PatientController@searchByDni')->middleware('auth:api', 'permission:patient_show'); // ?
+  // Buscar paciente por DNI
+  Route::post('/search', 'PatientController@searchByDni')->middleware('auth:api', 'permission:patient_show'); // Funciona
 
   // Retorna toda la información hospitalizaciones de un paciente
-  Route::get('/clinic_data/{patient_id}', 'PatientController@clinicData'); //->middleware('auth:api'); // Funciona
+  Route::get('/clinic_data/{patient_id}', 'PatientController@clinicData')->middleware('auth:api'); // Funciona
 
   // Cambia un paciente de sistema
-  Route::post('/system/change', 'PatientController@changeSystem')->middleware('auth:api', 'permission:patient_update'); // ?
+  Route::post('/system/change', 'PatientController@changeSystem')->middleware('auth:api', 'permission:patient_change_system'); // Funciona
 
   // Retorna los medicos asignados al paciente y los posibles médicos a asignar
-  Route::get('/medics/{patient_id}', 'PatientController@medics')->middleware('auth:api', 'permission:patient_show'); // ?
+  Route::get('/medics/{patient_id}', 'PatientController@medics')->middleware('auth:api', 'permission:patient_show'); // Funciona
 
   // Retorna los medicos asignados al paciente y los posibles médicos a asignar
-  Route::post('/medic/add', 'PatientController@addMedic')->middleware('auth:api', 'permission:patient_update'); // ?
+  Route::post('/medic/add', 'PatientController@addMedic')->middleware('auth:api', 'permission:patient_assign'); // Funciona
 
   // Retorna los medicos asignados al paciente y los posibles médicos a asignar
-  Route::post('/medic/remove', 'PatientController@removeMedic')->middleware('auth:api', 'permission:patient_update'); // ?
+  Route::post('/medic/remove', 'PatientController@removeMedic')->middleware('auth:api', 'permission:patient_assign'); // Funciona
 });
 
 /*

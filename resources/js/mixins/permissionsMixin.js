@@ -69,6 +69,18 @@ const permissionsMixin = {
     canAddEntry() {
       return ((this.roleData == this.roleGuard || this.roleData == this.roleMedic) && (this.systemData.system == this.systemGuard));
     },
+
+    // Ver si el usuario tiene el rol determinado por parametro
+    hasRole(role) {
+      return (this.roleData == role);
+      // var has_role = false;
+      // this.roleData.forEach(element => {
+      //   if (element.permission == permission) {
+      //     has_permission = true;
+      //   }
+      // });
+      // return has_role;
+    },
   },
 }
 

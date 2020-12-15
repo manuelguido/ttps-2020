@@ -23,6 +23,8 @@ class Permission extends Model
     const PATIENT_STORE = 'patient_store';
     const PATIENT_UPDATE = 'patient_update';
     const PATIENT_DESTROY = 'patient_destroy';
+    const PATIENT_ASSIGN = 'patient_assign';
+    const PATIENT_CHANGE_SYSTEM = 'patient_change_system';
 
     /**
      * Medic

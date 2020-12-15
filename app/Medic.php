@@ -41,7 +41,19 @@ class Medic extends Model
      */
     public function patients()
     {
-        return $this->belongsToMany('App\Patient', 'patient_medic', 'medic_id', 'patient_id');
+        return Patient::where([
+            ['medics.medic_id', '=', $this->medic_id],
+            ['patient_states.patient_state', '=', PatientState::STATE_HOSPITALIZED],
+            ])
+            ->join('patient_medic', 'patient_medic.patient_id', '=', 'patients.patient_id')
+            ->join('medics', 'medics.medic_id', '=', 'patient_medic.medic_id')
+            ->join('systems', 'systems.system_id', '=', 'patients.system_id')
+            ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
+            ->leftJoin('beds', 'beds.patient_id', '=', 'patients.patient_id')
+            ->leftJoin('rooms', 'rooms.room_id', '=', 'beds.room_id')
+            ->select('patients.*', 'systems.system', 'rooms.room', 'beds.number AS bed_number')
+            ->orderBy('updated_at', 'DESC'); 
+        // return $this->belongsToMany('App\Patient', 'patient_medic', 'medic_id', 'patient_id');
     }
 
 

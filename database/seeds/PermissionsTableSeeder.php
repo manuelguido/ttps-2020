@@ -47,6 +47,8 @@ class PermissionsTableSeeder extends Seeder
         create_permission(Permission::PATIENT_STORE);
         create_permission(Permission::PATIENT_UPDATE);
         create_permission(Permission::PATIENT_DESTROY);
+        create_permission(Permission::PATIENT_ASSIGN);
+        create_permission(Permission::PATIENT_CHANGE_SYSTEM);
 
         /**
          * Medic
@@ -105,7 +107,9 @@ class PermissionsTableSeeder extends Seeder
         add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::PATIENT_STORE);
         add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::PATIENT_UPDATE);
         add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::PATIENT_DESTROY);
-        
+        add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::PATIENT_ASSIGN);
+        add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::PATIENT_CHANGE_SYSTEM);
+
         add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::MEDIC_INDEX);
         add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::MEDIC_SHOW);
         add_permission(Role::ROLE_SYSTEM_CHIEF, Permission::MEDIC_STORE);
