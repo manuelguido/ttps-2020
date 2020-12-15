@@ -109,7 +109,7 @@ class PatientController extends Controller
         $user = User::find($request->user()->user_id);
         $responseData = [];
         if ($user->hasRole(Role::ROLE_MEDIC)) {
-            $responseData = $user->medic()->get()->patients()->get();
+            $responseData = $user->medic()->patients()->get();
         } else if ($user->hasRole(Role::ROLE_SYSTEM_CHIEF)) {
             $system_id = $user->systems()->first()->system_id;
             $responseData = Patient::allFullBySystemByState($system_id, PatientState::STATE_HOSPITALIZED);

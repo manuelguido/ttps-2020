@@ -525,6 +525,10 @@ class Patient extends Model
     public function addMedic($medic_id)
     {
         DB::table('patient_medic')->insert(['medic_id' => $medic_id, 'patient_id' => $this->patient_id]);
+
+        $textData = "Fuiste asignado al paciente ".$this->name." ".$this->lastname." (DNI ".$this->dni.")";
+        $medic = Medic::find($medic_id);
+        Alert::createAlert($this->patient_id, $medic, $textData);
     }
 
 
@@ -536,6 +540,10 @@ class Patient extends Model
     public function removeMedic($medic_id)
     {
         DB::table('patient_medic')->where(['medic_id' => $medic_id, 'patient_id' => $this->patient_id])->delete();
+        
+        $textData = "Fuiste desasignado del paciente ".$this->name." ".$this->lastname." (DNI ".$this->dni.")";
+        $medic = Medic::find($medic_id);
+        Alert::createAlert($this->patient_id, $medic, $textData);
     }
 
     /**

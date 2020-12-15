@@ -37,12 +37,10 @@ class User extends Authenticatable
     ];
 
     const MEDIC_ROUTES = [
-        ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
         ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
     ];
 
     const MEDIC_ROUTES_W_ENTRY = [
-        ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
         ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
         ['icon' => 'fad fa-user-plus', 'name' => 'Nueva internación', 'url' => '/dashboard/new_entry'],
     ];
@@ -127,7 +125,7 @@ class User extends Authenticatable
      */
     public function medic()
     {
-        return $this->belongsTo('App\Medic');
+        return Medic::where('user_id', $this->user_id)->first();
     }
     
     /**
