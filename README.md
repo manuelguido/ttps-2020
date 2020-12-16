@@ -105,12 +105,12 @@ http://127.0.0.1:8000/
 ```
 
 
-# Para correr los test luego de la instalación
+# Para correr los tests luego de la instalación
 ```
 .\vendor\bin\phpunit
 ```
 
-#### En caso de que los test no carguen, se debe limpiar la configuración del proyecto
+#### En caso de que los test no carguen, se debe limpiar la configuración del proyecto con el siguiente comando
 ```
 php artisan config:clear
 ```
