@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use Illuminate\Support\Carbon;
+use App\VentilatoryMechanic;
 use App\Hospitalization;
 use App\RuleSettings;
 use App\Evolution;
@@ -15,10 +16,10 @@ use App\Entry;
 use App\User;
 use DB;
 
-class Rule1 extends TestCase
+class Rule2 extends TestCase
 {
     /**
-     * Test de regla 1 (Somnolencia)
+     * Test de regla 2 (Ver paciente tiene mecánica ventilatoria "Regular" o "Mala")
      *
      * @return void
      */
@@ -53,13 +54,26 @@ class Rule1 extends TestCase
          * 
          * Si somnolencia es true, la funcion debe retornar verdadero, para evaluar el pase a uti.
          */
-        $evolution->drowsiness = true; // Somnolencia es "true"
-        $ruleCondition = $ruleSettings->analizeRule1($evolution); // Evaluar regla
-        $this->assertTrue($ruleCondition); // Ver que la regla devuelve "true"
+        // Obtener id de mecánicas respiratorias
+        $vm_good_id = VentilatoryMechanic::getIdByName(VentilatoryMechanic::GOOD);
+        $vm_regular_id = VentilatoryMechanic::getIdByName(VentilatoryMechanic::REGULAR);
+        $vm_bad_id = VentilatoryMechanic::getIdByName(VentilatoryMechanic::BAD);
 
-        $evolution->drowsiness = false; // Somnolencia es "false"
-        $ruleCondition = $ruleSettings->analizeRule1($evolution); // Evaluar regla
-        $this->assertFalse($ruleCondition); // Ver que la regla devuelve "false"
+
+        // Mecánica respiratoria buena -> regla es false
+        $evolution->ventilatory_mechanic_id = $vm_good_id;
+        $ruleCondition = $ruleSettings->analizeRule2($evolution);
+        $this->assertFalse($ruleCondition);
+
+        // Mecánica respiratoria regular -> regla es true
+        $evolution->ventilatory_mechanic_id = $vm_regular_id;
+        $ruleCondition = $ruleSettings->analizeRule2($evolution);
+        $this->assertTrue($ruleCondition);
+
+        // Mecánica respiratoria mala -> regla es true
+        $evolution->ventilatory_mechanic_id = $vm_bad_id;
+        $ruleCondition = $ruleSettings->analizeRule2($evolution);
+        $this->assertTrue($ruleCondition);
 
         // Borrado de información de test
         $evolution->delete();

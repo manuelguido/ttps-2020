@@ -120,19 +120,13 @@ class RuleSettings extends Model
      */
     public function analizeRule2($evolution)
     {
-        $mv_regular = VentilatoryMechanic::where('ventilatory_mechanic', '=', VentilatoryMechanic::REGULAR)
-            ->first()
-            ->ventilatory_mechanic_id;
+        $vm_regular = VentilatoryMechanic::getIdByName(VentilatoryMechanic::REGULAR);
 
-        $bad_vm = VentilatoryMechanic::where('ventilatory_mechanic', '=', VentilatoryMechanic::BAD)
-            ->first()
-            ->ventilatory_mechanic_id;
+        $vm_bad = VentilatoryMechanic::getIdByName(VentilatoryMechanic::BAD);
 
         $evolution_vm = $evolution->ventilatory_mechanic_id;
 
-        $ruleCondition = ($evolution_vm == $mv_regular || $evolution_vm == $bad_vm);
-
-        return $ruleCondition;
+        return ($evolution_vm == $vm_regular || $evolution_vm == $vm_bad);
     }
 
     /**

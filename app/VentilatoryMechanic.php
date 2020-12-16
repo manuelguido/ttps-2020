@@ -35,4 +35,14 @@ class VentilatoryMechanic extends Model
         $vm->save();
         return $vm;
     }
+
+    /**
+     * Obtener el id de una mecánica respiratoria por su nombre.
+     * 
+     * @return Integer.
+     */
+    public static function getIdByName($name)
+    {
+        return VentilatoryMechanic::where('ventilatory_mechanic', '=', $name)->first()->ventilatory_mechanic_id;
+    }
 }
