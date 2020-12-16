@@ -1,0 +1,207 @@
+5082436 (HEAD -> master, origin/master, origin/HEAD) actualicé archivos para deploy
+8eb3b1d Update README.md
+bfb8ac2 actualicé archivos para deploy
+1dd4264 agregué: actualización de datos de paciente
+4d834c1 actualicé ingreso de pacientes cuando ya estuvieron en el sistema
+c903261 Update README.md
+24238bf actualización de Readme
+d9bf953 actualización de Readme
+d112b4d actualización de README para correr los tests
+e7189b2 actualización de README para instalación del proyecto
+89c27a5 test de regla 6 (Ver si la saturación de oxígeno disminuyó)
+b3ad9ae test de regla 5 (Ver si la saturación de oxígeno es menor al parámetro)
+11fed9e test de regla 4 (Ver si pasaron mas de X dias desde el inicio de síntomas)
+ac3a779 test de regla 3 (Frecuencia respiratoria mayor al parámetro)
+8561d2f optimización tests de reglas 1 y 2
+ce24ad2 optimización tests de reglas 1 y 2
+4e99664 test de regla 2 (Mecánica respiratoria Mala o Regular)
+4a4ce3a test de regla 1 (Somnolencia)
+5ec35c3 factories para test de unidad de reglas de evoluciones
+eeef3f6 tests de restricción de rutas de API
+fbe681f actualicé frontend de creación de pacientes
+596d2fd pase a óbito de pacientes + pase de alta
+b444454 actualización: borrar alertas locales cuando el usuario está offline
+bdd2d69 agregué: restriccion de funcionalidades a médicos
+d377979 actualizado: backend para el listado de pacientes de médicos
+ccb55c4 actualizado: muestra de listado de evoluciones junto con cambios de sistema
+dcd2786 restriccion de edicion de pacientes en frontend
+d1d87c1 estado offline de usuarios + optimización de busqueda de alertas
+6380aa2 restricción de alertas (Solo para médicos y Jefes de Sistema)
+7985f7c actualicé: los administradores no pueden ver los pacientes de sistemas
+e778f23 actualizado: leftJoin en indice de usuarios para mostrar los que no tienen sistema
+75e30f2 nuevo: indice de usuarios - restringido para administradores
+fecb7d0 agregué: restricción por permisos en todas las vistas de vue
+5d35983 agregué: funcionalidades de configuradores de reglas + componente de input numerico
+f37d493 arreglé: error de información de usuario en frontend (cuando el sistema del usuario es nulo)
+92ac7dc actualicé: menor tiempo de intervalo fetch de alertas + menor tiempo de duración de visualización
+4a67966 agruegué: merge de listado de cambios de sistema junto a evoluciones (ordenados por periodos de tiempo)
+d0d05ba agruegué: visualización de evoluciones de pacientes
+08396eb actualicé: regla 5 (para evitar valores nulos)
+baae715 agregué: chequeo de reglas en las evoluciones y alertas de las mismas
+b3c17e2 actualicé: frontend de historial de alertas para ver ordenadas por fechas
+0c1fc8d agregué: migración, modelo y seeds para la configuración de reglas
+2bf56a7 actualicé: carga de evoluciones de un paciente
+6ef4531 agregué backend para tipos de alimentación en las evoluciones
+245a881 actualicé: backend de alta de pacientes e internaciones
+92b13c7 actualicé: mounted() a created() en la tabla de pacientes
+6b0184d actualicé: front-end del login + tablas de pacientes y médicos en la vista de sistema
+a99dde6 actualicé rutas de la API de pacientes y sistemas
+66df18e actualicé rutas de usuario + restricciones con middleware de rol y sistema + cambio de camas ilimitadas para el sistema de guardia
+8bd0fda agregué: sistema de alertas funcionando
+58e0b5e agruegé: cambios de sistema a los pacientes
+460634c actualicé: frontend de las tablas de información
+a8a9290 agregué la carga de internaciones + pacientes y la verificación de dni
+502e198 actualicé: front-end de la carga de evoluciones + eliminé: archivos inutilizados
+1ab6ed8 acomodé: los jefes solo ven los medicos de su sistema + los listados de pacientes y médicos se obtienen desde la pesta<C3><B1>a sistemas
+efcc414 acomodé: los médicos y jefes solo ven los pacientes de su sistema
+151d73b actualicé detalles chicos de frontend para la muestra de información
+21fa306 agregué: modelos y migraciones para hospitalizaciones, entradas y evoluciones
+91408e9 agregué: información faltante al modelo de pacientes
+abb5c68 agregué: migración para sumar la información de contacto a la tabla de pacientes
+3e7c045 agregué: la funcion de manejo de errores en algunos componentes
+84e00e5 agregué un mixin de vue para manejar errores 401
+5f82b5c reestructure rutas de API y agregué el chequeo de permisos
+21c05f7 actualicé: backend para reestructurar la base de datos y la muestra de información
+d641bd1 saque waves y acomode un poco de frontend en el dashboard
+9f14fff actualicé un poco de front y el update de perfil de usuario
+3b8a61e cambie el frontend del navbar
+1382ab7 actualicé el app.js
+9113123 agregué las rutas de api que faltaban para la entrega del 28/10
+73ecd59 acomodé los llamados recursivos desde axios en el login
+261c891 agregué migraciones y modelos de pacientes y usuarios para poder cambiar de sistema a los pacientes
+bdfb21f acomode vistas del dashboard para listado de pacientes y sistemas
+1e9902d acomode la estructura de tablas de sistemas
+fda586e acomode la estructura de tablas de pacientes
+5d92438 actualicé: vista de cargar evoluciones de paciente (Falta: Actualizar campos de formulario)
+83a21b6 acomodé: vista de cargar nuevo paciente
+3fd2281 acomodé: vista de cambio de sistema de paciente
+4bcd66b agregué frontend para la muestra del 28/10
+38e3e93 agregué backend para la muestra del 28/10
+1b18b3f agregué: seed modelo y migración para permisos de usuario
+0c498fd acomode un poco de frontend en las tablas y el inicio
+6aed9bf agregué el modelo de permisos y acomode la carga de pacientes en backend
+1a68c5f acomode el navbar del panel y la carga de pacientes
+b8f841d agregué: modelo y migración de permisos"
+ddc8fc0 actualicé el seed de pacientes para cargar la bse
+6c72df8 acomode unos archivos para probar el deploy
+15beb80 acomodé el historial de notificaciones
+4ad9c3a agregué dni e información de personas a pacientes
+729dc20 agregué: busqueda de pacientes
+0f74c3d agregué: vue loading bar + algunos cambios de la clase del miércoles
+c37a22e agregué: middleware para chequeo de roles y permisos
+d25a982 agregué: logout por inactividad
+75b47d6 agregué el frontend para sistemas en vue
+3061538 agregué: backend y API de sistema
+d4e53ec agregué API de systemas con información de camas
+86c01d8 agregué migración para indicar camas vacías
+d632624 agregué asignacion de médicos a pacientes en vue
+fc03e1d agregué estilos para el texto
+ffa7028 modifiqué los componentes de titulo de dashboard
+f4872b4 agregué: componente de atrás con vue-router
+c8ef6d1 modifiqué texto de barra de navegación e icono de notificaciones
+977152b complete la vista de pacientes para mostrar la información
+c1aba9b agregué la vista de cada paciente en vue
+9fb2539 modifiqué seed de estados de paciente
+3e5e163 agregué API para los estados del paciente
+85be46b agregué seed para los estados del paciente
+98fcc3a agregué: API de sistemas
+b07067f agregué los nuevos cambios a app.js
+ec735cf agregué vista de perfil de usuario
+7a09752 agregué: notificaciones en al navbar
+41db051 agregué vistas para el usuario
+d9dab51 agregué rutas para el usuario
+e4f9f7e modifiqué: localstorage en el login (resuelve exceso de llamadas a la api de usuario)
+d6722cb agregué backend y api de usuario para guardar en localstorage en el cliente
+6062b43 cambié SCO por SeCo
+464a867 agregué las rutas de jefe de sistema
+3fbe944 agregué el frontend de sistemas
+c381f15 modifiqué la tabla de pacientes y SCO por SeCo
+ebfe13c actualicé: rutas de apu de usuario y muestra de información de usuario en frontend
+960df70 agregué comentarios en seed
+cd4c985 agregué: migraciones y seeds para camas y salas
+d665b30 actualicé: modelos para camas y salas
+706f093 seeds y modelos para los distintos sistemas
+bf535b9 agregué seed para systemas en DB
+11e2b23 actualicé templates de callback para el login con google
+774ce04 acomodé el controlador de Social Auth
+4496674 agrege template para cuando el usuario de google no existe
+385aac4 cambie una url para test en deploy
+5631414 actualicé archivos de login para deploy
+54a5126 acomode services.php para el deplot
+5d3e4ca actualicé el readme
+6675b90 prueba de archivos para el deploy
+9f17ef6 agregué componenetes a app.js y estilos
+5b186bf componentes de pacientes
+c66114f agregué la carpeta de rutas para el dashboard y usuario
+490e25f agregué el subtitulo para el dashboard
+c8c2f5d actualicé las vistas de login y logout
+05cfa11 agregué: titulo y subtitulo para el dashboard
+bfd7fd1 agregué: componentes de navegación para el dashboard
+ae60e79 agregué: layout del dashboard
+4acec24 agrego componente de tabla para listados
+adfaa37 agrego componente de login con google
+9e2ae61 actualizé rutas de Api
+9572ccc agregué: componente de graficos
+ec2022f agregué: componentes de carga
+28f5f86 agrege modelos y controlador de rutas
+661808b cambie seed de usuarios
+2fa240a cambie seed de usuarios
+5c38eee actualicé users seeder + agregué sistem_id a pacientes
+0dad911 actualice: migraciones de sistemas + agregué: migraciones para estados de pacientes
+946ebb9 actualize información en el Read.me
+2088c64 agregue vistas del dashboard en componentes vuejs + vista principal de la app
+08693e2 agrego: rutas de error 404
+ace236b actualizo: imagen de profile + mixin de assets
+aee388e agrego: mixin de assets
+1b7fe65 agrego: archivos de carpeta public
+6acee64 agregué: rutas a web.php y api.php
+21d22a4 agregué: controladores y modelo de Role
+b99afb0 agrego: componente de input para formulario y el navbar principal
+dee7b32 agrego: componente y mixin de alertas
+4fe7105 agrego: frontend para el login
+d8bdf61 Merge branch 'master' of github.com:manuelguido/ttps-2020 into master
+3197fca agrego: migración para imágenes de usuarios
+3b61d80 borre: .rnd
+217b11e agrego: backend para login con passport asincrónico + google oauth
+f143480 agregué modelo de sistema
+4269705 agregué modelo de paciente
+cd8ae1b borré: welcome.blade.php
+a0dd795 agrego el favicon
+587effa agrego: Spa template de php
+3c9a4b6 agrego fontawesome para iconos
+a099a7e agregué estilos a app.js
+80bff11 saque componentes que no iban
+2ef8652 agregué: controlador para el SPA y la ruta en web.php
+cd00e5c instalé: vue vuex vue-router mdbvue
+a834145 borre: componente de ejemplo de vue
+146cca8 agrego: modelo de médico y de obra social
+6179052 agrego: migraciones basicas de usuarios roles y sistemas
+f72a695 agrego: app.js para vuejs
+a223a90 Update README.md
+c266edd Proyecto de laravel 5.8 inicial
+bb832c6 Update README.md
+34f39d9 Initial commit
+(END)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
