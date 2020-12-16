@@ -5,16 +5,8 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
-use Illuminate\Support\Carbon;
-use App\VentilatoryMechanic;
-use App\Hospitalization;
 use App\RuleSettings;
 use App\Evolution;
-use App\Patient;
-use App\Entry;
-use App\User;
-use DB;
 
 class Rule2 extends TestCase
 {
