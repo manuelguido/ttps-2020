@@ -109,3 +109,8 @@ http://127.0.0.1:8000/
 ```
 .\vendor\bin\phpunit
 ```
+
+### En caso de que los test no carguen, se debe limpiar la configuración del proyecto
+```
+php artisan config:clear
+```
