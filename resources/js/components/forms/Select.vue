@@ -21,7 +21,7 @@ export default {
   name: "VSelect",
   props: {
     value: {
-      type: String,
+      type: [Number, String],
       default: null,
     },
     placeholder: {

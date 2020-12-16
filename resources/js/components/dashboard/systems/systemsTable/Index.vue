@@ -1,6 +1,8 @@
 <template>
   <div class="card c-card uns">
-    <loading-dots v-if="loading"></loading-dots>
+    <div v-if="loading" class="card-body p-5">
+      <loading-overlay />
+    </div>
     <div v-else class="table-responsive text-nowrap">
       <!-- Table -->
       <table class="table my-0 table-hover">

@@ -375,11 +375,23 @@ class Patient extends Model
      */
     public function updateData($data)
     {
-        $this->saveData($data);
+        $this->name = $data->name;
+        $this->lastname = $data->lastname;
+        $this->dni = $data->dni;
+        $this->address = $data->address;
+        $this->phone = $data->phone;
+        $this->birth_date = $data->birth_date;
+        $this->personal_background = $data->personal_background;
+        $this->medical_ensurance_id = $data->medical_ensurance_id;
+        $this->email = $data->email;
+        $this->contact_name = $data->contact_name;
+        $this->contact_lastname = $data->contact_lastname;
+        $this->contact_phone = $data->contact_phone;
+        $this->save();
     }
 
     /**
-     * Actualizar información de un paciente
+     * Guardar información de un paciente
      * 
      * @return void.
      */

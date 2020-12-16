@@ -8,6 +8,8 @@ import NewEntry from '../views/dashboard/NewEntry'
 import Patients from '../views/dashboard/Patients';
 // Paciente
 import Patient from '../views/dashboard/Patient';
+// Edición de paciente
+import PatientEdit from '../views/dashboard/PatientEdit';
 // Asignación de medicos a pacientes
 import PatientAssigment from '../views/dashboard/PatientAssigment';
 // Patient Evolution Add
@@ -89,6 +91,15 @@ const routes = [
         path: '/dashboard/patient/:patient_id',
         name: 'Patient',
         component: Patient,
+        props: true,
+      },
+      /**
+       * Edición de paciente.
+       */
+      {
+        path: '/dashboard/patient/edit/:patient_id',
+        name: 'PatientEdit',
+        component: PatientEdit,
         props: true,
       },
       /**

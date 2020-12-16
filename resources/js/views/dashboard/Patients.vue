@@ -172,19 +172,19 @@ export default {
           dni: data[i].dni,
           room: data[i].room,
           bed: "Cama " + data[i].bed_number,
-          show: '<a href="/dashboard/patient/' + data[i].patient_id + '" class="btn btn-primary btn-sm table-button">Ver</a>',
-          evolve: '<a href="/dashboard/patient/evolution/add/' + data[i].patient_id +'" class="btn btn-purple btn-sm table-button">Evolucionar</a>',
+          show: '<a href="/dashboard/patient/' + data[i].patient_id + '" class="btn btn-primary btn-sm table-button"><i class="fad fa-external-link-alt mr-3"></i>Ver</a>',
+          evolve: '<a href="/dashboard/patient/evolution/add/' + data[i].patient_id +'" class="btn btn-purple btn-sm table-button"><i class="fad fa-file-edit mr-3"></i>Evolucionar</a>',
         };
 
         if (this.hasRole("Jefe de Sistema")) {
           patientData.assign =
             '<a href="/dashboard/patient/assignment/' +
             data[i].patient_id +
-            '" class="btn btn-indigo btn-sm table-button">Asignar médico</a>';
+            '" class="btn btn-indigo btn-sm table-button"><i class="fad fa-user-md mr-3"></i>Médicos</a>';
           patientData.change =
             '<a href="/dashboard/patient/system/change/' +
             data[i].patient_id +
-            '" class="btn btn-deep-purple btn-sm table-button">Cambiar sistema</a>';
+            '" class="btn btn-deep-purple btn-sm table-button"><i class="fad fa-exchange-alt mr-3"></i>Cambiar sistema</a>';
         }
 
         this.patients.push(patientData);

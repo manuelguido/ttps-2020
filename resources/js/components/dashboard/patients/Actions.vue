@@ -4,20 +4,20 @@
     <div class="d-flex flex-row justify-content-start">
       <span v-if="canEditPatient(patient)" class="actions-list">
         <router-link
-          class="btn btn-primary"
+          class="btn btn-blue-grey btn-sm"
           :to="'/dashboard/patient/assignment/' + patient.patient_id"
-          >Asignar médicos</router-link
+          ><i class="fad fa-user-md mr-3"></i>Asignar médicos</router-link
         >
         <router-link
           :to="'/dashboard/patient/system/change/' + patient.patient_id"
-          class="btn btn-deep-purple"
-          >Cambiar sistema</router-link
+          class="btn btn-blue-grey btn-sm"
+          ><i class="fad fa-exchange-alt mr-3"></i>Cambiar sistema</router-link
         >
-        <button class="btn btn-success" @click="declareExit">
-          Egresar del hospital
+        <button class="btn btn-dark-green btn-sm" @click="declareExit">
+          <i class="fad fa-shield-check mr-3"></i>Egresar del hospital
         </button>
-        <button class="btn btn-danger" @click="declareDeath">
-          Declarar óbito
+        <button class="btn btn-danger btn-sm" @click="declareDeath">
+          <i class="fad fa-times-hexagon mr-3"></i>Declarar óbito
         </button>
       </span>
     </div>

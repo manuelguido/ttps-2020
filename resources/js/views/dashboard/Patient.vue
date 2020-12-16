@@ -10,19 +10,18 @@
       >
         <p>
           <span class="h4 black-alpha-50">Paciente: </span>
-          <span class="h4 primary"
-            >{{ patient.name }} {{ patient.lastname }}</span
-          >
-          <br />
-          <br />
-          <span class="h5 black-alpha-50"
-            >Se encuentra en: {{ patient.system }}</span
-          >
+          <span class="h4 primary">{{ patient.name }} {{ patient.lastname }}</span>
         </p>
+
+        <router-link v-if="canEditPatient(patient)" :to="'/dashboard/patient/edit/'+patient.patient_id" class="btn p-2 waves-effect">
+          <i class="fad fa-pencil black-alpha-30 mr-2"></i>
+          Editar información
+        </router-link>
       </div>
 
       <!-- Información -->
       <div class="col-12 col-lg-9 col-xl-6">
+        <h1 class="h4 black-alpha-50 mb-5">Se encuentra en: {{ patient.system }}</h1>
         <info-data data="DNI" :value="formatDni(patient.dni)"></info-data>
         <info-data
           data="Teléfono"
@@ -52,7 +51,7 @@
       </div>
       <!-- /.Información -->
 
-      <div v-if="patientIsHospitalized(patient)" class="col-12">
+      <div v-if="patientIsHospitalized(patient) && canEditPatient(patient)" class="col-12">
         <div class="row">
           <div class="col-12 mb-4">
             <hr />
@@ -65,7 +64,7 @@
           </div>
 
           <!-- Hospitalizaciones (Listado) -->
-          <div v-if="canEditPatient(patient)" class="col-12 mb-3">
+          <div class="col-12 mb-3">
             <loading-overlay v-if="loadingClinicData" />
             <clinic-data
               @reload-data="fetchClinicData()"

@@ -150,25 +150,28 @@ class PatientController extends Controller
         if (!$guardSystem->hasBeds()) {
             $message = ['status' => 'warning', 'message' => 'No hay camas disponibles en guardia'];
         }
-        // Chequeo de DNI existente
-        else if (Patient::dniExists($data->dni)) {
-            $message = ['status' => 'warning', 'message' => 'El paciente con ese DNI ya existe en el sistema'];
-        } else {
+        else {
             // Information try
             try {
                 // Validación de paciente
                 $this->validatePatient($data);
                 $this->validatePatientEntry($data);
 
-                // Nuevo paciente
-                $patient = new Patient;
-                $store_data = $data;
-                $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
-                $store_data->system_id = $guardSystem->system_id;
-                $patient = Patient::createPatient($store_data);
+                // Chequeo de DNI existente
+                if (Patient::dniExists($data->dni)) {
+                    $message = ['status' => 'warning', 'message' => 'El paciente con ese DNI ya existe en el sistema'];
+                }
+                else {
+                    // Nuevo paciente
+                    $patient = new Patient;
+                    $store_data = $data;
+                    $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
+                    $store_data->system_id = $guardSystem->system_id;
+                    $patient = Patient::createPatient($store_data);
 
-                // Mensaje
-                $message = ['status' => 'success', 'message' => 'Se guardo el paciente y ha sido ingresado a guardia.'];
+                    // Mensaje
+                    $message = ['status' => 'success', 'message' => 'Se guardo el paciente y ha sido ingresado a guardia.'];
+                }
             } catch (\Exception $e) {
                 $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
             }
@@ -181,48 +184,27 @@ class PatientController extends Controller
      * 
      * @return JSON.
      */
-    public function update(Request $data)
+    public function update(Request $request)
     {
-        $patient = Patient::find($data['patient_id']);
-
-        // Chequeo que tenga permiso
-        if (!$data->user()->hasPermission(Permission::PATIENT_UPDATE)) {
-            $message = ['status' => 'warning', 'message' => 'No tienes el permiso para realizar esta acción'];
-        }
-        // Chequeo de DNI existente
-        else if (($patient->dni != $data->dni) && (Patient::dniExists($data->dni))) {
-            $message = ['status' => 'warning', 'message' => 'El paciente con ese DNI ya existe en el sistema'];
-        } else {
-            // Information try
-            try {
-                // Validación de paciente
-                $this->validatePatient($data);
-                $this->validatePatientEntry($data);
-
-                // Almacenamiento de información
-                // Nuevo paciente
-                $patient = new Patient;
-                $store_data = $data;
-                $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
-                $store_data->system_id = System::find(1)->system_id;
-                $patient = Patient::createPatient($store_data);
-
-
-                $store_data = $data;
-                $store_data->patient_state_id = $patient->patient_state_id;
-                $store_data->system_id = $patient->system_id;
-
-                $this->save($patient, $store_data);
-
-                $patient->setNewSystemById($store_data->system_id);
-                $patient->save();
-
-                // Returning the view
-                $message = ['status' => 'success', 'message' => 'Paciente guardado'];
-            } catch (\Exception $e) {
-                $message = ['status' => 'warning', 'message' => $e->errorInfo[2]];
+        try {
+            // Validación
+            $this->validatePatient($request);
+            // Buscar paciente
+            $patient = Patient::find($request->patient_id);
+            // Buscar usuario
+            $user = $request->user();
+            // Chequeo que pueda editar la información del paciente
+            if (!$user->canEditPatient($patient)) {
+                $message = ['status' => 'warning', 'message' => 'No tienes el permiso para realizar esta acción'];
+            } else {
+                $patient->updateData($request);
+                $message = ['status' => 'success', 'message' => 'Información guardada con éxito.'];
             }
+
+        } catch (\Exception $e) {
+            $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
         }
+        
         return response()->json($message, 200);
     }
 
@@ -424,7 +406,7 @@ class PatientController extends Controller
             $patient = Patient::find($request->patient_id);
             $user = User::find($request->user()->user_id);
 
-            if (!$user->canExitPatient($patient)) {
+            if (!$user->canEditPatient($patient)) {
                 abort(403);
             } else {
                 $patient->declareExit();
@@ -449,7 +431,7 @@ class PatientController extends Controller
             $patient = Patient::find($request->patient_id);
             $user = User::find($request->user()->user_id);
 
-            if (!$user->canExitPatient($patient)) {
+            if (!$user->canEditPatient($patient)) {
                 abort(403);
             } else {
                 $patient->declareDeath();

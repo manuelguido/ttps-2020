@@ -19,7 +19,7 @@ export default {
   name: "VInput",
   props: {
     value: {
-      type: String,
+      type: [Number, String],
       default: "",
     },
     type: {

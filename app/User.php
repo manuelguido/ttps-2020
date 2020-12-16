@@ -309,10 +309,12 @@ class User extends Authenticatable
      * 
      * @return Boolean.
      */
-    public function canExitPatient($patient)
+    public function canEditPatient($patient)
     {
-        if ($this->hasRole(Role::ROLE_MEDIC) || $this->hasRole(Role::ROLE_SYSTEM_CHIEF)) {
+        if ($this->hasRole(Role::ROLE_SYSTEM_CHIEF)) {
             return ($this->systems()->first()->system_id == $patient->system_id);
+        } else if ($this->hasRole(Role::ROLE_MEDIC)) {
+            return $this->medic()->hasPatient($patient);
         } else {
             return false;
         }

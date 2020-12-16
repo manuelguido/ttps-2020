@@ -60,6 +60,7 @@ class Medic extends Model
     /**
      * Obtiene todos los médicos.
      * 
+     * @return Boolean.
      */
     public static function allWithUserData()
     {
@@ -70,7 +71,9 @@ class Medic extends Model
     }
 
     /**
-     * Obtiene todos los médicos de un sistema
+     * Obtiene todos los médicos de un sistema.
+     * 
+     * @return Collection.
      */
     public static function allWithUserDataBySystem($system_id)
     {
@@ -80,5 +83,20 @@ class Medic extends Model
             ->leftJoin('systems', 'systems.system_id', '=', 'system_user.system_id')
             ->select('medic_id', 'name', 'lastname', 'dni', 'email', 'phone')
             ->get();
+    }
+
+    /**
+     * Ver si el médico tiene el paciente asignado.
+     * 
+     * @return Boolean.
+     */
+    public function hasPatient($patient)
+    {
+        $result = DB::table('medic_patient')->where([
+                ['medic_id', $this->medic_id],
+                ['patient_id', $patient->patient_id]])
+            ->count();
+
+        return ($result > 0);
     }
 }

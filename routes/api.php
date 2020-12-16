@@ -123,7 +123,7 @@ Route::prefix('/patient')->group(function() {
   Route::post('/store', 'PatientController@store')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // Funciona
 
   // Almacena una entrada de un paciente
-  Route::post('/new_entry', 'PatientController@newEntry')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // tiene problemas
+  Route::post('/new_entry', 'PatientController@newEntry')->middleware('auth:api', 'permission:patient_store', 'system:Guardia'); // Funciona
 
   // Actualizar el perfil de usuario
   Route::post('/update', 'PatientController@update')->middleware('auth:api', 'permission:patient_update'); // tiene problemas
