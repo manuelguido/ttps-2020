@@ -17,9 +17,8 @@ class User extends Authenticatable
      * User routes.
      */
     const ADMIN_ROUTES = [
-        // ['icon' => 'fad fa-tachometer-fast', 'name' => 'Inicio', 'url' => '/dashboard/home'],
+        ['icon' => 'fad fa-analytics', 'name' => 'Reportes', 'url' => '/dashboard/reports'],
         ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
-        ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics/all'],
         ['icon' => 'fad fa-users', 'name' => 'Usuarios', 'url' => '/dashboard/users'],
     ];
 

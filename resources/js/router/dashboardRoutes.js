@@ -1,33 +1,37 @@
 // Dashboard
-import Dashboard from '../layouts/Dashboard';
-// Home
-import Home from '../views/dashboard/Home';
+import Dashboard from '../layouts/Dashboard.vue';
+
+// Reportes
+import Reports from '../views/dashboard/reports/Index.vue';
+
 // Nueva entrada al sistema
-import NewEntry from '../views/dashboard/NewEntry'
+import NewEntry from '../views/dashboard/entries/New.vue'
+
 // Pacientes
-import Patients from '../views/dashboard/Patients';
-// Paciente
-import Patient from '../views/dashboard/Patient';
-// Edición de paciente
-import PatientEdit from '../views/dashboard/PatientEdit';
-// Asignación de medicos a pacientes
-import PatientAssigment from '../views/dashboard/PatientAssigment';
-// Patient Evolution Add
-import PatientChangeSystem from '../views/dashboard/PatientChangeSystem';
-// Patient Evolution Add
-import PatientEvolutionAdd from '../views/dashboard/PatientEvolutionAdd';
+import Patients from '../views/dashboard/patients/Index.vue';
+import Patient from '../views/dashboard/patients/Show.vue';
+import EditPatient from '../views/dashboard/patients/Edit.vue';
+import AssigmentPatient from '../views/dashboard/patients/Assigment.vue';
+import ChangeSystemPatient from '../views/dashboard/patients/ChangeSystem.vue';
+import AddEvolutionPatient from '../views/dashboard/patients/AddEvolution.vue';
+
 // Medicos
-import Medics from '../views/dashboard/Medics';
-// Medicos
-import Users from '../views/dashboard/Users';
-// Systems
-import Systems from '../views/dashboard/Systems';
-// Systems
-import System from '../views/dashboard/System';
+import Medics from '../views/dashboard/medics/Index.vue';
+
+// Usuarios
+import Users from '../views/dashboard/users/Index.vue';
+import NewUser from '../views/dashboard/users/New.vue';
+import EditUser from '../views/dashboard/users/Edit.vue';
+
+// Sistemas
+import Systems from '../views/dashboard/systems/Index.vue';
+import System from '../views/dashboard/systems/Show.vue';
+
 // Settings
-import RulesSettings from '../views/dashboard/RulesSettings';
+import RulesSettings from '../views/dashboard/RulesSettings.vue';
+
 // Data Load
-import DataLoad from '../views/auth/DataLoad';
+import DataLoad from '../views/auth/DataLoad.vue';
 
 function dashboardHome() {
   if (localStorage.routes) {
@@ -98,8 +102,8 @@ const routes = [
        */
       {
         path: '/dashboard/patient/edit/:patient_id',
-        name: 'PatientEdit',
-        component: PatientEdit,
+        name: 'EditPatient',
+        component: EditPatient,
         props: true,
       },
       /**
@@ -107,8 +111,8 @@ const routes = [
        */
       {
         path: '/dashboard/patient/assignment/:patient_id',
-        name: 'PatientAssigment',
-        component: PatientAssigment,
+        name: 'AssigmentPatient',
+        component: AssigmentPatient,
         props: true,
       },
       /**
@@ -116,8 +120,8 @@ const routes = [
        */
       {
         path: '/dashboard/patient/system/change/:patient_id',
-        name: 'PatientChangeSystem',
-        component: PatientChangeSystem,
+        name: 'ChangeSystemPatient',
+        component: ChangeSystemPatient,
         props: true,
       },
       /**
@@ -125,8 +129,8 @@ const routes = [
        */
       {
         path: '/dashboard/patient/evolution/add/:patient_id',
-        name: 'PatientEvolutionAdd',
-        component: PatientEvolutionAdd,
+        name: 'AddEvolutionPatient',
+        component: AddEvolutionPatient,
         props: true,
       },
       /**
@@ -152,6 +156,30 @@ const routes = [
         path: '/dashboard/users',
         name: 'Users',
         component: Users
+      },
+      /**
+       * Nuevo usuario.
+       */
+      {
+        path: '/dashboard/user/new',
+        name: 'NewUser',
+        component: NewUser
+      },
+      /**
+       * Editar usuario.
+       */
+      {
+        path: '/dashboard/user/:user_id',
+        name: 'EditUser',
+        component: EditUser
+      },
+      /**
+       * Reportes.
+       */
+      {
+        path: '/dashboard/reports',
+        name: 'Reports',
+        component: Reports
       },
       /**
        * Sistemas.
