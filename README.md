@@ -8,7 +8,7 @@ Desarrollo de un SPA (Aplciación de una sola página) con Laravel 5.8 y Vuejs p
 
 ## Instalación
 
-### Software requerido para la instalación
+#### Software requerido para la instalación
 * PHP
 * MySQL
 * Apache
@@ -30,74 +30,76 @@ https://getcomposer.org/
 composer global require laravel/installer
 ```
 
-### Descargar Proyecto
+#### Descargar Proyecto
 ```
 git clone https://github.com/manuelguido/ttps-2020.git
 ```
 
-### Ubicarse en el directorio del proyecto
+#### Ubicarse en el directorio del proyecto
 ```
 cd ttps-2020
 ```
 
-### Instalar dependencias de Composer
+#### Instalar dependencias de Composer
 ```
 composer install
 ```
 
-### Instalar dependencias de NPM
+#### Instalar dependencias de NPM
 ```
 npm install
 ```
 
-### Crear una copia del archivo .env.example a y renombrarlo como .env (También puede hacerse manualmente)
+#### Crear una copia del archivo .env.example a y renombrarlo como .env (También puede hacerse manualmente)
 ```
 cp .env.example .env
 ```
 
-### Generar clave de encriptado
+#### Generar clave de encriptado
 ```
 php artisan key:generate
 ```
 
-### Crear una base de datos en MySQL para el proyecto
-
-
-### Ingresar la siguiente información de la base de datos en el archivo .env del proyecto
+#### Crear una base de datos en MySQL para el proyecto con el siguiente nombre
 ```
-DB_DATABASE=baseDeDatosQueCreaste
-DB_USERNAME=nombreDeUsuario
-DB_PASSWORD=contraseña
+ttps-2020
 ```
 
-### Migrar la base de datos y hacer cargar seeds de información inicial
+#### Ingresar la siguiente información de la base de datos en el archivo .env del proyecto
+```
+DB_DATABASE=ttps-2020
+DB_USERNAME=usuarioDeBaseDeDatos
+DB_PASSWORD=contraseñaDeBaseDeDatos
+```
+
+#### Migrar la base de datos y hacer cargar seeds de información inicial
 ```
 php artisan migrate:fresh --seed
 ```
 
-### Instalar Passport para la autenticación via AJAX con la API
+#### Instalar Passport para la autenticación via AJAX con la API
 ```
 php artisan passport:install
 ```
 
-### Ingresar la siguiente información en el archivo .env
+#### Ingresar la siguiente información en el archivo .env
 ```
 PASSPORT_LOGIN_ENDPOINT=http://127.0.0.1:8000/oauth/token
 PASSPORT_CLIENT_ID=2
 PASSPORT_CLIENT_SECRET=LaSegundaKeyQueSeGeneróEnElComandoAnterior
 ```
 
-### Actualizar la información del proyecto en la cache
+#### Actualizar la información del proyecto en la cache
 ```
 php artisan config:cache
 ```
 
-### Correr el servidor
+#### Correr el servidor
 ```
 php artisan serve
 ```
 
-### Listo! Ahora puedes acceder al sitio desde la siguiente URL
+#### Listo! Ahora puedes acceder al sitio desde la siguiente URL
 ```
 http://127.0.0.1:8000/
 ```
@@ -105,6 +107,5 @@ http://127.0.0.1:8000/
 
 # Para correr los test luego de la instalación
 ```
-php artisan config:clear
 .\vendor\bin\phpunit
 ```
