@@ -3,16 +3,17 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ExampleTest extends TestCase
+class AlertApiRoutesTest extends TestCase
 {
     /**
-     * A basic test example.
+     * Test de restricción de rutas de API de alertas.
      *
      * @return void
      */
-    public function testBasicTest()
+    public function testExample()
     {
         $response = $this->get('/');
 
