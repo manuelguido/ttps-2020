@@ -196,7 +196,9 @@ class RuleSettings extends Model
             $previousData = $previousEvolution->oxigen_saturation;
             $currentData = $patient->lastEvolution()->oxigen_saturation;
             
-            $ruleCondition = (($previousData - $currentData) >= $this->oxigen_saturation_down_percentage);
+            if ($previousData != null && $currentData != null) {
+                $ruleCondition = (($previousData - $currentData) >= $this->oxigen_saturation_down_percentage);
+            }
         }
         return $ruleCondition;
     }

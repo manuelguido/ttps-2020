@@ -15,7 +15,7 @@ use App\Entry;
 class Rule4 extends TestCase
 {
     /**
-     * Test de regla 4: Pasaron x días desde el inicio de los síntomas: Evaluar alta.
+     * Test de regla 4: Pasaron x días desde el inicio de los síntomas.
      * 
      * x: Parámetro
      * 
@@ -69,8 +69,9 @@ class Rule4 extends TestCase
         
         $this->assertFalse($ruleCondition); // Ver que la regla devuelve "false"
 
-
-        // Borrado de información de test
+        /**
+         * Borrado de información de test en DB
+         */
         $evolution->delete();
         $entry->delete();
         $patient->delete();
