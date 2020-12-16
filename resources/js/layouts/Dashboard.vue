@@ -32,7 +32,7 @@ export default {
 		'navigation': navigation
   },
   created () {
-    // this.inactivityTime(); 
+    this.inactivityTime();
   },
   methods: {
     inactivityTime () {
@@ -43,14 +43,12 @@ export default {
       document.onkeypress = resetTimer;
 
       function logout() {
-        // localStorage.clear();
         window.location.href = "/logout"
-        console.log("Has salido del sistema.")            
       }
 
       function resetTimer() {
         clearTimeout(time);
-        time = setTimeout(logout, 3000000)
+        time = setTimeout(logout, 3600000)
       }
     }
   }

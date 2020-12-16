@@ -219,9 +219,20 @@ Route::prefix('/medic')->group(function() {
 | API de seguros médicos
 |--------------------------------------------------------------------------
 */
-Route::prefix('/settings/rules')->middleware('auth:api', 'permission:rule_crud', 'role:Configurador de Reglas')->group(function() {
+Route::prefix('/settings')->middleware('auth:api', 'role:Administrador')->group(function() {
   
   // Actualizar parametros de alertas.
+  Route::get('/show', 'SettingsController@show'); //Funciona
+
+  // Actualizar parametros de alertas.
+  Route::post('/update', 'SettingsController@update'); //Funciona
+});
+
+
+
+Route::prefix('/settings/rules')->middleware('auth:api', 'permission:rule_crud', 'role:Configurador de Reglas')->group(function() {
+  
+  // Obtener parametros de alertas.
   Route::get('/show', 'RulesSettingsController@show'); //Funciona
 
   // Actualizar parametros de alertas.

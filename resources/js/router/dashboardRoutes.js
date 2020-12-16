@@ -2,7 +2,7 @@
 import Dashboard from '../layouts/Dashboard.vue';
 
 // Reportes
-import Reports from '../views/dashboard/reports/Index.vue';
+import Settings from '../views/dashboard/settings/Index.vue';
 
 // Nueva entrada al sistema
 import NewEntry from '../views/dashboard/entries/New.vue'
@@ -58,7 +58,7 @@ const routes = [
    */
   {
     path: '/admin',
-    redirect: '/dashboard/home', //No necesita auth porque redirecciona a una ruta con auth siempre 
+    redirect: dashboardHome(),  //No necesita auth porque redirecciona a una ruta con auth siempre 
   },
   /**
    * Ruta base.
@@ -174,12 +174,12 @@ const routes = [
         component: EditUser
       },
       /**
-       * Reportes.
+       * Configuración.
        */
       {
-        path: '/dashboard/reports',
-        name: 'Reports',
-        component: Reports
+        path: '/dashboard/settings',
+        name: 'Settings',
+        component: Settings
       },
       /**
        * Sistemas.
