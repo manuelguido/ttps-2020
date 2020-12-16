@@ -18,54 +18,39 @@ use DB;
 class Rule1 extends TestCase
 {
     /**
-     * Test de regla 1 (Somnolencia)
-     *
+     * Test de regla 1: Somnolencia
+     * 
      * @return void
      */
     public function testExample()
     {
         // Obtener configuración de reglas
         $ruleSettings = RuleSettings::find(1);        
-
-        // Creación de usuario
-        $user = factory(User::class)->create(); // Creo un usuario
-        
-        // Creación de paciente
-        $patient = factory(Patient::class)->create();
-        
-        // Creación de entrada al sistema
-        $entry = factory(Entry::class)->create();
-        $entry->patient_id = $patient->patient_id;
-        $entry->save();
-
-        // Creación de hospitalización
-        $hospitalization = factory(Hospitalization::class)->create();
-        $hospitalization->entry_id = $entry->entry_id;
-        $hospitalization->save();
         
         // Creación de evolución
         $evolution = factory(Evolution::class)->create();
-        $evolution->hospitalization_id = $hospitalization->hospitalization_id;
-        $evolution->save();
 
         /**
-         * Testeo de regla numero 1
-         * 
-         * Si somnolencia es true, la funcion debe retornar verdadero, para evaluar el pase a uti.
+         * Testeo de regla cuando el paciente tiene somnolencia
          */
         $evolution->drowsiness = true; // Somnolencia es "true"
+        
         $ruleCondition = $ruleSettings->analizeRule1($evolution); // Evaluar regla
+        
         $this->assertTrue($ruleCondition); // Ver que la regla devuelve "true"
 
+        /**
+         * Testeo de regla cuando el paciente tiene somnolencia
+         */
         $evolution->drowsiness = false; // Somnolencia es "false"
+
         $ruleCondition = $ruleSettings->analizeRule1($evolution); // Evaluar regla
+        
         $this->assertFalse($ruleCondition); // Ver que la regla devuelve "false"
 
-        // Borrado de información de test
+        /**
+         * Borrado de información de test en DB
+         */
         $evolution->delete();
-        $hospitalization->delete();
-        $entry->delete();
-        $patient->delete();
-        $user->delete();
     }
 }
