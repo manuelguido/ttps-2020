@@ -144,8 +144,10 @@ class PatientController extends Controller
      */
     public function store(Request $data)
     {
+        // Obtener sistema de guardia
+        $guardSystem = System::where('system', '=', System::SYSTEM_GUARD)->first();
         // Chequeo de camas disponibles
-        if (!System::where('system', '=', System::SYSTEM_GUARD)->first()->hasBeds()) {
+        if (!$guardSystem->hasBeds()) {
             $message = ['status' => 'warning', 'message' => 'No hay camas disponibles en guardia'];
         }
         // Chequeo de DNI existente
@@ -162,11 +164,11 @@ class PatientController extends Controller
                 $patient = new Patient;
                 $store_data = $data;
                 $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
-                $store_data->system_id = System::find(1)->system_id;
+                $store_data->system_id = $guardSystem->system_id;
                 $patient = Patient::createPatient($store_data);
 
                 // Mensaje
-                $message = ['status' => 'success', 'message' => 'Paciente e internación guardadas.'];
+                $message = ['status' => 'success', 'message' => 'Se guardo el paciente y ha sido ingresado a guardia.'];
             } catch (\Exception $e) {
                 $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
             }
@@ -198,6 +200,14 @@ class PatientController extends Controller
                 $this->validatePatientEntry($data);
 
                 // Almacenamiento de información
+                // Nuevo paciente
+                $patient = new Patient;
+                $store_data = $data;
+                $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
+                $store_data->system_id = System::find(1)->system_id;
+                $patient = Patient::createPatient($store_data);
+
+
                 $store_data = $data;
                 $store_data->patient_state_id = $patient->patient_state_id;
                 $store_data->system_id = $patient->system_id;
@@ -211,6 +221,45 @@ class PatientController extends Controller
                 $message = ['status' => 'success', 'message' => 'Paciente guardado'];
             } catch (\Exception $e) {
                 $message = ['status' => 'warning', 'message' => $e->errorInfo[2]];
+            }
+        }
+        return response()->json($message, 200);
+    }
+
+    /**
+     * Ingresar un paciente al hospital que ya estuvo previamente.
+     * 
+     * @return JSON.
+     */
+    public function newEntry(Request $request)
+    {
+        // Obtener sistema de guardia
+        $guardSystem = System::where('system', '=', System::SYSTEM_GUARD)->first();
+        // Chequeo de camas disponibles
+        if (!$guardSystem->hasBeds()) {
+            $message = ['status' => 'warning', 'message' => 'No hay camas disponibles en guardia'];
+        }
+        // Chequeo de DNI existente
+        else if (Patient::dniExistsNotSelf($request)) {
+            $message = ['status' => 'warning', 'message' => 'El paciente con ese DNI ya existe en el sistema'];
+        } else {
+            // Information try
+            try {
+                // Validación de paciente
+                $this->validatePatient($request);
+                $this->validatePatientEntry($request);
+
+                // Nuevo paciente
+                $patient = Patient::find($request->patient_id);
+                $store_data = $request;
+                $store_data->patient_state_id = PatientState::where('patient_state', '=', PatientState::STATE_HOSPITALIZED)->first()->patient_state_id;
+                $store_data->system_id = $guardSystem->system_id;
+                $patient->admitPatient($store_data);
+
+                // Mensaje
+                $message = ['status' => 'success', 'message' => 'Se guardo el paciente y ha sido ingresado a guardia.'];
+            } catch (\Exception $e) {
+                $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
             }
         }
         return response()->json($message, 200);
@@ -311,16 +360,24 @@ class PatientController extends Controller
      */
     public function searchByDni(Request $request)
     {
+        // Validación
         $this->validatePatientDni($request);
-
+        // Obtener paciente
         $patient = Patient::where('dni', '=', $request->dni)->first();
+        // Si existe el paciente
         if ($patient) {
-            if ($patient->isOnInternation()) {
+            // Si está en internación
+            if ($patient->hasState(PatientState::STATE_HOSPITALIZED)) {
                 $responseData = ['status' => 'warning', 'message' => 'El paciente ya se encuentra en internación.'];
-            } else {
+            }
+            else if ($patient->hasState(PatientState::STATE_DEATH)) {
+                $responseData = ['status' => 'warning', 'message' => 'El paciente ya se declaró en óbito.'];
+            }
+            else {
                 $responseData = ['status' => 'success', 'message' => 'Se encontró el paciente.', 'patient' => $patient];
             }
-        } else {
+        }
+        else {
             $responseData = ['status' => 'success', 'message' => 'No se encontró el paciente.'];
         }
         return response()->json($responseData);

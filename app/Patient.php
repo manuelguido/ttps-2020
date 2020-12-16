@@ -37,13 +37,25 @@ class Patient extends Model
      * 
      * @return App\Patient;
      */
-    public static function createPatient($data)
+    public static function createPatient($patientData)
     {
         $patient = new Patient;
-        $patient->saveData($data);
-        $newEntry = $patient->addEntry($data);
-        $patient->setInitialSystem();
+        $patient->saveData($patientData);
+        $patient->addEntry($patientData);
+        $patient->addHospitalization();
         return $patient;
+    }
+
+    /**
+     * In
+     * 
+     * @return App\Patient;
+     */
+    public function admitPatient($patientData)
+    {
+        $this->saveData($patientData);
+        $newEntry = $this->addEntry($patientData);
+        $this->addHospitalization($newEntry);
     }
 
     /**
@@ -426,6 +438,17 @@ class Patient extends Model
     }
 
     /**
+     * Determina si el paciente con el DNI existe.
+     * 
+     * @return Boolean.
+     */
+    public static function dniExistsNotSelf($patient)
+    {
+        return (Patient::where([['dni', '=', $patient->dni],['patient_id', '<>', $patient->patient_id]])->count() > 0);
+    }
+
+
+    /**
      * Desasignar todos los médicos de un paciente.
      * 
      * @return void.
@@ -442,27 +465,22 @@ class Patient extends Model
      */
     public function changeSystem($old_system, $new_system, $userId)
     {
-        // Texto para la alerta
+        // Generar alerta
         $textData = "El paciente ".$this->name." ".$this->lastname." fue cambiado del sistema ".$old_system->system." a ".$new_system->system." .";
-
-        // Crear alerta a los medicos
-        foreach ($this->medicsFull() as $medic) {
-            Alert::createAlert($this->patient_id, $medic, $textData);
-        }
-
-        // Crear alerta al jefe del sistema
-        $chief = $this->system()->first()->chief()->first();
-        Alert::createAlert($this->patient_id, $chief, $textData);
-
-        // Desasignar todos los pacientes
+        $this->alertAssignedUsers($textData);
+        // Desasignar todos los médicos
         $this->unassignMedics();
-
         // Cambiar el sistema en si
         $entry = $this->currentEntry();
-        $entry->addHospitalization($new_system->system_id, $old_system->system_id); // Añadir hospitalización a la internación actual
-        $this->freeCurrentBed(); // Liberar la cama actual del sistema
-        $new_system->ocuppyNewBed($this->patient_id); // Enviar al sistema que ocupe una nueva cama para este paciente
-        $this->system_id = $new_system->system_id; // Acutalizo el id de sistema del paciente 
+        // Añadir hospitalización a la internación actual
+        $entry->addHospitalization($new_system->system_id, $old_system->system_id);
+        // Liberar la cama actual del sistema
+        $this->freeCurrentBed();
+        // Enviar al sistema que ocupe una nueva cama para este paciente
+        $new_system->ocuppyNewBed($this->patient_id);
+        // Acutalizo el id de sistema del paciente
+        $this->system_id = $new_system->system_id;
+
         $this->save();
     }
 
@@ -474,8 +492,9 @@ class Patient extends Model
      */
     public function freeCurrentBed()
     {
-        $bed = Bed::where('patient_id', '=', $this->patient_id)->first(); //Obtener cama actual
-
+        //Obtener cama actual
+        $bed = Bed::where('patient_id', '=', $this->patient_id)->first();
+        // Liberar cama
         if ($bed != NULL)
         {
             $bed->is_occupied = False;
@@ -486,30 +505,36 @@ class Patient extends Model
 
 
     /**
-     * Cambiar paciente de sistema.
+     * Ingresar sistema inicia
      * 
      * @return void.
      */
-    public function setInitialSystem()
+    public function addHospitalization($entry = null, $system = null)
     {
-        $entry = $this->currentEntry(); // Obtener ultima entrada del paciente
-        $guard = System::where('system', System::SYSTEM_GUARD)->first(); // Id de sistema guardia
-        $entry->addHospitalization($guard->system_id); // Añadir hospitalización a la internación actual
-        $guard->ocuppyNewBed($this->patient_id); // Enviar al sistema que ocupe una nueva cama para este paciente
-        $this->system_id = $guard->system_id; // Acutalizo el id de sistema del paciente 
+        // Obtener ultima entrada del paciente
+        $patientEntry = ($entry == null) ? $this->currentEntry() : $entry;
+        // Sistema
+        $patientSystem = ($system == null) ? System::where('system', System::SYSTEM_GUARD)->first() : $system;
+        // Añadir hospitalización a la internación actual
+        $patientEntry->addHospitalization($patientSystem->system_id);
+        // Enviar al sistema que ocupe una nueva cama para este paciente
+        $patientSystem->ocuppyNewBed($this->patient_id);
+        // Acutalizo el id de sistema del paciente 
+        $this->system_id = $patientSystem->system_id;
+
         $this->save();
     }
 
     /**
-     * Chequea si el paciente tiene asignado a un medico por el id de usuario del médico.
+     * Chequea si el paciente tiene asignado a un medico por el id de médico.
      * 
      * @return Boolean.
      */
     public function hasMedic($medic_id)
     {
         $result = DB::table('patient_medic')->where([
-            ['medic_id', '=', $medic_id],
-            ['patient_id', '=', $this->patient_id]
+                ['medic_id', '=', $medic_id],
+                ['patient_id', '=', $this->patient_id]
             ])
             ->count();
 
@@ -524,11 +549,12 @@ class Patient extends Model
      */
     public function addMedic($medic_id)
     {
+        // Asignar nuevo médico
         DB::table('patient_medic')->insert(['medic_id' => $medic_id, 'patient_id' => $this->patient_id]);
-
+        // Información de alerta
         $textData = "Fuiste asignado al paciente ".$this->name." ".$this->lastname." (DNI ".$this->dni.")";
-        $medic = Medic::find($medic_id);
-        Alert::createAlert($this->patient_id, $medic, $textData);
+        // Crear alerta para el médico
+        Alert::createAlert($this->patient_id, Medic::find($medic_id), $textData);
     }
 
 
@@ -539,11 +565,12 @@ class Patient extends Model
      */
     public function removeMedic($medic_id)
     {
+        // Desasignar al médico
         DB::table('patient_medic')->where(['medic_id' => $medic_id, 'patient_id' => $this->patient_id])->delete();
-        
+        // Información de alerta
         $textData = "Fuiste desasignado del paciente ".$this->name." ".$this->lastname." (DNI ".$this->dni.")";
-        $medic = Medic::find($medic_id);
-        Alert::createAlert($this->patient_id, $medic, $textData);
+        // Crear alerta para el médico
+        Alert::createAlert($this->patient_id, Medic::find($medic_id), $textData);
     }
 
     /**
@@ -571,14 +598,27 @@ class Patient extends Model
     }
 
     /**
+     * Obtener si el paciente ya se encuentra hospitalizado.
+     * 
+     * @return Booelan.
+     */
+    public function hasState($stateName)
+    {
+        return ($this->patientState()->patient_state == $stateName);
+    }
+
+    /**
      * Cambiar estado de un paciente.
      * 
      * @return void.
      */
-    private function setStatus($state)
+    private function setStatus($stateName)
     {
-        $patientState = PatientState::where('patient_state', '=', $state)->first();
+        // Obtener estado de paciente
+        $patientState = PatientState::where('patient_state', '=', $stateName)->first();
+        // Actualizar valor
         $this->patient_state_id = $patientState->patient_state_id;
+
         $this->save();
     }
     
@@ -589,10 +629,19 @@ class Patient extends Model
      */
     public function declareExit()
     {
+        // Agregar datetime de alata.
+        $currentEntry = $this->currentEntry();
+        $currentEntry->date_of_exit = Carbon::now('America/Argentina/Buenos_Aires');
+        $currentEntry->save();
+        // Cambiar estado
         $this->setStatus(PatientState::STATE_DISCHARGED);
+        // Generar alerta
         $textData = "El paciente ".$this->name." ".$this->lastname." ha sido dado de alta.";
         $this->alertAssignedUsers($textData);
+        // Desasignar médicos
         $this->unassignMedics();
+        // Liberar la cama actual del sistema
+        $this->freeCurrentBed();
     }
 
     /**
@@ -602,10 +651,19 @@ class Patient extends Model
      */
     public function declareDeath()
     {
+        // Agregar datetime de óbito.
+        $currentEntry = $this->currentEntry();
+        $currentEntry->date_of_death = Carbon::now('America/Argentina/Buenos_Aires');
+        $currentEntry->save();
+        // Cambiar estado
         $this->setStatus(PatientState::STATE_DEATH);
+        // Generar alerta
         $textData = "El paciente ".$this->name." ".$this->lastname." ha sido declarado en óbito.";
         $this->alertAssignedUsers($textData);
+        // Desasignar médicos
         $this->unassignMedics();
+        // Liberar la cama actual del sistema
+        $this->freeCurrentBed();
     }
 
     /**

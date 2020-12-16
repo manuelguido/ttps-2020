@@ -35,6 +35,8 @@ class PatientsTableSeeder extends Seeder
             return mb_strtolower($str).$email_ending;
         }
 
+        $guardSystem = System::find(1);
+
         for ($i=0; $i < 20; $i++)
         { 
             $patient = new Patient;
@@ -47,7 +49,7 @@ class PatientsTableSeeder extends Seeder
             $patient->personal_background = '';
             $patient->medical_ensurance_id = MedicalEnsurance::find(mt_rand(1,4))->medical_ensurance_id;
             $patient->patient_state_id = PatientState::find(1)->patient_state_id;
-            $patient->system_id = System::find(1)->system_id;
+            $patient->system_id = $guardSystem->system_id;
             $patient->email = randomEmail($patient);
             $patient->contact_name = randomName();
             $patient->contact_lastname = randomLastname();
@@ -62,7 +64,7 @@ class PatientsTableSeeder extends Seeder
                 'date_of_death' => null,
                 'date_of_exit' => null,
             ]);
-            $patient->setInitialSystem(System::find(1)->system_id);
+            $patient->addHospitalization();
         }
     }
 }

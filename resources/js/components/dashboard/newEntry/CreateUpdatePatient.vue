@@ -289,7 +289,10 @@ export default {
       const AuthStr =
         "Bearer " + localStorage.getItem("access_token").toString();
 
-      const formData = this.patientFormData();
+      let formData = this.patientFormData();
+      if (!this.createPatient) {
+        formData.patient_id = this.patient.patient_id;
+      }
 
       axios
         .post(path, formData, {

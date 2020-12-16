@@ -169,7 +169,7 @@ export default {
         let patientData = {
           lastname: data[i].lastname,
           name: data[i].name,
-          dni: this.formatDni(data[i].dni),
+          dni: data[i].dni,
           room: data[i].room,
           bed: "Cama " + data[i].bed_number,
           show: '<a href="/dashboard/patient/' + data[i].patient_id + '" class="btn btn-primary btn-sm table-button">Ver</a>',
