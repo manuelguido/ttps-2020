@@ -105,7 +105,7 @@ class RuleSettings extends Model
      * 
      * @return Boolean.
      */
-    private function analizeRule1($evolution)
+    public function analizeRule1($evolution)
     {
         $ruleCondition = $evolution->drowsiness;
 
@@ -118,7 +118,7 @@ class RuleSettings extends Model
      * 
      * @return Boolean.
      */
-    private function analizeRule2($evolution)
+    public function analizeRule2($evolution)
     {
         $mv_regular = VentilatoryMechanic::where('ventilatory_mechanic', '=', VentilatoryMechanic::REGULAR)
             ->first()
@@ -141,7 +141,7 @@ class RuleSettings extends Model
      * 
      * @return Boolean.
      */
-    private function analizeRule3($evolution)
+    public function analizeRule3($evolution)
     {
         $ruleCondition = ($evolution->breathing_rate > $this->breathing_rate);
 
@@ -154,7 +154,7 @@ class RuleSettings extends Model
      * 
      * @return Boolean.
      */
-    private function analizeRule4($patient, $evolution)
+    public function analizeRule4($patient, $evolution)
     {
         // Parámetro a evaluar
         $parameter = $this->days_to_evaluate;
@@ -174,7 +174,7 @@ class RuleSettings extends Model
      * 
      * @return Boolean.
      */
-    private function analizeRule5($evolution)
+    public function analizeRule5($evolution)
     {
         $ruleCondition = false;
         $currentSaturation = $evolution->oxigen_saturation;
@@ -192,7 +192,7 @@ class RuleSettings extends Model
      * 
      * @return Boolean.
      */
-    private function analizeRule6($patient, $evolution)
+    public function analizeRule6($patient, $evolution)
     {
         $ruleCondition = false;
 
@@ -212,7 +212,7 @@ class RuleSettings extends Model
      * 
      * @return Boolean.
      */
-    private function createAlert($textData, $patient_id, $medics, $chief)
+    public function createAlert($textData, $patient_id, $medics, $chief)
     {
         // Crear alerta a los médicos.
         foreach ($medics as $medic) {
