@@ -20,6 +20,7 @@
         :medical_ensurances="medical_ensurances"
         :createPatient="createPatient"
         @searchAgain="searchAgain"
+        @loadingData="loadingData"
       ></create-update-patient>
       <!-- /.Step 2 -->
     </div>

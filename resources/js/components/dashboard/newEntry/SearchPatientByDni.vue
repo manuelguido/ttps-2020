@@ -2,7 +2,7 @@
   <!-- Step 1  -->
   <div class="step-content animated">
     <!-- Row -->
-    <div class="row justify-content-center">
+    <div class="row justify-content-center p-5">
       <!-- Col -->
       <form
         @submit.prevent="searchByDni()"

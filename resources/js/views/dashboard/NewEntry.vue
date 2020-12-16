@@ -4,7 +4,7 @@
     <!-- Row -->
     <div class="row justify-content-center">
       <!-- Col -->
-      <div class="col-12 col-lg-10 py-lg-5">
+      <div class="col-12 col-lg-10">
         <!-- New entry -->
         <new-entry />
         <!-- /.New entry -->

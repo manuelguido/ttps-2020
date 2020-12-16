@@ -4,14 +4,13 @@
     <!-- Row -->
     <div class="row justify-content-center">
       <!-- Main title -->
-      <div class="col-lg-10">
-        <button
-          @click="searchAgain"
-          class="text-primary btn btn-outline-primary btn-sm mx-0 mb-5"
-        >
-          <i class="fad fa-chevron-left mr-3"></i>Buscar otro paciente
-        </button>
+      <div
+        class="col-lg-10 d-flex justify-content-between align-items-baseline"
+      >
         <dashboard-title :text="title" colored></dashboard-title>
+        <span @click="searchAgain" class="primary c-pointer">
+          <i class="fad fa-chevron-left mr-3"></i>Buscar otro paciente
+        </span>
       </div>
       <!-- /.Main title -->
       <!-- Form -->
@@ -24,7 +23,7 @@
           <!-- Title -->
           <div class="col-12 mb-4">
             <dashboard-subtitle
-              text="Información del paciente"
+              text="Información personal"
             ></dashboard-subtitle>
           </div>
           <!-- /.Title -->
@@ -136,12 +135,13 @@
             label="Apellido"
             placeholder="Apellido de contacto del paciente"
             classList="col-lg-6 mb-4"
+            onlyLetters
             required
           ></v-input>
           <v-input
             v-model="patient.contact_phone"
             label="Teléfono"
-            placeholder="Teléfono de contacto del paciente"
+            placeholder="Ingrese sólo números"
             classList="col-lg-6 mb-4"
             onlyNumbersAndSymbols
             required
@@ -281,6 +281,7 @@ export default {
      * @return void.
      */
     createUpdatePatient() {
+      this.$emit("loadingData", true);
       const path = this.createPatient
         ? "/api/patient/store"
         : "/api/patient/new_entry";
@@ -300,12 +301,13 @@ export default {
         .then((res) => {
           this.new_alert(res.data);
           if (res.data.status == "success") {
+            this.$emit("loadingData", false);
             this.searchAgain();
           }
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);
+          this.$emit("loadingData", false);
         });
     },
 
