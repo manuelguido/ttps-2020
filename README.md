@@ -62,6 +62,7 @@ php artisan key:generate
 
 ### Crear una base de datos en MySQL para el proyecto
 
+
 ### Ingresar la siguiente información de la base de datos en el archivo .env del proyecto
 ```
 DB_DATABASE=baseDeDatosQueCreaste
@@ -99,4 +100,11 @@ php artisan serve
 ### Listo! Ahora puedes acceder al sitio desde la siguiente URL
 ```
 http://127.0.0.1:8000/
+```
+
+
+# Para correr los test luego de la instalación
+```
+php artisan config:clear
+.\vendor\bin\phpunit
 ```
