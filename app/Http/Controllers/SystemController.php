@@ -46,6 +46,18 @@ class SystemController extends Controller
         return response()->json($responseData);
     }
 
+
+    /**
+     * Obtener todos los sistemas.
+     * 
+     * @return JSON.
+     */
+    public function indexReduced()
+    {
+        return response()->json(System::all());
+    }
+
+
     /**
      * Obtener un sistema con toda su información de camas y habitaciones
      * 

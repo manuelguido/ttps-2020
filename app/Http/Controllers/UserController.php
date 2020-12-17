@@ -10,6 +10,25 @@ use App\User;
 class UserController extends Controller
 {
     /**
+     * Validación de información de parametros.
+     * 
+     * @return void.
+     */
+    private function validateUser($data)
+    {
+        $this->validate($data, [
+            'name' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'password' => 'required|string',
+            'phone' => 'required|integer|min:1',
+            'dni' => 'required|integer|min:1|max:999999999',
+            'email' => 'required|string',
+            'role_id' => 'sometimes|integer|min:1',
+            'system_id' => 'sometimes|integer|min:1',
+        ]);
+    }
+
+    /**
      * Determinar las rutas del usuario y las retorna.
      * 
      * @return Array.
@@ -37,6 +56,38 @@ class UserController extends Controller
             case Role::ROLE_RULE_SETTER: return User::RULE_SETTER_ROUTES;
             default: return [''];
         }
+    }
+
+    /**
+     * Almacenar un usuario.
+     * 
+     * @return JSON.
+     */
+    public function store(Request $data)
+    {
+        // Information try
+        try {
+            // Validación de paciente
+            $this->validateUser($data);
+            // Chequeo de DNI existente
+            if (User::getByEmail($data->email)) {
+                $message = ['status' => 'warning', 'message' => 'El email ingresado ya existe en el sistema.'];
+            }
+            else {
+                // Nuevo usuario
+                $user = User::create($data);
+                $role = Role::find($data->role_id);
+                $user->setRole($role->role);
+                if (($role->role == Role::ROLE_MEDIC || $role->role == Role::ROLE_SYSTEM_CHIEF) && ($data->system_id)) {
+                    $user->setSystemById($data->system_id);
+                }
+                // Mensaje
+                $message = ['status' => 'success', 'message' => 'Se guardo el paciente y ha sido ingresado a guardia.'];
+            }
+        } catch (\Exception $e) {
+            $message = ['status' => 'warning', 'message' => 'Ocurrió un error. Verifica la información ingresada.'];
+        }    
+        return response()->json($message, 200);
     }
 
     /**

@@ -35,6 +35,9 @@ Route::prefix('/user')->group(function() {
   // Obtener usuario
   Route::get('/index', 'UserController@index')->middleware('auth:api', 'permission:user_index'); // Funciona
 
+  // Almacenar un usuario
+  Route::post('/store', 'UserController@store')->middleware('auth:api', 'permission:user_store'); // Funciona
+
   // Obtener rol de usuario
   Route::get('/role', 'UserController@role')->middleware('auth:api'); // Funciona
 
@@ -72,11 +75,15 @@ Route::prefix('/system')->group(function() {
   // Retorna todos los sistemas.
   Route::get('/index', 'SystemController@index')->middleware('auth:api', 'permission:system_index'); // Funciona
 
+  // Retorna todos los sistemas.
+  Route::get('/index/reduced', 'SystemController@indexReduced')->middleware('auth:api', 'permission:system_index'); // Funciona
+
   // Retorna todos los sistemas habiilitados (bajo regla) para hacer el cambio de sistema.
   Route::post('/allowed/index', 'SystemController@allowedIndex')->middleware('auth:api'); // Funciona
 
   // Retorna todo un sistema con su información de camas y habitaciones
   Route::get('/show', 'SystemController@show')->middleware('auth:api', 'permission:system_show'); // Funciona
+
 });
 
 Route::prefix('/system/guard')->group(function() {
@@ -84,8 +91,8 @@ Route::prefix('/system/guard')->group(function() {
   // Retorna todos los sistemas.
   Route::post('/inite_beds/update', 'SystemController@updateInfiniteBedsOnGuard')->middleware('auth:api', 'system:Guardia', 'role:Jefe de Sistema'); // Funciona
 
-    // Obtener si la guardia tiene la posibilidad de adminir un nuevo paciente.
-    Route::post('/available', 'SystemController@guardAvailable')->middleware('auth:api'); // Funciona
+  // Obtener si la guardia tiene la posibilidad de adminir un nuevo paciente.
+  Route::post('/available', 'SystemController@guardAvailable')->middleware('auth:api'); // Funciona
 
 });
 
@@ -216,7 +223,7 @@ Route::prefix('/medic')->group(function() {
 
 /*
 |--------------------------------------------------------------------------
-| API de seguros médicos
+| API de configuración
 |--------------------------------------------------------------------------
 */
 Route::prefix('/settings')->middleware('auth:api', 'role:Administrador')->group(function() {
@@ -228,8 +235,6 @@ Route::prefix('/settings')->middleware('auth:api', 'role:Administrador')->group(
   Route::post('/update', 'SettingsController@update'); //Funciona
 });
 
-
-
 Route::prefix('/settings/rules')->middleware('auth:api', 'permission:rule_crud', 'role:Configurador de Reglas')->group(function() {
   
   // Obtener parametros de alertas.
@@ -239,3 +244,16 @@ Route::prefix('/settings/rules')->middleware('auth:api', 'permission:rule_crud',
   Route::post('/update', 'RulesSettingsController@update'); //Funciona
 });
 
+/*
+|--------------------------------------------------------------------------
+| API de roles
+|--------------------------------------------------------------------------
+*/
+Route::prefix('/role')->middleware('auth:api', 'role:Administrador')->group(function() {
+  
+  // Actualizar parametros de alertas.
+  Route::get('/index', 'RoleController@index'); //Funciona
+
+    // Actualizar parametros de alertas.
+    Route::get('/index/reduced', 'RoleController@indexReduced'); //Funciona
+});

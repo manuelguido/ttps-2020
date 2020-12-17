@@ -3,13 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\user;
+use App\Role;
+use App\User;
 use Auth;
 
 class RoleController extends Controller
 {
-    public function has_role($role)
+    /**
+     * Obtener todos los roles
+     * @return JSON.
+     */
+    public function index()
     {
-        return Auth::user()->has_role($role);
+        return response()->json(Role::all());
+    }
+
+    /**
+     * Obtener roles reducidos
+     * @return JSON.
+     */
+    public function indexReduced()
+    {
+        return response()->json(Role::where([
+            ['role', '<>', Role::ROLE_RULE_SETTER],
+            ['role', '<>', Role::ROLE_SYSTEM_CHIEF],
+            ])->get());
     }
 }

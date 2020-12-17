@@ -210,8 +210,8 @@ class User extends Authenticatable
     public static function getByEmail($email)
     {
         $user = User::where('email', '=', $email)->get();
-        $userExists = (count($user) == 0); 
-        return $userExists ? false : $user->first();
+        $userNotExists = (count($user) == 0); 
+        return $userNotExists ? false : $user->first();
     }
 
     /**
@@ -296,6 +296,20 @@ class User extends Authenticatable
     {
         // Get system_id
         $system_id = System::where('system', $system)->get()->first()->system_id;
+        // Saves the system
+        DB::table('system_user')->insert([
+            'user_id' => $this->user_id,
+            'system_id' => $system_id,
+        ]);
+    }
+
+    /**
+     * Agregar un usuario a un sistema por su id
+     * 
+     * @return void.
+     */
+    public function setSystemById($system_id)
+    {
         // Saves the system
         DB::table('system_user')->insert([
             'user_id' => $this->user_id,
