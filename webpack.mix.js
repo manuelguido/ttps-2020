@@ -14,4 +14,4 @@ const mix = require('laravel-mix');
 /**
  * App assets
  */
-mix.js('resources/js/app.js', 'public/js/appFinal1.min.js').sourceMaps();
+mix.js('resources/js/app.js', 'public/js/appFinal2.min.js').sourceMaps();

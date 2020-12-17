@@ -1,4 +1,4 @@
-const production = false;
+const production = true;
 
 const assetMixin = {
 	data () {
