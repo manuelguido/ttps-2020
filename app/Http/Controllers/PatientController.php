@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\PatientState;
 use App\Permission;
+use App\Settings;
 use App\Patient;
 use App\System;
 use App\Role;
@@ -372,25 +373,36 @@ class PatientController extends Controller
      */
     public function clinicData($patient_id)
     {
+        function calculateEditable($evolution, $parameter) {
+            // Fecha de la evolución
+            $evolutionDate = new Carbon($evolution->created_at);
+            // Fecha de evolucion
+            $now = Carbon::now('America/Argentina/Buenos_Aires');
+            // Diferencia de fechas
+            return ($evolutionDate->diff($now)->days <= $parameter);
+        }
+
+        // Parámetro a evaluar
+        $parameter = Settings::find(1)->editing_days;
+
+        // Obtener paciente
         $patient = Patient::find($patient_id); // Obtener paciente
-
+        // Obtener evoluciones
         $evolutions = $patient->currentEvolutions()->get();
-
+        // Obtener cambios de sistema
         $systemChanges = $patient->systemChanges();
-
+        // Añadir campo evolution
         foreach ($evolutions as $evolution) {
             $evolution->evolution = true;
+            $evolution->editable = (calculateEditable($evolution, $parameter));
         }
         foreach ($systemChanges as $systemChange) {
             $systemChange->evolution = false;
         }
 
-        $clinicData = $systemChanges->merge($evolutions);
-
         return response()->json([
             'system_changes' => $systemChanges,
             'evolutions' => $evolutions,
-            // 'lastEvolutions' => $patient->lastEvolutions(),
         ]);
     }
 

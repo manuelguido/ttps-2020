@@ -13,7 +13,7 @@
           class="btn btn-blue-grey btn-sm"
           ><i class="fad fa-exchange-alt mr-3"></i>Cambiar sistema</router-link
         >
-        <button class="btn btn-dark-green btn-sm" @click="declareExit">
+        <button v-if="patientCanExit(patient)" class="btn btn-dark-green btn-sm" @click="declareExit">
           <i class="fad fa-shield-check mr-3"></i>Egresar del hospital
         </button>
         <button class="btn btn-danger btn-sm" @click="declareDeath">

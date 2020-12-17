@@ -160,17 +160,8 @@ class RuleSettings extends Model
         $ruleCondition = ($initialDate->diff($evolutionDate)->days >= $parameter);
 
         return $ruleCondition;
-    
-
-
-        // Fecha de diagnostico
-        $initial_date = new Carbon($patient->date_of_diagnosis());
-        // Fecha de evolución
-        $evolution_date = new Carbon($evolution->created_at);
-        // Diferencia de fechas
-        $result = ($initial_date->diff($evolution_date)->days >= $parameter);
-
     }
+
     /**
      * Analizar regla 5:
      * Saturación oxígeno menor a (PARÁMETRO): Evaluar oxigenoterapia y prono.

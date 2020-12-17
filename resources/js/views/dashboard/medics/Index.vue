@@ -71,14 +71,6 @@ export default {
           field: "phone",
           sort: "asc",
         },
-        {
-          label: "",
-          field: "show",
-        },
-        {
-          label: "",
-          field: "change",
-        },
       ],
     };
   },
@@ -122,14 +114,14 @@ export default {
           dni: this.formatDni(data[i].dni),
           email: data[i].email,
           phone: data[i].phone,
-          show:
-            '<a href="/dashboard/medic/' +
-            data[i].medic_id +
-            '" class="btn btn-primary btn-sm table-button">Ver</a>',
-          change:
-            '<a href="/dashboard/medic/system/change/' +
-            data[i].medic_id +
-            '" class="btn btn-deep-purple btn-sm table-button">Cambiar sistema</a>',
+          // show:
+          //   '<a href="/dashboard/medic/' +
+          //   data[i].medic_id +
+          //   '" class="btn btn-primary btn-sm table-button">Ver</a>',
+          // change:
+          //   '<a href="/dashboard/medic/system/change/' +
+          //   data[i].medic_id +
+          //   '" class="btn btn-deep-purple btn-sm table-button">Cambiar sistema</a>',
         });
         this.loadingMedics = false;
         this.$Progress.finish();

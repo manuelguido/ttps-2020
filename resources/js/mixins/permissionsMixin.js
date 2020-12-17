@@ -14,6 +14,10 @@ const permissionsMixin = {
       roleMedic: 'Médico',
       // Sistemas
       systemGuard: 'Guardia',
+      systemCovidFloor: 'Piso Covid',
+      systemUTI: 'UTI',
+      systemHotel: 'Hotel',
+      systemHome: 'Domicilio',
     }
   },
   methods: {
@@ -79,6 +83,12 @@ const permissionsMixin = {
     patientIsHospitalized(patient)
     {
       return (patient.patient_state === "En internación");
+    },
+
+    patientCanExit(patient)
+    {
+      const system = patient.system;
+      return (system == this.systemCovidFloor || system == this.systemHotel || system == this.systemHome);
     }
   },
 }

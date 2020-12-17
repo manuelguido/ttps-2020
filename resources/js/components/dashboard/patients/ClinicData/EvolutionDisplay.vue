@@ -1,7 +1,7 @@
 <template>
   <div>
     <mdb-btn color="primary" class="p-1" @click.native="modal = true"
-      >Ver</mdb-btn
+      ><i class="fad fa-external-link-alt mr-3"></i>Ver</mdb-btn
     >
     <mdb-modal :show="modal" @close="modal = false" size="lg" scrollable>
       <mdb-modal-header>
@@ -109,7 +109,7 @@
               <p>{{formatText(evolution.observations)}}</p>
             </div>
             <!-- /.Observaciones -->
-            
+
           </div>
         </div>
       </mdb-modal-body>

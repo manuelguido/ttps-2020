@@ -17,7 +17,10 @@
     </span>
 
     <!-- Right -->
-    <span>
+    <span class="d-flex flex-row">
+      <router-link :to="'/dashboard/evolution/edit/'+item.evolution_id" v-if="item.editable" class="btn btn-purple p-1"
+        ><i class="fad fa-external-link-alt mr-3"></i>Editar</router-link
+      >
       <evolution-display v-if="item.evolution_id" :evolution="item" />
     </span>
   </div>
@@ -44,16 +47,16 @@ export default {
       } else if (item.previous_system) {
         return "Cambio de sistema";
       } else {
-        return "Ingreso al hospital"
+        return "Ingreso al hospital";
       }
     },
     formatSystemData(item) {
       if (item.previous_system) {
-        return "Paso de "+item.previous_system+" a "+item.system;
+        return "Paso de " + item.previous_system + " a " + item.system;
       } else {
-        return "Ingresó a "+item.system;
+        return "Ingresó a " + item.system;
       }
-    }
+    },
   },
 };
 </script>

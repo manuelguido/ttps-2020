@@ -88,8 +88,7 @@ class Evolution extends Model
      */
     public function updateEvolution($data)
     {
-        $evolution->saveEvolutionData($data);
-        return $evolution;
+        $this->saveEvolutionData($data);
     }
 
 
@@ -191,5 +190,104 @@ class Evolution extends Model
         $this->observations = $data->observations['observations'];
 
         $this->save();
+    }
+
+    public function evolutionData()
+    {
+        return collect([
+            'temperature' => $this->temperature,
+            'heart_rate' => $this->heart_rate,
+            'breathing_rate' => $this->breathing_rate,
+            'systolic_ta' => $this->systolic_ta,
+            'diastolic_ta' => $this->diastolic_ta,
+        ]);
+    }
+
+    public function respiratoryData()
+    {
+        return collect([
+            'ventilatory_mechanic_id' => $this->ventilatory_mechanic_id,
+            'requires_oxigen' => $this->requires_oxigen,
+            'oxigen_requirement_type_id' => $this->oxigen_requirement_type_id,
+            'required_oxigen_value' => $this->required_oxigen_value,
+            'oxigen_saturation' => $this->oxigen_saturation,
+            'pafi' => $this->pafi,
+            'pafi_value' => $this->pafi_value,
+            'prone' => $this->prone,
+            'cough' => $this->cough,
+            'dyspnoea' => $this->dyspnoea,
+            'respiratory_irregularities' => $this->respiratory_irregularities,
+        ]);
+    }
+
+    public function otherSymptomsData()
+    {
+        return collect([
+            'drowsiness' => $this->drowsiness,
+            'anosmia' => $this->anosmia,
+            'dysgeucia' => $this->dysgeucia,
+        ]);
+    }
+
+    public function studiesData()
+    {
+        return collect([
+            'rxtx' => $this->rxtx,
+            'rxtx_type' => $this->rxtx_type,
+            'rxtx_text' => $this->rxtx_text,
+            'tac' => $this->tac,
+            'tac_type' => $this->tac_type,
+            'tac_text' => $this->tac_text,
+            'ecg' => $this->ecg,
+            'ecg_type' => $this->ecg_type,
+            'ecg_text' => $this->ecg_text,
+            'pcr' => $this->ecg,
+            'pcr_type' => $this->ecg_type,
+            'pcr_text' => $this->ecg_text,
+            'laboratory' => $this->laboratory,
+        ]);
+    }
+
+    public function actualTreatmentsData()
+    {
+        return collect([
+            'feeding_type_id' => $this->feeding_type_id,
+            'feeding_note' => $this->feeding_note,
+            'drug' => $this->drug,
+            'drug_dosis' => $this->drug_dosis,
+            'dosis_day_number' => $this->dosis_day_number,
+            'thromboprophylaxis' => $this->thromboprophylaxis,
+            'thromboprophylaxis_data' => $this->thromboprophylaxis_data,
+            'dexamethasone' => $this->dexamethasone,
+            'dexamethasone_data' => $this->dexamethasone_data,
+            'gastric_protection' => $this->gastric_protection,
+            'gastric_protection_data' => $this->gastric_protection_data,
+            'dialysis' => $this->dialysis,
+            'dialysis_data' => $this->dialysis_data,
+            'research_study' => $this->research_study,
+            'research_study_data' => $this->research_study_data,
+        ]);
+    }
+
+    public function observationsData()
+    {
+        return collect([
+            'observations' => $this->observations,
+        ]);
+    }
+
+    /**
+     * Obtener las últimas evoluciones de un paciente
+     * 
+     * @return Collection.
+     */
+    public function patient()
+    {
+        return Evolution::where('evolutions.evolution_id', $this->evolution_id)
+            ->join('hospitalizations', 'hospitalizations.hospitalization_id', '=', 'evolutions.hospitalization_id')
+            ->join('entries', 'entries.entry_id', '=', 'hospitalizations.entry_id')
+            ->join('patients', 'patients.patient_id', '=', 'entries.patient_id')
+            ->select('patients.*')
+            ->first();
     }
 }

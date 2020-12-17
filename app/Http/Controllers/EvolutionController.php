@@ -13,6 +13,18 @@ use App\Patient;
 class EvolutionController extends Controller
 {
     /**
+     * Validación de id de la evolución.
+     * 
+     * @return void.
+     */
+    private function validateEvolutionId($data)
+    {
+        $this->validate($data, [
+            'evolution_id' => 'required|integer|min:1',
+        ]);
+    }
+
+    /**
      * Validación de id del paciente.
      * 
      * @return void.
@@ -143,6 +155,29 @@ class EvolutionController extends Controller
      * 
      * @return JSON.
      */
+    public function show(Request $request)
+    {
+        // Validación de la evolucion
+        $this->validateEvolutionId($request);
+
+        // Crear evolución
+        $evolution = Evolution::find($request->evolution_id);
+
+        return response()->json([
+            'evolution' => $evolution->evolutionData(),
+            'respiratory' => $evolution->respiratoryData(),
+            'otherSymptoms' => $evolution->otherSymptomsData(),
+            'studies' => $evolution->studiesData(),
+            'actualTreatments' => $evolution->actualTreatmentsData(),
+            'observations' => $evolution->observationsData(),
+        ]);
+    }
+
+    /**
+     * Almacenar una nueva evolución.
+     * 
+     * @return JSON.
+     */
     public function store(Request $request)
     {
         try {
@@ -171,8 +206,44 @@ class EvolutionController extends Controller
         }
         catch (\Exception $e)
         {
-            $message = ['status' => 'warning', 'message' => $e];
+            $message = ['status' => 'warning', 'message' => 'No ingreses información inválida.'];
         }
+
+        return response()->json($message, 200);
+    }
+
+    /**
+     * Almacenar una nueva evolución.
+     * 
+     * @return JSON.
+     */
+    public function update(Request $request)
+    {
+        // try {
+            // Validación de la evolucion
+            $this->validateEvolutionId($request);
+            $this->validateEvolution($request);
+            $this->validateRespiratorySystem($request);
+            $this->validateOtherSymptoms($request);
+            $this->validateStudies($request);
+            $this->validateActualTreatments($request);
+            $this->validateObservations($request);
+
+            // Actualizar
+            $evolution = Evolution::find($request->evolution_id);
+            $patient = $evolution->patient();
+            $evolution->updateEvolution($request);
+
+            // Chequeo de reglas
+            $ruleSettings = RuleSettings::find(1);
+            $ruleSettings->analizeAllRules($patient->patient_id, $evolution);
+
+            $message = ['status' => 'success', 'message' => 'Evolución guardada con exito.'];
+        // }
+        // catch (\Exception $e)
+        // {
+            // $message = ['status' => 'warning', 'message' => 'No ingreses información inválida.'];
+        // }
 
         return response()->json($message, 200);
     }

@@ -14,6 +14,8 @@ import EditPatient from '../views/dashboard/patients/Edit.vue';
 import AssigmentPatient from '../views/dashboard/patients/Assigment.vue';
 import ChangeSystemPatient from '../views/dashboard/patients/ChangeSystem.vue';
 import AddEvolutionPatient from '../views/dashboard/patients/AddEvolution.vue';
+import EditEvolutionPatient from '../views/dashboard/patients/EditEvolution.vue';
+
 
 // Medicos
 import Medics from '../views/dashboard/medics/Index.vue';
@@ -131,6 +133,15 @@ const routes = [
         path: '/dashboard/patient/evolution/add/:patient_id',
         name: 'AddEvolutionPatient',
         component: AddEvolutionPatient,
+        props: true,
+      },
+      /**
+       * Editar evolución.
+       */
+      {
+        path: '/dashboard/evolution/edit/:evolution_id',
+        name: 'EditEvolutionPatient',
+        component: EditEvolutionPatient,
         props: true,
       },
       /**

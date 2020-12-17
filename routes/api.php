@@ -168,6 +168,9 @@ Route::prefix('/patient')->group(function() {
 Route::prefix('/evolution')->group(function() {
 
   // Almacenar una evolución
+  Route::post('/show', 'EvolutionController@show')->middleware('auth:api'); // Funciona
+
+  // Almacenar una evolución
   Route::post('/store', 'EvolutionController@store')->middleware('auth:api', 'permission:patient_store'); //  Función
 
   // Actualizar el perfil de usuario
