@@ -9,6 +9,7 @@ import NewEntry from '../views/dashboard/entries/New.vue'
 
 // Pacientes
 import Patients from '../views/dashboard/patients/Index.vue';
+import PatientsAssigned from '../views/dashboard/patients/IndexAssigned.vue';
 import Patient from '../views/dashboard/patients/Show.vue';
 import EditPatient from '../views/dashboard/patients/Edit.vue';
 import AssigmentPatient from '../views/dashboard/patients/Assigment.vue';
@@ -82,6 +83,14 @@ const routes = [
       }
     },
     children: [
+      /**
+       * Pacientes assignados.
+       */
+      {
+        path: '/dashboard/assigned',
+        name: 'PatientsAssigned',
+        component: PatientsAssigned
+      },
       /**
        * Pacientes.
        */

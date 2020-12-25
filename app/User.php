@@ -36,10 +36,12 @@ class User extends Authenticatable
     ];
 
     const MEDIC_ROUTES = [
+        ['icon' => 'fad fa-user-md', 'name' => 'Pacientes asignados', 'url' => '/dashboard/assigned'],
         ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
     ];
 
     const MEDIC_ROUTES_W_ENTRY = [
+        ['icon' => 'fad fa-user-md', 'name' => 'Pacientes asignados', 'url' => '/dashboard/assigned'],
         ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
         ['icon' => 'fad fa-user-plus', 'name' => 'Nueva internación', 'url' => '/dashboard/new_entry'],
     ];
@@ -160,9 +162,10 @@ class User extends Authenticatable
      */
     public function systems()
     {
+        // return System::where('user_id', '=', $this->user_id)
+            // ->join('system_user', 'user_system.system_id', '=', 'systems.system_id');
         return $this->belongsToMany('App\System', 'system_user', 'user_id', 'system_id');
     } 
-
 
     /**
      * Obtener todas las alertas del usuario.

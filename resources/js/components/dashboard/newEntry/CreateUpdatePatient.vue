@@ -304,9 +304,9 @@ export default {
         .then((res) => {
           this.new_alert(res.data);
           if (res.data.status == "success") {
-            this.$emit("loadingData", false);
             this.searchAgain();
           }
+          this.$emit("loadingData", false);
         })
         .catch((err) => {
           console.log(err);

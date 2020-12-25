@@ -172,8 +172,14 @@ export default {
           dni: data[i].dni,
           room: data[i].room,
           bed: "Cama " + data[i].bed_number,
-          show: '<a href="/dashboard/patient/' + data[i].patient_id + '" class="btn btn-primary btn-sm table-button"><i class="fad fa-external-link-alt mr-3"></i>Ver</a>',
-          evolve: '<a href="/dashboard/patient/evolution/add/' + data[i].patient_id +'" class="btn btn-purple btn-sm table-button"><i class="fad fa-file-edit mr-3"></i>Evolucionar</a>',
+          show:
+            '<a href="/dashboard/patient/' +
+            data[i].patient_id +
+            '" class="btn btn-primary btn-sm table-button"><i class="fad fa-external-link-alt mr-3"></i>Ver</a>',
+          evolve:
+            '<a href="/dashboard/patient/evolution/add/' +
+            data[i].patient_id +
+            '" class="btn btn-purple btn-sm table-button"><i class="fad fa-file-edit mr-3"></i>Evolucionar</a>',
         };
 
         if (this.hasRole("Jefe de Sistema")) {
@@ -199,7 +205,7 @@ export default {
      * @return void.
      */
     fetchPatients() {
-      const path = "/api/patient/index/"+JSON.parse(localStorage.getItem('system')).system_id;
+      const path = "/api/medic/patients/";
       const AuthStr =
         "Bearer " + localStorage.getItem("access_token").toString();
 

@@ -214,8 +214,8 @@ Route::prefix('/medic')->group(function() {
   // Retorna todos los medicos
   Route::get('/index', 'MedicController@index')->middleware('auth:api', 'permission:medic_index'); // ?
   
-  // Retorna todos los pacientes
-  Route::get('/assigned/index', 'MedicController@indexAssigned')->middleware('auth:api', 'permission:medic_index'); // Funciona
+  // Retorna todos los pacientes del médico
+  Route::get('/patients', 'MedicController@patients')->middleware('auth:api', 'permission:patient_index', 'role:Médico'); // Funciona
 
   // Retorna todos los medicos por sistema
   Route::get('/index/{system_id}', 'MedicController@indexBySystem')->middleware('auth:api', 'permission:medic_index'); // Funciona

@@ -24,15 +24,11 @@ class MedicController extends Controller
      * 
      * @return JSON.
      */
-    public function indexAssigned(Request $request)
+    public function patients(Request $request)
     {
-        $user = $request->user();        
-        
-        $system_id = $user->systems()->first()->system_id;
-        // if ( )
-        $data = Medic::allWithUserDataBySystem($system_id);
-        
-        return response()->json($data);
+        $responseData = $request->user()->medic()->patients()->get();
+
+        return response()->json($responseData);
     }
 
     /**

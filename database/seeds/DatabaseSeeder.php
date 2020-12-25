@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             FeedingTypesTableSeeder::class,
             OxigenRequirementTypesTableSeeder::class,
             RuleSettingsTableSeeder::class,
+            SettingsTableSeeder::class,
         ]);
     }
 }
