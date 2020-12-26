@@ -165,13 +165,17 @@ export default {
      * @return void.
      */
     loadPatients(data) {
+      var patientData = {}, roomData, bedData;
+
       for (let i = 0; i < data.length; i++) {
-        let patientData = {
+        roomData = (data[i].room) ? data[i].room : '<span class="black-alpha-50">Sin sala registrada</span>';
+        bedData = (data[i].bed_number) ? "Cama " + data[i].bed_number : '<span class="black-alpha-50">Sin cama registrada</span>';
+        patientData = {
           lastname: data[i].lastname,
           name: data[i].name,
           dni: data[i].dni,
-          room: data[i].room,
-          bed: "Cama " + data[i].bed_number,
+          room: roomData,
+          bed: bedData,
           show: '<a href="/dashboard/patient/' + data[i].patient_id + '" class="btn btn-primary btn-sm table-button"><i class="fad fa-external-link-alt mr-3"></i>Ver</a>',
           evolve: '<a href="/dashboard/patient/evolution/add/' + data[i].patient_id +'" class="btn btn-purple btn-sm table-button"><i class="fad fa-file-edit mr-3"></i>Evolucionar</a>',
         };

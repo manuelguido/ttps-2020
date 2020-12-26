@@ -62,7 +62,7 @@ export default {
      * Buscar paciente por dni.
      */
     searchByDni() {
-      this.$emit("loadingData", true);
+      // this.$emit("loadingData", true);
       const path = "/api/patient/search";
       const AuthStr =
         "Bearer " + localStorage.getItem("access_token").toString();

@@ -163,6 +163,16 @@ class System extends Model
     }
 
     /**
+     * Obtener si el sistema tiene camas disponibles reales.
+     * 
+     * @return Boolean.
+     */
+    public function hasRealBeds()
+    {
+        return ($this->system == System::SYSTEM_HOME) ? true : $this->freeBeds() > 0; 
+    }
+
+    /**
      * Cargar una nueva cama en el sistema (La siguiente disponible)
      * 
      * @return void.
@@ -251,7 +261,7 @@ class System extends Model
      */
     public function ableToUpdateInfiniteBeds()
     {
-        return ($this->occupiedBeds() < $this->totalBeds());
+        return ($this->occupiedBeds() <= $this->totalBeds());
     }
     
     /**

@@ -15,7 +15,12 @@ class CreateRuleSettingsTable extends Migration
     {
         Schema::create('rule_settings', function (Blueprint $table) {
             $table->bigIncrements('rule_setting_id');
-            $table->boolean('activated');
+            $table->boolean('activated_r1');
+            $table->boolean('activated_r2');
+            $table->boolean('activated_r3');
+            $table->boolean('activated_r4');
+            $table->boolean('activated_r5');
+            $table->boolean('activated_r6');
             $table->integer('breathing_rate');
             $table->integer('days_to_evaluate');
             $table->integer('oxigen_saturation');

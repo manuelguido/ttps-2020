@@ -83,16 +83,18 @@ Route::prefix('/system')->group(function() {
 
   // Retorna todo un sistema con su información de camas y habitaciones
   Route::get('/show', 'SystemController@show')->middleware('auth:api', 'permission:system_show'); // Funciona
-
 });
 
 Route::prefix('/system/guard')->group(function() {
+
+  // Retorna todo un sistema con su información de camas y habitaciones
+  Route::get('/has_availability', 'SystemController@guardHasAvailability')->middleware('auth:api'); // Funciona
 
   // Retorna todos los sistemas.
   Route::post('/inite_beds/update', 'SystemController@updateInfiniteBedsOnGuard')->middleware('auth:api', 'system:Guardia', 'role:Jefe de Sistema'); // Funciona
 
   // Obtener si la guardia tiene la posibilidad de adminir un nuevo paciente.
-  Route::post('/available', 'SystemController@guardAvailable')->middleware('auth:api'); // Funciona
+  Route::get('/availability_to_change', 'SystemController@guardAvailabilityToChange'); // Funciona
 
 });
 
@@ -214,6 +216,9 @@ Route::prefix('/medic')->group(function() {
   // Retorna todos los medicos
   Route::get('/index', 'MedicController@index')->middleware('auth:api', 'permission:medic_index'); // ?
   
+  // Retorna todos los pacientes del médico
+  Route::get('/assigned/index', 'MedicController@indexAssigned')->middleware('auth:api', 'permission:medic_index'); // Funciona
+
   // Retorna todos los pacientes del médico
   Route::get('/patients', 'MedicController@patients')->middleware('auth:api', 'permission:patient_index', 'role:Médico'); // Funciona
 

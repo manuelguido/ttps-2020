@@ -15,7 +15,12 @@ class RulesSettingsController extends Controller
     private function validateRules($data)
     {
         $this->validate($data, [
-            'activated' => 'required|boolean',
+            'activated_r1' => 'required|boolean',
+            'activated_r2' => 'required|boolean',
+            'activated_r3' => 'required|boolean',
+            'activated_r4' => 'required|boolean',
+            'activated_r5' => 'required|boolean',
+            'activated_r6' => 'required|boolean',
             'breathing_rate' => 'required|integer|min:0',
             'days_to_evaluate' => 'required|integer|min:0',
             'oxigen_saturation' => 'required|integer|min:0|max:100',

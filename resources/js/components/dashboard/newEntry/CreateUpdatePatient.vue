@@ -281,7 +281,7 @@ export default {
      * @return void.
      */
     createUpdatePatient() {
-      this.$emit("loadingData", true);
+      // this.$emit("loadingData", true);
       const path = this.createPatient
         ? "/api/patient/store"
         : "/api/patient/new_entry";

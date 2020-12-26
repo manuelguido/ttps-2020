@@ -1,10 +1,17 @@
 <template>
   <!-- Container -->
   <div>
+    <loading-overlay v-if="loading" />
+    <div v-else-if="!guardAvailability" class="stepper-content d-flex flex-column align-items-center justify-conten-center py-5">
+      <span class="mb-4"
+        ><i class="fad fa-frown black-alpha-30 fa-4x"></i
+      ></span>
+      <span class="h4 black-alpha-50"
+        >La guradia del hospital no tiene disponibilidad de camas</span
+      >
+    </div>
     <!-- Stepper content -->
-    <div class="stepper-content">
-      <loading-overlay v-if="loading"></loading-overlay>
-
+    <div v-else class="stepper-content">
       <!-- Step 1: Buscar paciente por dni -->
       <search-patient-by-dni
         v-if="currentStep == 1"
@@ -41,7 +48,8 @@ export default {
   data() {
     return {
       currentStep: 1,
-      loading: false,
+      loading: true,
+      guardAvailability: false,
       // Steps data
       steps: [
         {
@@ -75,6 +83,9 @@ export default {
       medical_ensurances: [],
       createPatient: true,
     };
+  },
+  created() {
+    this.getGuardAvailability();
   },
   mounted() {
     this.getMedicalEnsurances();
@@ -127,6 +138,31 @@ export default {
     searchAgain() {
       this.setStep(1);
       this.resetForm();
+    },
+
+    /**
+     * Obtener todas las obras sociales.
+     */
+    getGuardAvailability() {
+      const path = "/api/system/guard/has_availability";
+      const AuthStr =
+        "Bearer " + localStorage.getItem("access_token").toString();
+
+      axios
+        .get(path, {
+          headers: {
+            Accept: "application/json",
+            Authorization: AuthStr,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.guardAvailability = res.data.avaiability;
+          this.loading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
 
     /**

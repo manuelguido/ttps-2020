@@ -25,10 +25,55 @@
       <div class="col-12 col-lg-8 col-xl-6 d-flex flex-column">
         <loading-overlay v-if="loadingData" />
         <!-- Activacion de reglas -->
+        <div class="form-group mb-4">
+          <switcher
+            v-model="rules.activated_r1"
+            label="Analizar somnolencia"
+          ></switcher>
+        </div>
+        <!-- /.Activacion de reglas -->
+
+        <!-- Activacion de reglas -->
+        <div class="form-group mb-4">
+          <switcher
+            v-model="rules.activated_r2"
+            label="Analizar mecánica ventilatoria 'Regular' o 'Mala'"
+          ></switcher>
+        </div>
+        <!-- /.Activacion de reglas -->
+
+        <!-- Activacion de reglas -->
+        <div class="form-group mb-4">
+          <switcher
+            v-model="rules.activated_r3"
+            :label="'Analizar frecuencia respiratoria mayor a Parámetro ('+rules.breathing_rate+')'"
+          ></switcher>
+        </div>
+        <!-- /.Activacion de reglas -->
+
+        <!-- Activacion de reglas -->
+        <div class="form-group mb-4">
+          <switcher
+            v-model="rules.activated_r4"
+            label="Analizr cantidad de días que pasaron desde el inicio de los síntomas"
+          ></switcher>
+        </div>
+        <!-- /.Activacion de reglas -->
+
+        <!-- Activacion de reglas -->
+        <div class="form-group mb-4">
+          <switcher
+            v-model="rules.activated_r5"
+            :label="'Analizar saturación de oxígeno menor a Parámetro ('+rules.oxigen_saturation+')'"
+          ></switcher>
+        </div>
+        <!-- /.Activacion de reglas -->
+
+        <!-- Activacion de reglas -->
         <div class="form-group mb-5">
           <switcher
-            v-model="rules.activated"
-            label="Activación de reglas"
+            v-model="rules.activated_r6"
+            :label="'Analizar descenso de saturación de oxígeno menor a Parámetro ('+rules.oxigen_saturation_down_percentage+')'"
           ></switcher>
         </div>
         <!-- /.Activacion de reglas -->
@@ -93,7 +138,7 @@
 <script>
 export default {
   name: "RulesSettingsView",
-  props: ["system_id"],
+  // props: system_id,
   data() {
     return {
       cardTitle: "Configuración de reglas",
@@ -143,7 +188,12 @@ export default {
         "Bearer " + localStorage.getItem("access_token").toString();
 
       let formData = {
-        activated: this.rules.activated,
+        activated_r1: this.rules.activated_r1,
+        activated_r2: this.rules.activated_r2,
+        activated_r3: this.rules.activated_r3,
+        activated_r4: this.rules.activated_r4,
+        activated_r5: this.rules.activated_r5,
+        activated_r6: this.rules.activated_r6,
         breathing_rate: this.rules.breathing_rate,
         days_to_evaluate: this.rules.days_to_evaluate,
         oxigen_saturation: this.rules.oxigen_saturation,

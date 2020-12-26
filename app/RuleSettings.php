@@ -29,7 +29,8 @@ class RuleSettings extends Model
      * @var array
      */
     protected $fillable = [
-        'activated', 'breathing_rate', 'days_to_evaluate', 'oxigen_saturation', 'oxigen_saturation_down_percentage',
+        'activated_r1', 'activated_r2', 'activated_r3', 'activated_r4', 'activated_r5', 'activated_r6',
+        'breathing_rate', 'days_to_evaluate', 'oxigen_saturation', 'oxigen_saturation_down_percentage',
     ];
 
     public $timestamps = false;
@@ -42,51 +43,62 @@ class RuleSettings extends Model
      */
     public function analizeAllRules($patient_id, $evolution)
     {
-        if ($this->activated) {
-            $patient = Patient::find($patient_id); // Paciente
-            $medics = $patient->medicsFull(); // Medicos asignados
-            $chief = $patient->system()->first()->chief()->first(); // Jefe de sistema del paciente
+        $patient = Patient::find($patient_id); // Paciente
+        $medics = $patient->medicsFull(); // Medicos asignados
+        $chief = $patient->system()->first()->chief()->first(); // Jefe de sistema del paciente
 
-            // Evaluación de Regla 1
+        // Evaluación de Regla 1
+        if ($this->activated_r1) {    
             $rule1Condition = $this->analizeRule1($evolution);
             if ($rule1Condition) {
                 // Crear alerta
                 $textData = RuleSettings::MESSAGE_E1." (El paciente tiene somnolencia)";
                 $this->createAlert($textData, $patient_id, $medics, $chief);
             }
+        }
 
-            // Evaluación de Regla 2
+        // Evaluación de Regla 2
+        if ($this->activated_r2) {    
             $rule2Condition = $this->analizeRule2($evolution);
             if ($rule2Condition) {
                 // Crear alerta
                 $textData = RuleSettings::MESSAGE_E1." (Mecánica ventilatoria 'Regular' o 'Mala')";
                 $this->createAlert($textData, $patient_id, $medics, $chief);
             }
+        }
 
-            // Evaluación de Regla 3
+        // Evaluación de Regla 3
+        if ($this->activated_r3) {    
             $rule3Condition = $this->analizeRule3($evolution);
             if ($rule3Condition) {
                 // Crear alerta
                 $textData = RuleSettings::MESSAGE_E1." (Frecuencia respiratoria mayor a ".$this->breathing_rate.")";
                 $this->createAlert($textData, $patient_id, $medics, $chief);
             }
+        }
 
-            // Evaluación de Regla 4
+        // Evaluación de Regla 4
+        if ($this->activated_r4) {    
             $rule4Condition = $this->analizeRule4($patient, $evolution);
             if ($rule4Condition) {
                 // Crear alerta
                 $textData = RuleSettings::MESSAGE_E2." (Pasaron al menos ".$this->days_to_evaluate." días desde el inicio de los síntomas)";
                 $this->createAlert($textData, $patient_id, $medics, $chief);
             }
+        }
 
-            // Evaluación de Regla 5
+        // Evaluación de Regla 5
+        if ($this->activated_r5) {    
             $rule5Condition = $this->analizeRule5($evolution);
             if ($rule5Condition) {
                 // Crear alerta
                 $textData = RuleSettings::MESSAGE_E3." (La saturación de oxígeno es menor a ".$this->oxigen_saturation.")";
                 $this->createAlert($textData, $patient_id, $medics, $chief);
             }
+        }
 
+        // Evaluación de Regla 6
+        if ($this->activated_r6) {    
             // Evaluación de Regla 6
             if (!$rule5Condition) {
                 $rule6Condition = $this->analizeRule6($patient, $evolution);
@@ -225,7 +237,12 @@ class RuleSettings extends Model
      */
     public function updateData($data)
     {
-        $this->activated = $data->activated;
+        $this->activated_r1 = $data->activated_r1;
+        $this->activated_r2 = $data->activated_r2;
+        $this->activated_r3 = $data->activated_r3;
+        $this->activated_r4 = $data->activated_r4;
+        $this->activated_r5 = $data->activated_r5;
+        $this->activated_r6 = $data->activated_r6;
         $this->breathing_rate = $data->breathing_rate;
         $this->days_to_evaluate = $data->days_to_evaluate;
         $this->oxigen_saturation = $data->oxigen_saturation;

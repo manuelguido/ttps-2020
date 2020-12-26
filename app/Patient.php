@@ -530,7 +530,9 @@ class Patient extends Model
         // Añadir hospitalización a la internación actual
         $patientEntry->addHospitalization($patientSystem->system_id);
         // Enviar al sistema que ocupe una nueva cama para este paciente
-        $patientSystem->ocuppyNewBed($this->patient_id);
+        if ($patientSystem->hasRealBeds()) {
+            $patientSystem->ocuppyNewBed($this->patient_id);
+        }
         // Acutalizo el id de sistema del paciente 
         $this->system_id = $patientSystem->system_id;
 

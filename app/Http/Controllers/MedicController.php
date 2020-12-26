@@ -24,6 +24,22 @@ class MedicController extends Controller
      * 
      * @return JSON.
      */
+    public function indexAssigned(Request $request)
+    {
+        $user = $request->user();        
+        
+        $system_id = $user->systems()->first()->system_id;
+
+        $data = Medic::allWithUserDataBySystem($system_id);
+        
+        return response()->json($data);
+    }
+
+    /**
+     * Obtener todos los pacientes asignados al usuario médico o jefe de sistema.
+     * 
+     * @return JSON.
+     */
     public function patients(Request $request)
     {
         $responseData = $request->user()->medic()->patients()->get();

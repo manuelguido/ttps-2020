@@ -44,7 +44,7 @@ export default {
   name: "PatientsView",
   data() {
     return {
-      title: "",
+      title: "Tus pacientes asignados",
       loadingPatients: true,
       patients: [],
       tableColumns1: [
@@ -130,7 +130,6 @@ export default {
   created() {
     this.$Progress.start();
     this.hasPermission("patient_index");
-    this.setTitle();
     this.fetchPatients();
   },
   methods: {
@@ -140,23 +139,6 @@ export default {
       } else {
         return this.tableColumns2;
       }
-    },
-    /**
-     * Determinar el titulo de la página.
-     *
-     * @return void.
-     */
-    setTitle() {
-      var condition = false;
-      const roleData = JSON.parse(localStorage.getItem("role"));
-      const systemData = JSON.parse(localStorage.getItem("system"));
-      const roleGuard = "Jefe de Sistema";
-      const roleMedic = "Médico";
-
-      this.title =
-        roleData == roleGuard || roleData == roleMedic
-          ? "Pacientes de " + systemData.system
-          : "Pacientes";
     },
 
     /**

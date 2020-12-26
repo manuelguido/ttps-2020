@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Patient;
 use App\System;
 
 class SystemController extends Controller
@@ -114,7 +115,7 @@ class SystemController extends Controller
      */
     public function updateInfiniteBedsOnGuard(Request $data)
     {
-        // try {
+        try {
             // Validación
             $this->validateInfiniteBeds();
 
@@ -124,14 +125,49 @@ class SystemController extends Controller
                 $message = ['status' => 'warning', 'message' => 'Necesitas desocupar camas para volver a la configuración de camas limitadas.'];
             } else {
                 $guard->updateInfiniteBeds($data->infinite_beds);
-                $message = ['status' => 'success', 'message' => 'Guardaste la información.'];
+                $message = ['status' => 'success', 'message' => 'Acualizaste las camas infinitas.'];
             }
-            
-            $message = ['status' => 'success', 'message' => 'Guardaste la información.'];
-        // } catch (\Exception $e) {
-            // $message = ['status' => 'danger', 'message' => 'Ingresaste información no válida.'];
-        // }
+        } catch (\Exception $e) {
+            $message = ['status' => 'danger', 'message' => 'Ingresaste información no válida.'];
+        }
 
         return response()->json($message);
+    }
+
+    /**
+     * Corroborar que guardia tenga disponibilidad.
+     * 
+     * @return JSON.
+     */
+    public function guardHasAvailability()
+    {
+        $guard = System::where('system', '=', System::SYSTEM_GUARD)->first();
+
+        return response()->json(['avaiability' => $guard->hasBeds()]);
+    }
+
+    /**
+     * Corroborar que guardia tenga disponibilidad para cambiar de camas infintas a no infinitas.
+     * 
+     * @return JSON.
+     */
+    public function guardAvailabilityToChange()
+    {
+        $guard = System::where('system', '=', System::SYSTEM_GUARD)->first();
+
+        if (!$guard->infinite_beds) {
+            $isAvailableToChange = true;
+        } else {
+            $patientCount = Patient::where([
+                    ['system_id', '=', $guard->system_id],
+                    ['patient_states.patient_state_id', '=', 1],
+                    ])
+                ->join('patient_states', 'patient_states.patient_state_id', '=', 'patients.patient_state_id')
+                ->count();
+
+            $isAvailableToChange = ($guard->totalBeds() >= $patientCount);
+        }
+
+        return response()->json(['is_available_to_change' => $isAvailableToChange]);
     }
 }

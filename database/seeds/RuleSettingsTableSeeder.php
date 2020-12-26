@@ -13,7 +13,12 @@ class RuleSettingsTableSeeder extends Seeder
     public function run()
     {
         $rs = new RuleSettings;
-        $rs->activated = true;
+        $rs->activated_r1 = true;
+        $rs->activated_r2 = true;
+        $rs->activated_r3 = true;
+        $rs->activated_r4 = true;
+        $rs->activated_r5 = true;
+        $rs->activated_r6 = true;
         $rs->breathing_rate = 30;
         $rs->days_to_evaluate = 10;
         $rs->oxigen_saturation = 92;
