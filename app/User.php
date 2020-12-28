@@ -25,6 +25,7 @@ class User extends Authenticatable
     const SYSTEM_CHIEF_ROUTES = [
         ['icon' => 'fad fa-user-tag', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
         ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
+        ['icon' => 'fad fa-search', 'name' => 'Buscar paciente', 'url' => '/dashboard/search'],
         ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
     ];
 
@@ -32,18 +33,21 @@ class User extends Authenticatable
         ['icon' => 'fad fa-user-tag', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
         ['icon' => 'fad fa-user-nurse', 'name' => 'Médicos', 'url' => '/dashboard/medics'],
         ['icon' => 'fad fa-user-plus', 'name' => 'Nueva internación', 'url' => '/dashboard/new_entry'],
+        ['icon' => 'fad fa-search', 'name' => 'Buscar paciente', 'url' => '/dashboard/search'],
         ['icon' => 'fad fa-window', 'name' => 'Sistemas', 'url' => '/dashboard/systems'],
     ];
 
     const MEDIC_ROUTES = [
         ['icon' => 'fad fa-user-md', 'name' => 'Pacientes asignados', 'url' => '/dashboard/assigned'],
         ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
+        ['icon' => 'fad fa-search', 'name' => 'Buscar paciente', 'url' => '/dashboard/search'],
     ];
 
     const MEDIC_ROUTES_W_ENTRY = [
         ['icon' => 'fad fa-user-md', 'name' => 'Pacientes asignados', 'url' => '/dashboard/assigned'],
         ['icon' => 'fad fa-user-alt', 'name' => 'Pacientes', 'url' => '/dashboard/patients'],
         ['icon' => 'fad fa-user-plus', 'name' => 'Nueva internación', 'url' => '/dashboard/new_entry'],
+        ['icon' => 'fad fa-search', 'name' => 'Buscar paciente', 'url' => '/dashboard/search'],
     ];
 
     const RULE_SETTER_ROUTES = [

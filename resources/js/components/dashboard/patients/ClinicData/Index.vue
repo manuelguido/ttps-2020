@@ -5,6 +5,7 @@
     <div class="row">
       <!-- Col -->
       <div
+        v-if="!noTitle"
         class="col-12 d-flex justify-content-between align-items-center mb-5"
       >
         <!-- Title -->
@@ -12,7 +13,7 @@
           <span class="black-alpha-50">{{ title }}</span>
         </p>
         <!-- Modal -->
-        <span>
+        <span v-if="!noEdit">
           <evolution-modal
             @reload-data="reloadData()"
             :patient_id="patient_id"
@@ -47,6 +48,14 @@ export default {
     },
     patient_id: {
       type: String,
+    },
+    noEdit: {
+      type: Boolean,
+      default: false,
+    },
+    noTitle: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {

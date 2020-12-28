@@ -140,6 +140,12 @@ Route::prefix('/patient')->group(function() {
   // Buscar paciente por DNI
   Route::post('/search', 'PatientController@searchByDni')->middleware('auth:api', 'permission:patient_show'); // Funciona
 
+  // Buscar paciente
+  Route::post('/search/complete', 'PatientController@searchComplete')->middleware('auth:api', 'permission:patient_show'); // Funciona
+
+  // Obtener paciente como resultado de busqueda
+  Route::get('/complete/{id}', 'PatientController@getPatientComplete')->middleware('auth:api', 'permission:patient_show'); // Funciona
+
   // Retorna toda la información hospitalizaciones de un paciente
   Route::get('/clinic_data/{patient_id}', 'PatientController@clinicData')->middleware('auth:api'); // Funciona
 

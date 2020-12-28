@@ -6,6 +6,8 @@ import Settings from '../views/dashboard/settings/Index.vue';
 
 // Nueva entrada al sistema
 import NewEntry from '../views/dashboard/entries/New.vue'
+import Search from '../views/dashboard/Search/Index.vue'
+import SearchResult from '../views/dashboard/Search/Result.vue'
 
 // Pacientes
 import Patients from '../views/dashboard/patients/Index.vue';
@@ -162,7 +164,24 @@ const routes = [
         component: NewEntry
       },
       /**
-       * Medicos.
+       * Buscar pacientes.
+       */
+      {
+        path: '/dashboard/search',
+        name: 'Search',
+        component: Search,
+      },
+      /**
+       * Buscar pacientes.
+       */
+      {
+        path: '/dashboard/search_result/:patient_id',
+        name: 'SearchResult',
+        component: SearchResult,
+        props: true,
+      },
+      /**
+       * Medico1s.
        */
       {
         path: '/dashboard/medics',

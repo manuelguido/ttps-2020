@@ -371,6 +371,61 @@ class PatientController extends Controller
     }
 
     /**
+     * Obtener un paciente por su dni.
+     * 
+     * @return JSON.
+     */
+    public function searchComplete(Request $request)
+    {
+        // Obtener paciente
+        $responseData = Patient::where('dni', '=', $request->input_data)
+            ->orWhere('name', '=', $request->input_data)
+            ->orWhere('lastname', '=', $request->input_data)
+            ->orWhere('name', 'LIKE', "%{$request->input_data}%")
+            ->orWhere('lastname', 'LIKE', "%{$request->input_data}%")
+            ->get();
+
+        return response()->json(['result' => $responseData]);
+    }
+
+    /**
+     * Obtener un paciente por su dni.
+     * 
+     * @return JSON.
+     */
+    public function getPatientComplete($id)
+    {
+        // Obtener paciente
+        $patient = Patient::find($id);
+
+        $entries = $patient->entries()->get();
+
+        // Obtener hospitalizaciones
+        foreach ($entries as $entry) {
+            $entry->hospitalizations = $entry->hospitalizations()->get();
+
+            // Obtener evoluciones
+            foreach ($entry->hospitalizations as $hospitalization) {
+                $hospitalization->system = System::find($hospitalization->system_id)->system;
+                $hospitalization->evolutions = $hospitalization->evolutions()->get();
+
+                // Guardar información de edición
+                foreach ($hospitalization->evolutions as $evolution) {
+                    $evolution->evolution = true;
+                    $evolution->editable = false;
+                }
+            }
+        }
+
+
+        // Response
+        return response()->json([
+            'patient' => Patient::full($id),
+            'entries' => $entries,
+        ]);
+    }
+
+    /**
      * Retorna los medicos asignados al paciente y los posibles médicos a asignar
      * 
      * @return JSON.
